@@ -18,7 +18,7 @@ function syncFile() {
 }
 function syncFileHome() {
 	local sourceFile="$1"
-	if [ ! -d "$HOME/.config/${sourceFile}" ]; then
+	if [ ! -d "$HOME/${sourceFile}" ]; then
 		printf "Symlink: ${sourceFile}\n"
 		ln -sf "$CWD/${sourceFile}" "$HOME/${sourceFile}"
 		printf "Done\n"
