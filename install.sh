@@ -1,11 +1,27 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-# Symlink
-# it will override existing files
+set -e # stop script when error occurs
 
-# Scripts
-ln -srf Scripts ~/Scripts
-# fish
-ln -srf fish ~/.config/fish
-# waybar
-ln -srf waybar ~/.config/waybar
+CWD=$(pwd)
+
+printf "# Syncing to home folder ... \n"
+
+function syncFile() {
+	local sourceFile="$1"
+	printf "Symlink: ${sourceFile}\n"
+	ln -sf "$CWD/${sourceFile}" "$HOME/.config/${sourceFile}"
+	printf "Done\n"
+}
+function syncFileHome() {
+	local sourceFile="$1"
+	ln -sf "$CWD/${sourceFile}" "$HOME/${sourceFile}"
+}
+
+syncFile "fish"
+syncFile "waybar"
+syncFile "lazygit"
+syncFile "kitty"
+
+syncFileHome "Scripts"
+
+printf "Done\n"
