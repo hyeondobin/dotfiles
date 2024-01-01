@@ -8,13 +8,23 @@ printf "# Syncing to home folder ... \n"
 
 function syncFile() {
 	local sourceFile="$1"
-	printf "Symlink: ${sourceFile}\n"
-	ln -sf "$CWD/${sourceFile}" "$HOME/.config/${sourceFile}"
-	printf "Done\n"
+	if [ ! -d "$HOME/.config/${sourceFile}" ]; then
+		printf "Symlink: ${sourceFile}\n"
+		ln -sf "$CWD/${sourceFile}" "$HOME/.config/${sourceFile}"
+		printf "Done\n"
+	else
+		printf "Skipping ${sourceFile}\n"
+	fi
 }
 function syncFileHome() {
 	local sourceFile="$1"
-	ln -sf "$CWD/${sourceFile}" "$HOME/${sourceFile}"
+	if [ ! -d "$HOME/.config/${sourceFile}" ]; then
+		printf "Symlink: ${sourceFile}\n"
+		ln -sf "$CWD/${sourceFile}" "$HOME/${sourceFile}"
+		printf "Done\n"
+	else
+		printf "Skipping ${sourceFile}\n"
+	fi
 }
 
 syncFile "fish"
