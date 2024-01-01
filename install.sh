@@ -32,6 +32,8 @@ syncFile "waybar"
 syncFile "lazygit"
 syncFile "kitty"
 syncFile "hypr"
+syncFile "fcitx"
+syncFile "fcitx5"
 
 syncFileHome "Scripts"
 
