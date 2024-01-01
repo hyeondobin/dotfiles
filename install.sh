@@ -4,6 +4,7 @@ set -e # stop script when error occurs
 
 CWD=$(pwd)
 YELLOW="\e[33m"
+GREEN="\e[32m"
 ENDCOLOR="\e[0m"
 
 printf "# Syncing to home folder ... \n"
@@ -39,4 +40,4 @@ syncFile "fcitx5"
 
 syncFileHome "Scripts"
 
-printf "Done\n"
+printf "${GREEN}Done${ENDCOLOR}\n"
