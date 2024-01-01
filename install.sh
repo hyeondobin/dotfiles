@@ -1,8 +1,11 @@
 #!/bin/bash
 
 # Symlink
+# it will override existing files
 
 # Scripts
-ln -s Scripts ~/Scripts
+ln -srf Scripts ~/Scripts
+# fish
+ln -srf fish ~/.config/fish
 # waybar
-ln -s waybar ~/.config/waybar
+ln -srf waybar ~/.config/waybar
