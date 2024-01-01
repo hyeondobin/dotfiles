@@ -3,6 +3,8 @@
 set -e # stop script when error occurs
 
 CWD=$(pwd)
+YELLOW="\e[33m"
+ENDCOLOR="\e[0m"
 
 printf "# Syncing to home folder ... \n"
 
@@ -13,7 +15,7 @@ function syncFile() {
 		ln -sf "$CWD/${sourceFile}" "$HOME/.config/${sourceFile}"
 		printf "Done\n"
 	else
-		printf "Skipping ${sourceFile}\n"
+		printf "${YELLOW}Skipping${ENDCOLOR} ${sourceFile}\n"
 	fi
 }
 function syncFileHome() {
@@ -23,7 +25,7 @@ function syncFileHome() {
 		ln -sf "$CWD/${sourceFile}" "$HOME/${sourceFile}"
 		printf "Done\n"
 	else
-		printf "Skipping ${sourceFile}\n"
+		printf "${YELLOW}Skipping${ENDCOLOR} ${sourceFile}\n"
 	fi
 }
 
