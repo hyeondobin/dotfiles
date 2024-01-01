@@ -31,6 +31,7 @@ syncFile "fish"
 syncFile "waybar"
 syncFile "lazygit"
 syncFile "kitty"
+syncFile "hypr"
 
 syncFileHome "Scripts"
 
