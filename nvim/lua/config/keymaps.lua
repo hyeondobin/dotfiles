@@ -9,4 +9,4 @@ vim.keymap.set("i", ";", "<C-c>A;", opts)
 
 -- move line up/down with Alt
 vim.keymap.set("n", "<A-j>", "ddp", opts)
-vim.keymap.set("n", "<A-k>", "ddP", opts)
+vim.keymap.set("n", "<A-k>", "ddkP", opts)
