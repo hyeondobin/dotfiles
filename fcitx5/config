@@ -12,13 +12,12 @@ EnumerateSkipFirst=False
 # Enumerate Input Method Group Forward
 EnumerateGroupForwardKeys=
 # Activate Input Method
-ActivateKeys=
+ActivateKeys=Hangul
 # Deactivate Input Method
-DeactivateKeys=
+DeactivateKeys=Shift+Hangul
 
 [Hotkey/TriggerKeys]
-0=Hangul
-1=Shift+space
+0=Shift+space
 
 [Hotkey/EnumerateGroupBackwardKeys]
 0=Control+space
