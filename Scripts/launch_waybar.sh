@@ -1,4 +1,9 @@
 #!/bin/bash
+if ! command -v inotifiwait &> /dev/null
+then
+    printf "Installing inotify-tools"
+    yay inotify-tools
+fi
 
 CONFIG_FILES="$HOME/.config/waybar/config $HOME/.config/waybar/style.css"
 
