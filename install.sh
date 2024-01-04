@@ -79,4 +79,6 @@ fi
 install_font "FiraCode Nerd Font"
 install_font "D2Coding"
 
+sudo npm install -g live-server
+
 printf "${GREEN}Done${ENDCOLOR}\n"
