@@ -1,3 +1,4 @@
+# vim: set ft=toml :
 [Hotkey]
 # Enumerate when press trigger key repeatedly
 EnumerateWithTriggerKeys=False
