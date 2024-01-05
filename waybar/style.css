@@ -1,48 +1,48 @@
 @import "nord.css";
 
 @keyframes blink-warning {
-  70% {
-    color: @nord4;
-  }
+    70% {
+        color: @nord4;
+    }
 
-  to {
-    color: @nord4;
-    background-color: @nord13;
-  }
+    to {
+        color: @nord4;
+        background-color: @nord13;
+    }
 }
 
 @keyframes blink-critical {
-  70% {
-    color: @nord4;
-  }
+    70% {
+        color: @nord4;
+    }
 
-  to {
-    color: @nord4;
-    background-color: @nord11;
-  }
+    to {
+        color: @nord4;
+        background-color: @nord11;
+    }
 }
 
 * {
-  /* `otf-font-awesome` is required to be installed for icons */
-  font-family: "Firacode Nerd Font", "Font Awesome";
-  font-size: 15px;
-  margin-top: 2px;
-  background-color: transparent;
-  border: none;
-  border-radius: 10px;
-  border-width: 4px;
-  min-height: 0;
-  margin: 1px 6px 1px 6px;
+    /* `otf-font-awesome` is required to be installed for icons */
+    font-family: "Firacode Nerd Font", "Font Awesome";
+    font-size: 15px;
+    margin-top: 2px;
+    background-color: transparent;
+    border: none;
+    border-radius: 10px;
+    border-width: 4px;
+    min-height: 0;
+    margin: 1px 6px 1px 6px;
 }
 
 /* Whole bar */
 #waybar {
-  background-color: transparent;
-  color: @nord4;
-  font-family: "Firacode Nerd Font", "Font Awesome";
-  font-size: 22px;
-  font-weight: bold;
-  border-radius: 0px;
+    background-color: transparent;
+    color: @nord4;
+    font-family: "Firacode Nerd Font", "Font Awesome";
+    font-size: 22px;
+    font-weight: bold;
+    border-radius: 0px;
 }
 
 /* Each module */
@@ -53,7 +53,7 @@
 #memory,
 #cpu,
 #clock {
-  background-color: @nord0;
+    background-color: @nord0;
 }
 
 /* indicators */
@@ -61,14 +61,14 @@
 #cpu,
 #pulseaudio,
 #clock {
-  padding-right: 5px;
-  padding-left: 5px;
-  border-radius: 0px;
-  border-style: solid none solid none;
-  border-color: @nord1;
-  margin-right: 0px;
-  margin-left: 0px;
-  background-color: @nord0;
+    padding-right: 5px;
+    padding-left: 5px;
+    border-radius: 0px;
+    border-style: solid none solid none;
+    border-color: @nord1;
+    margin-right: 0px;
+    margin-left: 0px;
+    background-color: @nord0;
 }
 
 /* Each module that should blink */
@@ -76,9 +76,9 @@
 #memory,
 #temperature,
 #battery {
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-  animation-direction: alternate;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
 }
 
 /* Each critical module */
@@ -86,7 +86,7 @@
 #cpu.critical,
 #temperature.critical,
 #battery.critical {
-  color: @nord11;
+    color: @nord11;
 }
 
 /* Each critical that should blink */
@@ -94,8 +94,8 @@
 #memory.critical,
 #temperature.critical,
 #battery.critical.discharging {
-  animation-name: blink-critical;
-  animation-duration: 2s;
+    animation-name: blink-critical;
+    animation-duration: 2s;
 }
 
 /* Each warning */
@@ -104,83 +104,83 @@
 #cpu.warning,
 #temperature.warning,
 #battery.warning {
-  background: @nord13;
-  color: @nord5;
+    background: @nord13;
+    color: @nord5;
 }
 
 /* Each warning that should blink */
 #battery.warning.discharging {
-  animation-name: blink-warning;
-  animation-duration: 3s;
+    animation-name: blink-warning;
+    animation-duration: 3s;
 }
 
 /* modules themselves in their respective order */
 
 #custom-wlogout {
-  padding: 7px;
-  padding-right: 10px;
-  color: @nord11;
-  border-color: @nord1;
-  border-style: solid;
+    padding: 7px;
+    padding-right: 10px;
+    color: @nord11;
+    border-color: @nord1;
+    border-style: solid;
 }
 
 /* taskbar */
 #taskbar {
-  border-color: @nord1;
-  border-style: solid;
+    border-color: @nord1;
+    border-style: solid;
 }
 
 #taskbar button:hover {
-  background-color: @nord8;
+    background-color: @nord8;
 }
 
 #tray {
-  border-color: @nord1;
-  border-style: solid;
+    border-color: @nord1;
+    border-style: solid;
 }
 
 /* <S-D-w> */
 
 window#waybar.hidden {
-  opacity: 0.2;
+    opacity: 0.2;
 }
 
 button {
-  /* Use box-shadow instead of border so the text isn't offset */
-  box-shadow: inset 0 -3px transparent;
-  /* Avoid rounded borders under each button name */
-  border: none;
-  border-radius: 0;
+    /* Use box-shadow instead of border so the text isn't offset */
+    box-shadow: inset 0 -3px transparent;
+    /* Avoid rounded borders under each button name */
+    border: none;
+    border-radius: 0;
 }
 
 /* https://github.com/Alexays/Waybar/wiki/FAQ#the-workspace-buttons-have-a-strange-hover-effect */
 button:hover {
-  background: inherit;
-  box-shadow: inset 0 -3px #ffffff;
+    background: inherit;
+    box-shadow: inset 0 -3px #ffffff;
 }
 
 #workspaces button {
-  padding: 0 5px;
-  background-color: transparent;
-  color: #ffffff;
+    padding: 0 5px;
+    background-color: transparent;
+    color: #ffffff;
 }
 
 #workspaces button:hover {
-  background: rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.2);
 }
 
 #workspaces button.focused {
-  background-color: #64727D;
-  box-shadow: inset 0 -3px #ffffff;
+    background-color: #64727D;
+    box-shadow: inset 0 -3px #ffffff;
 }
 
 #workspaces button.urgent {
-  background-color: #eb4d4b;
+    background-color: #eb4d4b;
 }
 
 #mode {
-  background-color: #64727D;
-  border-bottom: 3px solid #ffffff;
+    background-color: #64727D;
+    border-bottom: 3px solid #ffffff;
 }
 
 #clock,
@@ -196,30 +196,30 @@ button:hover {
 #tray,
 #mode,
 #window {
-  margin-left: 10px;
-  color: @nord6;
-  font-weight: bold;
-  padding: 0px 5px;
-  background-color: @nord3;
+    margin-left: 10px;
+    color: @nord6;
+    font-weight: bold;
+    padding: 0px 5px;
+    background-color: @nord3;
 }
 
 #workspaces {
-  margin: 0 4px;
+    margin: 0 4px;
 }
 
 #clock {
-  background-color: @nord2;
+    background-color: @nord2;
 }
 
 @keyframes blink {
-  to {
-    background-color: #ffffff;
-    color: #000000;
-  }
+    to {
+        background-color: #ffffff;
+        color: #000000;
+    }
 }
 
 #tray {
-  background-color: @nord2;
-  padding: 0px 8px;
-  color: @nord6;
+    background-color: @nord2;
+    padding: 0px 8px;
+    color: @nord6;
 }
