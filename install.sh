@@ -31,6 +31,18 @@ function syncFileHome() {
     fi
 }
 
+function install ()
+{
+    local program=$1
+if command -v ${program} &> /dev/null
+then
+    echo "${program} already installed"
+else
+    printf "Installing '${program}'"
+    yay ${program}
+fi
+}
+
 syncFile "fish"
 syncFile "waybar"
 syncFile "lazygit"
@@ -54,13 +66,8 @@ else
     makepkg -si
 fi
 
-if command -v fish &> /dev/null
-then
-    echo "fish already installed"
-else
-    printf "Installing 'fish'"
-    yay fish
-fi
+install "fish"
+install "wlogout"
   
 is_font_installed(){
     fontname=$1
@@ -79,6 +86,12 @@ fi
 install_font "FiraCode Nerd Font"
 install_font "D2Coding"
 
-sudo npm install -g live-server
+if command -v live-server &> /dev/null
+then
+    printf "live-server already installed"
+else
+    printf "Installing live-server"
+    sudo npm install -g live-server
+fi
 
 printf "${GREEN}Done${ENDCOLOR}\n"
