@@ -18,7 +18,7 @@
         //"idle_inhibitor",
         "pulseaudio",
         "hyprland/Language",
-        //"network",
+        "network",
         "cpu",
         "memory",
         "temperature",
@@ -114,7 +114,7 @@
     "clock": {
         // "timezone": "America/New_York",
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-        "format": "  {:%Y-%m-%d   %H:%M}",
+        "format": " {:%Y-%m-%d %H:%M}",
         "format-alt": "{:%Y-%m-%d}"
     },
     "cpu": {
@@ -177,7 +177,7 @@
     },
     "network": {
         // "interface": "wlp2*", // (Optional) To force the use of this interface
-        "format-wifi": "{essid} ({signalStrength}%) ",
+        "format-wifi": "{essid:.6}...{signalStrength}%",
         "format-ethernet": "{ipaddr}/{cidr} ",
         "tooltip-format": "{ifname} via {gwaddr} ",
         "format-linked": "{ifname} (No IP) ",

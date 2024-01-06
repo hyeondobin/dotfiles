@@ -67,6 +67,7 @@
 #temperature,
 #backlight,
 #tray,
+#network,
 #clock {
     padding-right: 5px;
     padding-left: 5px;
@@ -80,6 +81,10 @@
 #battery {
     padding-left: 8px;
     padding-right: 9px;
+}
+
+#network {
+    padding-right: 10px;
 }
 
 /* Each module that should blink */
