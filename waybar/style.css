@@ -1,3 +1,5 @@
+/* vim: set ft=less : */
+
 @import "nord.css";
 
 @keyframes blink-warning {
@@ -29,10 +31,11 @@
     margin-top: 2px;
     background-color: transparent;
     border: none;
-    border-radius: 10px;
+    border-radius: 0px;
     border-width: 4px;
+    border-color: @nord9;
     min-height: 0;
-    margin: 1px 6px 1px 6px;
+    margin: 1px 0px 1px 0px;
 }
 
 /* Whole bar */
@@ -60,15 +63,23 @@
 #memory,
 #cpu,
 #pulseaudio,
+#battery,
+#temperature,
+#backlight,
+#tray,
 #clock {
     padding-right: 5px;
     padding-left: 5px;
     border-radius: 0px;
     border-style: solid none solid none;
-    border-color: @nord1;
     margin-right: 0px;
     margin-left: 0px;
     background-color: @nord0;
+}
+
+#battery {
+    padding-left: 8px;
+    padding-right: 9px;
 }
 
 /* Each module that should blink */
@@ -116,30 +127,56 @@
 
 /* modules themselves in their respective order */
 
+#clock {
+    border-right: 4 solid @nord9;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
 #custom-wlogout {
     padding: 7px;
     padding-right: 10px;
     color: @nord11;
-    border-color: @nord1;
-    border-style: solid;
+    border-style: solid none;
+    border-left-style: solid;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
 }
 
 /* taskbar */
 #taskbar {
-    border-color: @nord1;
-    border-style: solid;
+    border-style: solid none;
+    border-right-style: solid;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
 }
 
 #taskbar button:hover {
-    background-color: @nord8;
+    background-color: @nord3;
 }
 
 #tray {
-    border-color: @nord1;
-    border-style: solid;
+    border-style: solid none;
+    padding: 0px 8px;
+    color: @nord4;
+}
+
+#pulseaudio {
+    border-left: 4 solid @nord9;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    margin-left: 30px;
 }
 
 /* <S-D-w> */
+#window {
+    background-color: @nord0;
+    border-width: 4px;
+    border-style: solid;
+    padding: 0 4px;
+    margin: 0 5px;
+    border-radius: 10px;
+}
 
 window#waybar.hidden {
     opacity: 0.2;
@@ -159,67 +196,35 @@ button:hover {
     box-shadow: inset 0 -3px #ffffff;
 }
 
+tooltip {
+    background-color: @nord4;
+}
+
+tooltip label {
+    color: @nord1;
+}
+
+#workspaces {
+    padding: 0 5px;
+    border-style: solid none;
+}
+
 #workspaces button {
     padding: 0 5px;
     background-color: transparent;
-    color: #ffffff;
+    color: @nord8;
 }
 
 #workspaces button:hover {
     background: rgba(0, 0, 0, 0.2);
 }
 
-#workspaces button.focused {
-    background-color: #64727D;
+#workspaces button.active {
+    background-color: @nord3;
     box-shadow: inset 0 -3px #ffffff;
+
 }
 
 #workspaces button.urgent {
     background-color: #eb4d4b;
-}
-
-#mode {
-    background-color: #64727D;
-    border-bottom: 3px solid #ffffff;
-}
-
-#clock,
-#cpu,
-#memory,
-#disk,
-#temperature,
-#backlight,
-#network,
-#pulseaudio,
-#wireplumber,
-#custom-media,
-#tray,
-#mode,
-#window {
-    margin-left: 10px;
-    color: @nord6;
-    font-weight: bold;
-    padding: 0px 5px;
-    background-color: @nord3;
-}
-
-#workspaces {
-    margin: 0 4px;
-}
-
-#clock {
-    background-color: @nord2;
-}
-
-@keyframes blink {
-    to {
-        background-color: #ffffff;
-        color: #000000;
-    }
-}
-
-#tray {
-    background-color: @nord2;
-    padding: 0px 8px;
-    color: @nord6;
 }

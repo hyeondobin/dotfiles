@@ -2,13 +2,13 @@
 {
     "layer": "top", // Waybar at top layer
     // "position": "bottom", // Waybar position (top|bottom|left|right)
-    "height": 35, // Waybar height (to be removed for auto height)
+    // "height": 35, // Waybar height (to be removed for auto height)
     // "width": 1280, // Waybar width
     "spacing": 0, // Gaps between modules (4px)
     // Choose the order of the modules
     "modules-left": [
         "custom/wlogout",
-        "wlr/workspaces",
+        "hyprland/workspaces",
         "wlr/taskbar"
     ],
     "modules-center": [
@@ -31,14 +31,14 @@
     "wlr/taskbar": {
         "all-outputs": false,
         "format": "{icon}",
-        "icon-size": 30,
+        "icon-size": 24,
         "icon-theme": "Nordzy-dark",
         "tooltip-format": "{title}",
         "on-click": "activate",
         "on-click-right": "close"
     },
     // Modules configuration
-    "wlr/workspaces": {
+    "hyprland/workspaces": {
         "format": "{icon}",
         "on-click": "activate",
         "all-outputs": true,
