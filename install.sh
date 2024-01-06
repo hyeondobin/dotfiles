@@ -51,6 +51,7 @@ syncFile "hypr"
 syncFile "fcitx"
 syncFile "fcitx5"
 syncFile "nvim"
+syncFile "wallpapers"
 
 syncFileHome "Scripts"
 syncFileHome ".gitconfig"
@@ -66,9 +67,6 @@ else
     makepkg -si
 fi
 
-install "fish"
-install "wlogout"
-  
 is_font_installed(){
     fontname=$1
     fc-list | grep -i "$fontname" >/dev/null
@@ -83,12 +81,17 @@ else
 fi
 }
 
+install "fish"
+install "wlogout"
+install "hyprpaper"
+
 install_font "FiraCode Nerd Font"
 install_font "D2Coding"
+install_font "font awesome"
 
 if command -v live-server &> /dev/null
 then
-    printf "live-server already installed"
+    printf "live-server already installed\n"
 else
     printf "Installing live-server"
     sudo npm install -g live-server
