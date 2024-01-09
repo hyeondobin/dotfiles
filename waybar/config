@@ -59,10 +59,10 @@
         }
     },
     "hyprland/window": {
-        "format": "{}",
+        "format": "{class} {title}",
         "rewrite": {
-            "(.*) - Vivaldi": "  $1",
-            "~": "> [$1]"
+            "vivaldi-stable (.*) - Vivaldi": "  $1",
+            "kitty (.*)": "fish> $1"
         },
         "separate-outputs": true
     },
