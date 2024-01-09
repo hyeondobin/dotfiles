@@ -62,7 +62,7 @@
         "format": "{class} {title}",
         "rewrite": {
             "vivaldi-stable (.*) - Vivaldi": "  $1",
-            "kitty (.*)": "fish> $1"
+            "kitty (.*)": "FISH> $1"
         },
         "separate-outputs": true
     },
