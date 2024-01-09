@@ -35,7 +35,8 @@
         "icon-theme": "Nordzy-dark",
         "tooltip-format": "{title}",
         "on-click": "activate",
-        "on-click-right": "close"
+        "on-click-right": "close",
+        "active-first": true,
     },
     // Modules configuration
     "hyprland/workspaces": {
@@ -60,8 +61,8 @@
     "hyprland/window": {
         "format": "{}",
         "rewrite": {
-            "(.*) - Vivaldi": " $1",
-            "(.*) - fish": "> [$1]"
+            "(.*) - Vivaldi": "  $1",
+            "~": "> [$1]"
         },
         "separate-outputs": true
     },
