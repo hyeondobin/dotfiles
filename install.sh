@@ -22,7 +22,7 @@ function syncFile() {
 }
 function syncFileHome() {
 	local sourceFile="$1"
-	if [ ! -d "$HOME/${sourceFile}" ]; then
+	if [ ! -e "$HOME/${sourceFile}" ]; then
 		printf "${BLUE}Symlink:${ENDCOLOR} ${sourceFile}\n"
 		ln -sf "$CWD/${sourceFile}" "$HOME/${sourceFile}"
 		printf "Done\n"
@@ -50,6 +50,7 @@ syncFile "fcitx"
 syncFile "fcitx5"
 syncFile "nvim"
 syncFile "wallpapers"
+syncFile "lf"
 
 syncFileHome "Scripts"
 syncFileHome ".gitconfig"
@@ -94,9 +95,13 @@ install_font() {
 	fi
 }
 
+# Update pacman DB
+sudo pacman -Syy
+
 install "fish"
 install "wlogout"
 install "hyprpaper"
+install "ueberzug"
 
 install_font "FiraCode Nerd Font"
 install_font "D2Coding"
