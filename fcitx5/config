@@ -1,4 +1,3 @@
-# vim: set ft=toml :
 [Hotkey]
 # Enumerate when press trigger key repeatedly
 EnumerateWithTriggerKeys=False
@@ -13,9 +12,11 @@ EnumerateSkipFirst=False
 # Enumerate Input Method Group Forward
 EnumerateGroupForwardKeys=
 # Activate Input Method
-ActivateKeys=Hangul
+ActivateKeys=
 # Deactivate Input Method
-DeactivateKeys=Shift+Hangul
+DeactivateKeys=
+# Toggle embedded preedit
+TogglePreedit=
 
 [Hotkey/TriggerKeys]
 0=Shift+space
@@ -34,9 +35,6 @@ DeactivateKeys=Shift+Hangul
 
 [Hotkey/NextCandidate]
 0=Tab
-
-[Hotkey/TogglePreedit]
-0=Control+Alt+P
 
 [Behavior]
 # Active By Default
