@@ -1,0 +1,6 @@
+set icons
+set period 1
+set hidden!
+set hiddenfiles ".*:*.aux:*.log:*.bbl:*.blg:*.run.xml"
+set drawbox
+set number
