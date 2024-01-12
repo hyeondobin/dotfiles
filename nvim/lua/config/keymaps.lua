@@ -19,5 +19,4 @@ wk.register({
         s = { "<cmd>LiveServerStart<CR>", "Start LiveServer" },
         c = { "<cmd>LiveServerStop<CR>", "Stop LiveServer" },
     },
-    e = { "<cmd>Lf<CR>", "List Files" },
 }, { prefix = "<leader>" })
