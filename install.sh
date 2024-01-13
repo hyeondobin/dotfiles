@@ -50,7 +50,6 @@ syncFile "fcitx"
 syncFile "fcitx5"
 syncFile "nvim"
 syncFile "wallpapers"
-syncFile "lf"
 
 syncFileHome "Scripts"
 syncFileHome ".gitconfig"
@@ -104,6 +103,7 @@ install "hyprpaper"
 install "fzf"
 install "fd"
 install "bat"
+install "eza"
 
 install_font "FiraCode Nerd Font"
 install_font "D2Coding"
@@ -114,11 +114,6 @@ if command -v live-server &>/dev/null; then
 else
 	printf "Installing live-server"
 	sudo npm install -g live-server
-fi
-
-if command -v timedatectl &>/dev/null; then
-	timedatectl set-local-rtc 1 --adjust-system-clock
-	printf "changed time setting\n"
 fi
 
 printf "${GREEN}Done${ENDCOLOR}\n"
