@@ -50,6 +50,7 @@ syncFile "fcitx"
 syncFile "fcitx5"
 syncFile "nvim"
 syncFile "wallpapers"
+syncFile "dunst"
 
 syncFileHome "Scripts"
 syncFileHome ".gitconfig"
