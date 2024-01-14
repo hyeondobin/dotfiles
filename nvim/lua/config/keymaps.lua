@@ -5,8 +5,8 @@ local opts = { silent = true, remap = false }
 local wk = require("which-key")
 
 -- add ; to end of line
-vim.keymap.set("i", ";<Space>", "; ", opts)
-vim.keymap.set("i", ";", "<C-c>A;", opts)
+vim.keymap.set("i", "<C-S>;", "<C-o>A;", opts)
+vim.keymap.set("i", "<C-S>,", "<C-o>A,", opts)
 
 -- move line up/down
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
