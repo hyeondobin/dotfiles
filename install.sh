@@ -53,6 +53,7 @@ syncFile "wallpapers"
 syncFile "dunst"
 syncFile "rofi"
 syncFile "tmux"
+syncFile "pipewire"
 
 syncFileHome "Scripts"
 syncFileHome ".gitconfig"
