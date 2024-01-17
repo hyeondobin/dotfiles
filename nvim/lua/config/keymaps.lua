@@ -18,6 +18,11 @@ wk.register({
         name = "preview",
         s = { "<cmd>LiveServerStart<CR>", "Start LiveServer" },
         c = { "<cmd>LiveServerStop<CR>", "Stop LiveServer" },
+        m = {
+            name = "markdown",
+            s = { "<cmd>MarkdownPreview<CR>", "Start MarkdownPreview" },
+            c = { "<cmd>MarkdownPreviewStop<CR>", "Stop MarkdownPreview" },
+        },
     },
 }, { prefix = "<leader>" })
 
