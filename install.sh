@@ -109,6 +109,8 @@ install "fd"
 install "bat"
 install "eza"
 install "tmux"
+install "man"
+install "rofi"
 
 install_font "FiraCode Nerd Font"
 install_font "D2Coding"
