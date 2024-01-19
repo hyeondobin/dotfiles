@@ -13,18 +13,33 @@ vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 
 -- https://github.com/folke/which-key.nvim?tab=readme-ov-file#%EF%B8%8F-mappings
-wk.register({
-    p = {
-        name = "preview",
-        s = { "<cmd>LiveServerStart<CR>", "Start LiveServer" },
-        c = { "<cmd>LiveServerStop<CR>", "Stop LiveServer" },
-        m = {
-            name = "markdown",
-            s = { "<cmd>MarkdownPreview<CR>", "Start MarkdownPreview" },
-            c = { "<cmd>MarkdownPreviewStop<CR>", "Stop MarkdownPreview" },
+if vim.loop.os_uname().sysname == "Linux" then
+    wk.register({
+        p = {
+            name = "preview",
+            s = { "<cmd>LiveServerStart<CR>", "Start LiveServer" },
+            c = { "<cmd>LiveServerStop<CR>", "Stop LiveServer" },
+            m = {
+                name = "markdown",
+                s = { "<cmd>MarkdownPreview<CR>", "Start MarkdownPreview" },
+                c = { "<cmd>MarkdownPreviewStop<CR>", "Stop MarkdownPreview" },
+            },
         },
-    },
-}, { prefix = "<leader>" })
+    }, { prefix = "<leader>" })
+end
+
+if vim.loop.os_uname().sysname == "Windows_NT" then
+    wk.register({
+        p = {
+            name = "preview",
+            m = {
+                name = "markdown",
+                s = { "<cmd>MarkdownPreview<CR>", "Start MarkdownPreview" },
+                c = { "<cmd>MarkdownPreviewStop<CR>", "Stop MarkdownPreview" },
+            },
+        },
+    }, { prefix = "<leader>" })
+end
 
 vim.keymap.set("n", "<C-h>", "<cmd>TmuxNavigateLeft<CR>", { desc = "window left" })
 vim.keymap.set("n", "<C-j>", "<cmd>TmuxNavigateDown<CR>", { desc = "window down" })
