@@ -41,6 +41,20 @@ function install() {
 	fi
 }
 
+is_font_installed() {
+	fontname=$1
+	fc-list | grep -i "$fontname" >/dev/null
+}
+install_font() {
+	fontname=$1
+	if ! is_font_installed $1; then
+		printf "Installing $fontname"
+		yay "$fontname"
+	else
+		printf "$fontname already installed\n"
+	fi
+}
+
 syncFile "fish"
 syncFile "waybar"
 syncFile "lazygit"
@@ -58,6 +72,16 @@ syncFile "pipewire"
 syncFileHome "Scripts"
 syncFileHome ".gitconfig"
 
+if command -v yay &>/dev/null; then
+	echo "yay already installed"
+else
+	printf "Installing 'YAY'"
+	sudo pacman -S --needed git base-devel
+	git clone https://aur.archlinux.org/yay.git
+	cd yay
+	makepkg -si
+fi
+
 if command -v caps2esc &>/dev/null; then
 	echo "caps2esc already installed"
 else
@@ -73,30 +97,6 @@ if [ ! -e "/etc/interception/udevmon.d/caps2esc.yaml" ]; then
 else
 	printf "${YELLOW}Skipping${ENDCOLOR} caps2esc job config.\n"
 fi
-
-if command -v yay &>/dev/null; then
-	echo "yay already installed"
-else
-	printf "Installing 'YAY'"
-	sudo pacman -S --needed git base-devel
-	git clone https://aur.archlinux.org/yay.git
-	cd yay
-	makepkg -si
-fi
-
-is_font_installed() {
-	fontname=$1
-	fc-list | grep -i "$fontname" >/dev/null
-}
-install_font() {
-	fontname=$1
-	if ! is_font_installed $1; then
-		printf "Installing $fontname"
-		yay "$fontname"
-	else
-		printf "$fontname already installed\n"
-	fi
-}
 
 # Update pacman DB
 sudo pacman -Syy
@@ -114,6 +114,7 @@ install "rofi"
 install "lazygit"
 install "ripgrep"
 install "node"
+install "gh"
 
 install_font "FiraCode Nerd Font"
 install_font "D2Coding"
