@@ -1,3 +1,4 @@
+local nord = require "lualine.themes.nord"
 -- https://github.com/shaunsingh/nord.nvim
 function ColorMyPencils(color)
     color = color or "nord"
@@ -11,14 +12,16 @@ end
 return {
     {
         "shaunsingh/nord.nvim",
+        enabled = true,
         lazy = false,
         priority = 1000,
         config = function()
             -- require("nord").setup({})
-            ColorMyPencils()
             vim.g.nord_disable_background = true
             vim.g.nord_contrast = true
             vim.g.cursorline_transparent = true
+            vim.g.nord_italic = false
+            ColorMyPencils()
         end,
     },
 }
