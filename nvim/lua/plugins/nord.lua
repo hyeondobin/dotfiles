@@ -1,4 +1,3 @@
-local nord = require "lualine.themes.nord"
 -- https://github.com/shaunsingh/nord.nvim
 function ColorMyPencils(color)
     color = color or "nord"
