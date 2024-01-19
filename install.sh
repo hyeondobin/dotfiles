@@ -41,6 +41,17 @@ function install() {
 	fi
 }
 
+installDifName() {
+	local program=$1
+	local command=$2
+	if command -v ${command} &>/dev/null; then
+		echo "${program} already installed"
+	else
+		printf "Installing '${program}'\n"
+		yay ${program}
+	fi
+}
+
 is_font_installed() {
 	fontname=$1
 	fc-list | grep -i "$fontname" >/dev/null
@@ -99,7 +110,10 @@ else
 fi
 
 # Update pacman DB
-sudo pacman -Syy
+read -p "Update package DB? (y/n) " answer
+if [ ${answer}="y" ] || [ ${answer}="" ]; then
+	sudo pacman -Syy
+fi
 
 install "fish"
 install "wlogout"
@@ -112,9 +126,10 @@ install "tmux"
 install "man"
 install "rofi"
 install "lazygit"
-install "ripgrep"
 install "node"
-install "gh"
+
+installDifName "github-cli" "gh"
+installDifName "ripgrep"" rg"
 
 install_font "FiraCode Nerd Font"
 install_font "D2Coding"
