@@ -20,6 +20,14 @@ return {
                         require("neo-tree.command").execute({ action = "close" })
                     end,
                 },
+                {
+                    event = "vim_buffer_enter",
+                    handler = function()
+                        if vim.bo.filetype == "neo-tree" then
+                            vim.cmd("setlocal rnu")
+                        end
+                    end,
+                },
             },
             window = {
                 mappings = {},
