@@ -41,6 +41,10 @@ if vim.loop.os_uname().sysname == "Windows_NT" then
     }, { prefix = "<leader>" })
 end
 
+-- wk.register({
+--     e = { "<cmd>Ex<CR>", "netrw" },
+-- }, { prefix = "<leader>" })
+
 vim.keymap.set("n", "<C-h>", "<cmd>TmuxNavigateLeft<CR>", { desc = "window left" })
 vim.keymap.set("n", "<C-j>", "<cmd>TmuxNavigateDown<CR>", { desc = "window down" })
 vim.keymap.set("n", "<C-k>", "<cmd>TmuxNavigateUp<CR>", { desc = "window up" })
