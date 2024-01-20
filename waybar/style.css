@@ -1,26 +1,26 @@
 /* vim: set ft=less : */
 
-@import "nord.css";
+@import "catppuccin-mocha.css";
 
 @keyframes blink-warning {
     70% {
-        color: @nord4;
+        color: @yellow;
     }
 
     to {
-        color: @nord4;
-        background-color: @nord13;
+        color: @text;
+        background-color: @base;
     }
 }
 
 @keyframes blink-critical {
     70% {
-        color: @nord4;
+        color: @text;
     }
 
     to {
-        color: @nord4;
-        background-color: @nord11;
+        color: @text;
+        background-color: @mantle;
     }
 }
 
@@ -33,7 +33,7 @@
     border: none;
     border-radius: 0px;
     border-width: 4px;
-    border-color: @nord9;
+    border-color: @overlay0;
     min-height: 0;
     margin: 1px 0px 1px 0px;
 }
@@ -41,7 +41,7 @@
 /* Whole bar */
 #waybar {
     background-color: transparent;
-    color: @nord4;
+    color: @text;
     font-family: "Firacode Nerd Font", "Font Awesome";
     font-size: 22px;
     font-weight: bold;
@@ -56,7 +56,7 @@
 #memory,
 #cpu,
 #clock {
-    background-color: @nord0;
+    background-color: @base;
 }
 
 /* indicators */
@@ -75,7 +75,7 @@
     border-style: solid none solid none;
     margin-right: 0px;
     margin-left: 0px;
-    background-color: @nord0;
+    background-color: @base;
 }
 
 #battery {
@@ -102,7 +102,7 @@
 #cpu.critical,
 #temperature.critical,
 #battery.critical {
-    color: @nord11;
+    color: @red;
 }
 
 /* Each critical that should blink */
@@ -120,8 +120,8 @@
 #cpu.warning,
 #temperature.warning,
 #battery.warning {
-    background: @nord13;
-    color: @nord5;
+    background: @base;
+    color: @yellow;
 }
 
 /* Each warning that should blink */
@@ -133,7 +133,7 @@
 /* modules themselves in their respective order */
 
 #clock {
-    border-right: 4 solid @nord9;
+    border-right: 4 solid @overlay0;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
 }
@@ -141,7 +141,7 @@
 #custom-wlogout {
     padding: 7px;
     padding-right: 10px;
-    color: @nord11;
+    color: @text;
     border-style: solid none;
     border-left-style: solid;
     border-top-left-radius: 10px;
@@ -157,17 +157,17 @@
 }
 
 #taskbar button:hover {
-    background-color: @nord3;
+    background-color: @surface0;
 }
 
 #tray {
     border-style: solid none;
     padding: 0px 8px;
-    color: @nord4;
+    color: @text;
 }
 
 #pulseaudio {
-    border-left: 4 solid @nord9;
+    border-left-style: solid;
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
     margin-left: 30px;
@@ -175,7 +175,7 @@
 
 /* <S-D-w> */
 #window {
-    background-color: @nord0;
+    background-color: @base;
     border-width: 4px;
     border-style: solid;
     padding: 0 4px;
@@ -206,22 +206,23 @@ button:hover {
 }
 
 tooltip {
-    background-color: @nord4;
+    background-color: @base;
 }
 
 tooltip label {
-    color: @nord1;
+    color: @text;
 }
 
 #workspaces {
     padding: 0 5px;
     border-style: solid none;
+    background-color: @base;
 }
 
 #workspaces button {
     padding: 0 5px;
-    background-color: transparent;
-    color: @nord8;
+    background-color: @base;
+    color: @text;
 }
 
 #workspaces button:hover {
@@ -229,11 +230,11 @@ tooltip label {
 }
 
 #workspaces button.active {
-    background-color: @nord3;
+    background-color: @overlay1;
     box-shadow: inset 0 -3px #ffffff;
-
+    border-radius: 3px;
 }
 
 #workspaces button.urgent {
-    background-color: #eb4d4b;
+    background-color: @red;
 }

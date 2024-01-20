@@ -12,6 +12,7 @@ while [[ $jobsLeft = true ]]; do
 	printf "2. rofi theme collection\n"
 	printf "3. tmux plugin manager(tpm)\n"
 	printf "4. hyeondobin obsidian\n"
+	printf "5. catppuccin\n"
 
 	read -p "Choose (eg: 1 or [a]ll) >> " answer
 	if command -v git &>/dev/null; then
@@ -35,6 +36,10 @@ while [[ $jobsLeft = true ]]; do
 			;;
 		4)
 			clone hyeondobin/obsidianRepo obsidianRepo
+			jobsLeft=false
+			;;
+		5)
+			clone catppuccin/hyprland hyprland
 			jobsLeft=false
 			;;
 		a)
