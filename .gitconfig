@@ -7,3 +7,5 @@
 [user]
 	email = dobinhyeon@gmail.com
 	name = hyeondobin
+[pull]
+	rebase = false
