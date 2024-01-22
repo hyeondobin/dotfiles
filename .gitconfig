@@ -7,3 +7,5 @@
 [user]
 	email = dobinhyeon@gmail.com
 	name = hyeondobin
+[safe]
+	directory = /mnt/c/Users/dobin/AppData/Local/dotfiles
