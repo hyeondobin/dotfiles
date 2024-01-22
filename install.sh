@@ -56,10 +56,18 @@ is_font_installed() {
 	fontname=$1
 	fc-list | grep -i "$fontname" >/dev/null
 }
+
 install_font() {
 	fontname=$1
-	if ! is_font_installed $1; then
-		printf "Installing $fontname"
+	if [ -e $2 ]; then
+		fontcommand=$2
+		if ! is_font_installed "$1"; then
+			printf "Installing $fontname\n"
+			yay $fontcommand
+		fi
+	fi
+	if ! is_font_installed "$1"; then
+		printf "Installing $fontname\n"
 		yay "$fontname"
 	else
 		printf "$fontname already installed\n"
@@ -82,6 +90,15 @@ syncFile "pipewire"
 
 syncFileHome "Scripts"
 syncFileHome ".gitconfig"
+
+# Update pacman DB
+read -r -p "Update package DB? (y/n) " answer
+answer=${answer,,}
+if [[ "$answer" =~ ^(y| )$ ]]; then
+	pacman -Syy
+else
+	printf "Skipping package DB update\n"
+fi
 
 if command -v yay &>/dev/null; then
 	echo "yay already installed"
@@ -109,12 +126,6 @@ else
 	printf "${YELLOW}Skipping${ENDCOLOR} caps2esc job config.\n"
 fi
 
-# Update pacman DB
-read -p "Update package DB? (y/n) " answer
-if [ ${answer}="y" ] || [ ${answer}="" ]; then
-	sudo pacman -Syy
-fi
-
 install "fish"
 install "wlogout"
 install "hyprpaper"
@@ -133,7 +144,7 @@ installDifName "ripgrep"" rg"
 
 install_font "FiraCode Nerd Font"
 install_font "D2Coding"
-install_font "font awesome"
+install_font "font awesome" "ttf-font-awesome"
 
 if command -v live-server &>/dev/null; then
 	printf "live-server already installed\n"
