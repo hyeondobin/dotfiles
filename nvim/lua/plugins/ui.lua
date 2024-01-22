@@ -66,13 +66,14 @@ return {
         opts = {
             timeout = 5000,
         },
+        enabled = false,
     },
     {
         "nvim-lualine/lualine.nvim",
         event = "VeryLazy",
         opts = {
             options = {
-                theme = "nord",
+                theme = "catppuccin",
             },
         },
     },
