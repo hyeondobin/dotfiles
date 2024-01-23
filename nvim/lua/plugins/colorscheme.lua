@@ -17,7 +17,18 @@ return {
         lazy = false,
         config = function()
             -- require("nord").setup({})
-            transparent_background = true
+            require("catppuccin").setup({
+                flavour = "mocha",
+                transparent_background = true,
+                integrations = {
+                    cmp = true,
+                    notify = true,
+                    mini = {
+                        enabled = true,
+                        indentscope_color = "",
+                    },
+                },
+            })
             ColorMyPencils()
         end,
     },
