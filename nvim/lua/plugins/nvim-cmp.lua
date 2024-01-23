@@ -55,20 +55,32 @@ return {
                     end
                 end, { "i", "s" }),
                 ["<CR>"] = cmp.config.disable,
-                ["."] = cmp.mapping(function(fallback)
-                    if cmp.visible() then
-                        cmp.confirm()
-                        if luasnip.expand_or_locally_jumpable() then
-                            fallback()
-                        else
-                            vim.cmd('norm A. ')
-                        end
-                    else
-                        fallback()
-                    end
-                end, { "i", "s" }),
+                ["<C-0>"] = cmp.mapping.complete(),
             })
+
+            opts.sources = cmp.config.sources(vim.list_extend(opts.sources, {
+                { name = 'nvim_lsp' },
+                { name = 'luasnip' },
+                { name = 'buffer' },
+            }))
+
+            cmp.setup.cmdline({ '/', '?' }, {
+                mapping = cmp.mapping.preset.cmdline(),
+                sources = {
+                    { name = 'buffer' }
+                }
+            })
+
+            cmp.setup.cmdline(':', {
+                mapping = cmp.mapping.preset.cmdline(),
+                sources = cmp.config.sources({
+                    { name = 'path' }
+                }, {
+                    { name = 'cmdline' }
+                })
+            })
+
+            local capabilities = require('cmp_nvim_lsp').default_capabilities()
         end,
     },
-
 }
