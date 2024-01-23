@@ -9,3 +9,7 @@
 	name = hyeondobin
 [pull]
 	rebase = false
+[safe]
+	directory = /mnt/c/Users/dobin/AppData/Local/dotfiles
+[merge]
+	tool = vimdiff

@@ -16,7 +16,7 @@ return {
             event_handlers = {
                 {
                     event = "file_opened",
-                    handler = function(file_path)
+                    handler = function()
                         require("neo-tree.command").execute({ action = "close" })
                     end,
                 },
@@ -24,7 +24,7 @@ return {
                     event = "vim_buffer_enter",
                     handler = function()
                         if vim.bo.filetype == "neo-tree" then
-                            vim.cmd("setlocal rnu")
+                            vim.cmd("setlocal relativenumber")
                         end
                     end,
                 },
