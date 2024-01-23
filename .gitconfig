@@ -12,4 +12,5 @@
 [safe]
 	directory = /mnt/c/Users/dobin/AppData/Local/dotfiles
 [merge]
-	tool = vimdiff
+	tool = nvimdiff2
+    conflictstyle = diff3
