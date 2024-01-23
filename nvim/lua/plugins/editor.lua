@@ -38,4 +38,15 @@ return {
         "folke/flash.nvim",
         enabled = false,
     },
+    {
+        "nvim-treesitter/nvim-treesitter",
+        config = function()
+            require("nvim-treesitter.configs").setup {
+                hightlight = {
+                    enable = true,
+                    additional_vim_regex_highlighting = false
+                }
+            }
+        end
+    }
 }
