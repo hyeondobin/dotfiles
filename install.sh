@@ -95,7 +95,7 @@ syncFileHome ".gitconfig"
 read -r -p "Update package DB? (y/n) " answer
 answer=${answer,,}
 if [[ "$answer" =~ ^(y| )$ ]]; then
-	pacman -Syy
+	sudo pacman -Syy
 else
 	printf "Skipping package DB update\n"
 fi
