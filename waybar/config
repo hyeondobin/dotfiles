@@ -64,7 +64,9 @@
         "format": "{class} {title}",
         "rewrite": {
             "vivaldi-stable (.*) - Vivaldi": "  $1",
-            "kitty (.*)": "FISH> $1"
+            "kitty (.*)": "FISH> $1",
+            "org.telegram.desktop (.*)": " -> $1",
+            "Chromium YouTube Music - (.*) - YouTube Music": "󰝚 $1"
         },
         "separate-outputs": true
     },

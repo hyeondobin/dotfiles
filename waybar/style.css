@@ -56,6 +56,7 @@
 #memory,
 #cpu,
 #clock {
+    margin-top: 10px;
     background-color: @base;
 }
 
@@ -69,6 +70,7 @@
 #tray,
 #network,
 #clock {
+    margin-top: 10px;
     padding-right: 5px;
     padding-left: 5px;
     border-radius: 0px;
@@ -136,6 +138,7 @@
     border-right: 4 solid @overlay0;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
+    margin-right: 10px;
 }
 
 #custom-wlogout {
@@ -146,6 +149,7 @@
     border-left-style: solid;
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
+    margin-left: 10px;
 }
 
 /* taskbar */
@@ -155,6 +159,7 @@
     border-right-style: solid;
     border-left-style: solid;
     border-radius: 10px;
+    margin-top: 10px;
 }
 
 #taskbar button:hover {
@@ -185,6 +190,7 @@
     border-style: solid;
     padding: 0 4px;
     margin: 0 5px;
+    margin-top: 10px;
     border-radius: 10px;
 }
 
@@ -226,6 +232,7 @@ tooltip label {
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
     background-color: @base;
+    margin-top: 10px;
 }
 
 #workspaces button {
