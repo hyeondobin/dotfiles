@@ -81,11 +81,11 @@ return {
                 ["<C-0>"] = cmp.mapping.complete(),
             })
 
-            opts.sources = cmp.config.sources(vim.list_extend(opts.sources, {
-                { name = "nvim_lsp" },
-                { name = "luasnip" },
-                { name = "buffer" },
-            }))
+            -- opts.sources = cmp.config.sources(vim.list_extend(opts.sources, {
+            --     { name = "nvim_lsp" },
+            --     { name = "luasnip" },
+            --     { name = "buffer" },
+            -- }))
 
             cmp.setup.cmdline({ "/", "?" }, {
                 mapping = cmp.mapping.preset.cmdline(),
