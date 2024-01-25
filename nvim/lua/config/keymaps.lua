@@ -5,6 +5,8 @@ local opts = { silent = true, remap = false }
 local wk = require("which-key")
 
 -- add ; to end of line
+vim.keymap.del({ "n", "x", "i" }, "<C-S>")
+vim.keymap.set("i", "<C-S>", "<C-O>", opts)
 vim.keymap.set("i", "<C-S>;", "<C-o>A;", opts)
 vim.keymap.set("i", "<C-S>,", "<C-o>A,", opts)
 
@@ -55,3 +57,6 @@ vim.keymap.set("n", "<C-h>", "<cmd>TmuxNavigateLeft<CR>", { desc = "window left"
 vim.keymap.set("n", "<C-j>", "<cmd>TmuxNavigateDown<CR>", { desc = "window down" })
 vim.keymap.set("n", "<C-k>", "<cmd>TmuxNavigateUp<CR>", { desc = "window up" })
 vim.keymap.set("n", "<C-l>", "<cmd>TmuxNavigateRight<CR>", { desc = "window right" })
+
+-- next diagnostic
+vim.keymap.set("n", "<F8>", "<cmd>lua vim.diagnostic.goto_next()<CR>", opts)
