@@ -16,13 +16,6 @@ return {
                         },
                     },
                 },
-                rust_analyzer = {
-                    completion = {
-                        fullFunctionSignatures = {
-                            enable = true,
-                        },
-                    },
-                },
             },
         },
     },
@@ -54,7 +47,7 @@ return {
                     and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
             end
 
-            table.insert(opts.sources, { name = "hrsh7th/luasnip" })
+            -- table.insert(opts.sources, { name = "hrsh7th/luasnip" })
 
             local luasnip = require("luasnip")
             local cmp = require("cmp")
