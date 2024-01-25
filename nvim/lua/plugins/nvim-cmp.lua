@@ -12,6 +12,11 @@ return {
         "hrsh7th/nvim-cmp",
         dependencies = {
             "hrsh7th/cmp-emoji",
+            "hrsh7th/cmp-buffer",
+            "hrsh7th/cmp-nvim-lsp",
+            "hrsh7th/cmp-path",
+            -- "hrsh7th/cmp_luasnip",
+            "hrsh7th/cmp-cmdline",
         },
         ---@param opts cmp.ConfigSchema
         opts = function(_, opts)
@@ -52,10 +57,33 @@ return {
                         fallback()
                     end
                 end, { "i", "s" }),
-                ["<CR>"] = cmp.mapping(function(fallback)
-                    fallback()
-                end),
+                ["<CR>"] = cmp.config.disable,
+                ["<C-0>"] = cmp.mapping.complete(),
             })
+
+            opts.sources = cmp.config.sources(vim.list_extend(opts.sources, {
+                { name = 'nvim_lsp' },
+                { name = 'luasnip' },
+                { name = 'buffer' },
+            }))
+
+            cmp.setup.cmdline({ '/', '?' }, {
+                mapping = cmp.mapping.preset.cmdline(),
+                sources = {
+                    { name = 'buffer' }
+                }
+            })
+
+            cmp.setup.cmdline(':', {
+                mapping = cmp.mapping.preset.cmdline(),
+                sources = cmp.config.sources({
+                    { name = 'path' }
+                }, {
+                    { name = 'cmdline' }
+                })
+            })
+
+            local capabilities = require('cmp_nvim_lsp').default_capabilities()
         end,
     },
 }
