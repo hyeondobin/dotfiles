@@ -138,6 +138,7 @@ install "man"
 install "rofi"
 install "lazygit"
 install "node"
+install "rustup"
 
 installDifName "github-cli" "gh"
 installDifName "ripgrep"" rg"
