@@ -62,6 +62,7 @@
 
 /* indicators */
 #memory,
+#language,
 #cpu,
 #pulseaudio,
 #battery,
@@ -154,10 +155,9 @@
 
 /* taskbar */
 #taskbar {
+    background-color: transparent;
     margin-left: 3px;
-    border-style: solid none;
-    border-right-style: solid;
-    border-left-style: solid;
+    border-style: none;
     border-radius: 10px;
     margin-top: 10px;
 }
@@ -167,7 +167,7 @@
 }
 
 #taskbar.empty {
-    border-style: none;
+    border: none;
 }
 
 #tray {
