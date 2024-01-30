@@ -62,8 +62,8 @@ return {
                     if luasnip.expand_or_locally_jumpable() then
                         -- elseif luasnip.expand_or_locally_jumpable() then
                         luasnip.expand_or_jump()
-                    elseif has_words_before() then
-                        cmp.confirm()
+                    -- elseif has_words_before() then
+                    --     cmp.confirm()
                     else
                         fallback()
                     end
@@ -103,7 +103,7 @@ return {
                 }),
             })
 
-            local capabilities = require("cmp_nvim_lsp").default_capabilities()
+            -- local capabilities = require("cmp_nvim_lsp").default_capabilities()
         end,
     },
 }
