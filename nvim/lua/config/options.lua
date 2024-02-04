@@ -8,7 +8,8 @@ vim.opt.expandtab = true
 
 vim.opt.signcolumn = "yes"
 vim.opt.isfname:append("@-@")
-vim.o.colorcolumn = 80
+vim.opt.colorcolumn = "80"
+vim.opt.wrap = false
 
 vim.opt.termguicolors = true
 
@@ -24,7 +25,7 @@ vim.opt.undofile = true
 
 vim.opt.updatetime = 50
 
-vim.opt.conceallevel = 0
+vim.opt.conceallevel = 1
 
 vim.opt.ttimeoutlen = 200
 
