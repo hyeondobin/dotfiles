@@ -3,3 +3,4 @@ lazygit/state.yml
 nvim/lazy-lock.json
 tmux/plugins
 nvim/lazyvim.json
+blender/4.0/scripts/presets/keyconfig/__pycache__
