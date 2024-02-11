@@ -1,4 +1,4 @@
-function ew --wraps='nvim ~/.config/waybar/config' --description 'alias ew nvim ~/.config/waybar/config'
-  nvim ~/.config/waybar/config $argv
+function ew --wraps='neovide ~/.config/waybar/config' --description 'alias ew neovide ~/.config/waybar/config'
+  neovide ~/.config/waybar/config $argv
         
 end

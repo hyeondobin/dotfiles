@@ -1,4 +1,4 @@
-function en --wraps='nvim ~/.config/nvim/init.lua' --description 'alias en nvim ~/.config/nvim/init.lua'
-  nvim ~/.config/nvim/init.lua $argv
+function en --wraps='neovide ~/.config/neovide/init.lua' --description 'alias en neovide ~/.config/neovide/init.lua'
+  neovide ~/.config/neovide/init.lua $argv
         
 end

@@ -1,4 +1,4 @@
-function eh --wraps='nvim ~/.config/hypr/hyprland.conf' --description 'alias eh nvim ~/.config/hypr/hyprland.conf'
-  nvim ~/.config/hypr/hyprland.conf $argv
+function eh --wraps='neovide ~/.config/hypr/hyprland.conf' --description 'alias eh neovide ~/.config/hypr/hyprland.conf'
+  neovide ~/.config/hypr/hyprland.conf $argv
         
 end

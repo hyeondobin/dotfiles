@@ -1,4 +1,4 @@
-function et --wraps='nvim /home/hyeondobin/.config/tmux/tmux.conf' --description 'alias et nvim /home/hyeondobin/.config/tmux/tmux.conf'
-    nvim /home/hyeondobin/.config/tmux/tmux.conf
+function et --wraps='neovide /home/hyeondobin/.config/tmux/tmux.conf' --description 'alias et neovide /home/hyeondobin/.config/tmux/tmux.conf'
+    neovide /home/hyeondobin/.config/tmux/tmux.conf
 
 end
