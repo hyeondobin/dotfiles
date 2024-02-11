@@ -87,6 +87,7 @@ syncFile "dunst"
 syncFile "rofi"
 syncFile "tmux"
 syncFile "pipewire"
+syncFile "blender"
 
 syncFileHome "Scripts"
 syncFileHome ".gitconfig"
