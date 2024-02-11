@@ -1,3 +1,3 @@
-function vim --wraps='nvim' --description 'alias vim nvim'
-  nvim $argv
+function vim --wraps='neovide' --description 'alias vim neovide'
+  neovide $argv
 end
