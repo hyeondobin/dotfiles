@@ -140,6 +140,7 @@ install "lazygit"
 install "node"
 install "rustup"
 install "cmake"
+install "neovide"
 
 installDifName "github-cli" "gh"
 installDifName "ripgrep"" rg"
