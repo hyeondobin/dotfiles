@@ -1,18 +1,26 @@
 #!/usr/bin/env bash
 set -x
 
-term_exec="bash"
-
 nvim_exec="neovide"
 
 server_path="/tmp/nvimsocket"
+if [ -z "$2" ]; then
+	line=$2
+else
+	line=0
+fi
+if [ -z "$3" ]; then
+	col=$3
+else
+	col=0
+fi
 
 start_server() {
-	"$term_exec" -c "$nvim_exec" "$1" -- --listen "$server_path"
+	"$nvim_exec" "$1" -- "+call cursor($line, $col)" --listen "$server_path"
 }
 
 open_file_in_server() {
-	"nvim" --server "$server_path" --remote-send "<ESC>:n $1<CR>:call cursor($2, $3)<CR>"
+	"nvim" --server "$server_path" --remote-send "<ESC>:n $1<CR>:call cursor('$2', '$3')<CR>"
 }
 
 if ! [ -e "$server_path" ]; then
