@@ -46,7 +46,8 @@
         "format-icons": {
             "1": "dev",
             "2": "web",
-            "3": "idk"
+            "3": "term"
+            ,"4": "idk"
         },
         "persistent-workspaces": {
             "DP-1": [
