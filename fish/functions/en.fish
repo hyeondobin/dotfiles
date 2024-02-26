@@ -1,4 +1,4 @@
-function en --wraps='neovide ~/.config/neovide/init.lua' --description 'alias en neovide ~/.config/neovide/init.lua'
-  neovide ~/.config/neovide/init.lua $argv
+function en --wraps='vi ~/.config/vi/init.lua' --description 'alias en vi ~/.config/vi/init.lua'
+  vi ~/.config/vi/init.lua $argv
         
 end

@@ -1,4 +1,4 @@
-function eh --wraps='neovide ~/.config/hypr/hyprland.conf' --description 'alias eh neovide ~/.config/hypr/hyprland.conf'
-  neovide ~/.config/hypr/hyprland.conf $argv
+function eh --wraps='vi ~/.config/hypr/hyprland.conf' --description 'alias eh vi ~/.config/hypr/hyprland.conf'
+  vi ~/.config/hypr/hyprland.conf $argv
         
 end
