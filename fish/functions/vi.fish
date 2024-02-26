@@ -1,3 +1,3 @@
 function vi --wraps='nvim' --description 'alias vi nvim'
-  nvim $argv
+  nvim --listen /tmp/godothost $argv
 end

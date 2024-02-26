@@ -1,3 +1,3 @@
 function vim --wraps='nvim' --description 'alias vim nvim'
-  nvim $argv
+  nvim --listen /tmp/godothost $argv
 end
