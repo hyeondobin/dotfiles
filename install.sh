@@ -36,7 +36,7 @@ function install() {
 	if command -v ${program} &>/dev/null; then
 		echo "${program} already installed"
 	else
-		printf "Installing '${program}'"
+		printf "Installing '%s'", "$program"
 		yay ${program}
 	fi
 }
@@ -141,6 +141,7 @@ install "node"
 install "rustup"
 install "cmake"
 install "neovide"
+install "pulsemixer"
 
 installDifName "github-cli" "gh"
 installDifName "ripgrep"" rg"
