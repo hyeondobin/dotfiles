@@ -33,22 +33,22 @@ function syncFileHome() {
 
 function install() {
 	local program=$1
-	if command -v ${program} &>/dev/null; then
+	if command -v "${program}" &>/dev/null; then
 		echo "${program} already installed"
 	else
 		printf "Installing '%s'", "$program"
-		yay ${program}
+		yay "${program}"
 	fi
 }
 
 installDifName() {
 	local program=$1
 	local command=$2
-	if command -v ${command} &>/dev/null; then
+	if command -v "${command}" &>/dev/null; then
 		echo "${program} already installed"
 	else
 		printf "Installing '${program}'\n"
-		yay ${program}
+		yay "${program}"
 	fi
 }
 
@@ -59,11 +59,11 @@ is_font_installed() {
 
 install_font() {
 	fontname=$1
-	if [ -e $2 ]; then
+	if [ -e "$2" ]; then
 		fontcommand=$2
 		if ! is_font_installed "$1"; then
 			printf "Installing $fontname\n"
-			yay $fontcommand
+			yay "$fontcommand"
 		fi
 	fi
 	if ! is_font_installed "$1"; then
@@ -87,6 +87,7 @@ syncFile "rofi"
 syncFile "tmux"
 syncFile "pipewire"
 syncFile "blender"
+syncFile "starship.toml"
 
 syncFileHome "Scripts"
 syncFileHome ".gitconfig"
@@ -142,6 +143,7 @@ install "rustup"
 install "cmake"
 install "neovide"
 install "pulsemixer"
+install "starship"
 
 installDifName "github-cli" "gh"
 installDifName "ripgrep"" rg"
