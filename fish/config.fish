@@ -5,3 +5,5 @@ if status is-interactive
     exec tmux new-session -As PanRuyal
 
 end
+
+zoxide init fish | source
