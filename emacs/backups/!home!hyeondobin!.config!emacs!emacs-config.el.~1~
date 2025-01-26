@@ -1,0 +1,149 @@
+(use-package undo-tree
+  :ensure t
+  :demand
+  :bind ("C-M--" . undo-tree-switch-branch)
+  :config (global-undo-tree-mode))
+
+(defvar multiple-cursors-keymap (make-sparse-keymap))
+
+(use-package multiple-cursors
+  :ensure t
+  :bind-keymap ("C-t" . multiple-cursors-keymap)
+  :bind (:map multiple-cursors-keymap
+              ("C-s" . mc--mark-symbol-at-point)
+              ("C-w" . mark-word)
+              ("C-n" . mc/mark-next-like-this)
+              ("C-p" . mc/mark-previous-like-this)
+              ("n" . mc/mark-next-like-this-symbol)
+              ("p" . mc/mark-previous-like-this-symbol)
+              ("a" . 'mc/mark-all-like-this)
+              ("C-a" . 'mc/edit-lines)))
+
+(use-package magit
+  :ensure t
+  :bind (("C-M-g" . magit-file-dispatch)
+         ("C-c g" . magit-status))
+  :config (require 'projectile))
+
+(use-package vterm
+  :ensure t)
+
+(setq mouse-yank-at-point t)
+
+(if (display-graphic-p)
+(tool-bar-mode 0))
+(if (display-graphic-p)
+(scroll-bar-mode -1))
+
+(electric-pair-mode)
+
+(setq-default ring-bell-function 'ignore)
+
+(setq-default truncate-lines t)
+
+(setq-default indent-tabs-mode nil)
+
+;; don't clobber symlinks
+(setq backup-by-copying t)
+
+;; don't litter my fs tree
+(setq backup-directory-alist
+      '(("." . "~/.config/emacs/backups")))
+
+;; use versioned backups
+(setq delete-old-versions t)
+(setq kept-new-versions 6)
+(setq kept-old-versions 2)
+(setq version-control t)
+
+(let ((dir "~/.config/emacs/auto-saves/"))
+  (unless (file-directory-p dir)
+  (mkdir dir))
+  (setq auto-save-file-name-transforms
+	`((".*" ,dir t))))
+
+(use-package prog-mode
+  :config
+  (global-prettify-symbols-mode 1)
+  (setq prettify-symbols-unprettify-at-point 'right-edge))
+
+(put 'upcase-region 'disabled nil)
+(put 'downcase-region 'disabled nil)
+
+;; scroll one line at a time (less "jumpy" than defaults)
+
+(setq mouse-wheel-scroll-amount '(3 ((shift) . 1))) ;; three line at a time
+(setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
+(setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
+(setq scroll-conservatively 101) ;; keyboard scroll one line at a time
+
+;; (use-package smooth-scrolling
+;;   :ensure t
+;;   :demand
+;;   :config
+;;   (progn
+;;     (setq-default smooth-scroll-margin 2)
+;;     (smooth-scrolling-mode 1)))
+
+(defun smarter-move-beginning-of-line (arg)
+  "Move point back to indentation of beginning of line.
+
+Move point to the first non-whitespace character on this line.
+If point is already there, move to the beginning of the line.
+Effectively toggle between the first non-whitespace character and
+the beginning of the line.
+
+If ARG is not nil or 1, move forward ARG - 1 lines first.  If
+point reaches the beginning or end of the buffer, stop there."
+  (interactive "^p")
+  (setq arg (or arg 1))
+
+  ;; Move lines first
+  (when (/= arg 1)
+    (let ((line-move-visual nil))
+      (forward-line (1- arg))))
+
+  (let ((orig-point (point)))
+    (back-to-indentation)
+    (when (= orig-point (point))
+      (move-beginning-of-line 1))))
+
+;; remap C-a to `smarter-move-beginning-of-line'
+(global-set-key [remap move-beginning-of-line]
+                'smarter-move-beginning-of-line)
+
+(setq-default inhibit-startup-screen t)
+
+(defun quit-window (&optional kill window)
+  "Quit WINDOW and kill the buffer instead of burying it,
+regardless of the value of `kill'.
+
+This calls the function `quit-restore-window' to delete WINDOW or
+show some other buffer in it.  See Info node `(elisp) Quitting
+Windows' for more details.
+
+The functions in `quit-window-hook' will be run before doing
+anything else."
+  (interactive "P")
+  ;; Run the hook from the buffer implied to get any buffer-local
+  ;; values.
+  (with-current-buffer (window-buffer (window-normalize-window window))
+    (run-hooks 'quit-window-hook))
+  (quit-restore-window window 'kill))
+
+(when (fboundp 'winner-mode)
+  (winner-mode 1))
+
+(use-package projectile
+  :ensure t
+  :bind-keymap ("C-c p" . projectile-command-map)
+  :config (progn
+            (setq projectile-completion-system 'ivy)
+            (projectile-mode 1)
+            (setq magit-repository-directories
+                  (mapcar (lambda (dir)
+                            (cons dir 0))
+                          (mapcar #'directory-file-name
+                                  (cl-remove-if-not (lambda (project)
+                                                      (file-exists-p (concat project "/.git")))
+                                                    (projectile-relevant-known-projects)))))))

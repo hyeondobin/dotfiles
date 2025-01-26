@@ -1,0 +1,135 @@
+#+TITLE: hyeondobin's Emacs Config
+
+* Initialization
+** Package sources and init
+
+Add MELPA and the https version of elpa to the package sources,
+then initialize.
+
+This should preferrably be done in the init-file,
+before this file is loaded, to allow for byte-compiling.
+
+#+begin_src emacs-lisp :tangle no
+  (require 'package)
+  (setq-default package-archives
+		'(("gnu" . "https://elpa.gnu.org/packages/")
+		  ("melpa" . "https://melpa.org/packages/")))
+
+  (setq-default package-enable-at-startup nil)
+  (package-initialize)
+#+end_src
+
+** Set up use-package, install if missing
+
+use-package is a handy macro for keeping track of installed
+packages and installing them if they're missing. It also structures
+configuration of the package and can defer loading until the
+package is actually used.
+
+This should preferrably be done in the init-file,
+before this file is loaded, to allow for byte-compiling.
+
+#+begin_src emacs-lisp :tangle no
+
+  (unless (package-installed-p 'use-package)
+    (progn
+      (package-refresh-contents)
+      (package-install 'use-package)))
+
+  (require 'use-package)
+
+#+end_src
+
+
+** CL
+
+Require cl for extended functionality from common lisp used in
+various places.
+
+#+begin_src emacs-lisp :tangle no
+
+  (use-package cl)
+
+#+end_src
+
+* Utils
+     
+** Undo-tree
+
+#+begin_src emacs-lisp :tangle yes
+
+(use-package undo-tree
+  :ensure t
+  :demand
+  :bind ("C-M--" . undo-tree-switch-branch)
+  :config (global-undo-tree-mode))
+
+#+end_src
+
+** Multiple cursors
+
+#+begin_src emacs-lisp :tangle yes
+  
+(defvar multiple-cursors-keymap (make-sparse-keymap))
+
+(use-package multiple-cursors
+  :ensure t
+  :bind-keymap ("C-t" . multiple-cursors-keymap)
+  :bind (:map multiple-cursors-keymap
+              ("C-s" . mc--mark-symbol-at-point)
+              ("C-w" . mark-word)
+              ("C-n" . mc/mark-next-like-this)
+              ("C-p" . mc/mark-previous-like-this)
+              ("n" . mc/mark-next-like-this-symbol)
+              ("p" . mc/mark-previous-like-this-symbol)
+              ("a" . 'mc/mark-all-like-this)
+              ("C-a" . 'mc/edit-lines)))
+
+#+end_src
+
+** Magit
+#+begin_src emacs-lisp :tangle yes
+(use-package magit
+  :ensure t
+  :bind (("C-M-g" . magit-file-dispatch)
+         ("C-c g" . magit-status))
+  :config (require 'projectile))
+
+#+end_src
+
+** vterm
+#+begin_src emacs-lisp :tangle yes
+(use-package vterm
+  :ensure t)
+
+#+end_src
+
+* Behaviour
+** Paste at point with middle-click
+
+Instead of pasting the content to where the mouse points, paste it where the point currently is.
+
+#+begin_src emacs-lisp :tangle yes
+  (setq mouse-yank-at-point t)
+#+end_src
+
+** Disable tool bar and menu bar and scroll bar
+
+#+begin_src emacs-lisp :tangle yes
+  (if (display-graphic-p)
+  (tool-bar-mode 0))
+  (if (display-graphic-p)
+  (scroll-bar-mode -1))
+#+end_src
+
+** Enable electric pairs
+#+begin_src emacs-lisp :tangle yes
+  (electric-pair-mode)
+#+end_src
+
+** Disable bell
+
+Disable the annoying beeping sound emacs makes
+#+begin_src emacs-lisp :tangle yes
+  (setq-default ring-bell-function 'ignore)
+#+end_src
