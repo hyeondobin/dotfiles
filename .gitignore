@@ -2,3 +2,4 @@ auto-save*
 eln*
 undo/
 backups/
+emacs/eshell/history
