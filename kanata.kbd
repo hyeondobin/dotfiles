@@ -31,8 +31,8 @@
     XX      XX   XX   XX   XX        XX    XX   XX   XX   XX   XX   XX   XX   del    XX   XX   XX
     XX      XX   XX   XX   XX        XX    XX   home pgup end  XX   XX   @mou XX     XX   XX   XX
     caps    XX   XX   XX   XX        @game lft  down up   rght XX   bspc      XX
-    XX      XX   XX   XX   XX        XX    XX   @mao pgdn XX   XX             XX          XX
-    XX      XX   XX                  XX                   XX   XX             XX     XX   XX   XX
+    lsft      XX   XX   XX   XX        XX    XX   @mao pgdn XX   XX             XX          XX
+    lctl      XX   XX                  XX                   XX   XX             XX     XX   XX   XX
 )
 
 (deflayer mao
