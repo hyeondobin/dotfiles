@@ -23,7 +23,7 @@
     tab     q    w    e    r         t     y    u    i    o    p    [    ]    @bsnv  del  end  pgdn
     @esctrl a    s    d    f         g     h    j    k    l    ;    '         enter
     lsft    z    x    c    v         b     n    m    ,    .    /              rsft         up
-    lctl    lmet lalt               spc            ralt      rmet             rctl    left down right
+    caps    lmet lalt               spc            ralt      rmet             rctl    left down right
 )
 
 (deflayer vimnav
