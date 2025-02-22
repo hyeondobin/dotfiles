@@ -30,7 +30,7 @@
     XX           XX   XX   XX        XX      lrld XX   XX   XX      XX   XX  XX  XX
     XX      XX   XX   XX   XX        XX    XX   XX   XX   XX   XX   XX   XX   del    XX   XX   XX
     XX      XX   XX   XX   XX        XX    XX   home pgup end  XX   XX   @mou XX     XX   XX   XX
-    caps    XX   XX   XX   XX        @game lft  down up   rght XX   bspc      XX
+    caps    XX   XX   XX   XX        @game lft  down up   rght XX   @cbsp    XX
     lsft      XX   XX   XX   XX        XX    XX   @mao pgdn XX   XX             XX          XX
     lctl      XX   XX                  XX                   XX   XX             XX     XX   XX   XX
 )
@@ -97,4 +97,5 @@
     mmr     (movemouse-accel-right 1 1000 1 5)
     lsd     (layer-switch default )
     fst     (tap-hold-press $tap-time $hold-time XX (layer-toggle mouse-f))
+    cbsp    C-bspc
 )
