@@ -5,3 +5,9 @@ backups/
 emacs/eshell/history
 kanata_winIOv2.exe
 kanata_winIOv2.exe.lnk
+emacs/eln-cache/29.4-631e5fd8
+emacs/elpa
+emacs/eln-cache/29.4-631e5fd8
+emacs/elpa
+emacs/transient
+*.~undo-tree~
