@@ -75,6 +75,13 @@
     hold-time 150
 )
 
+(defchordsv2
+    (  k l) esc     100 all-released    (game vimnav mouse mouse-f mao)
+    (j k  ) bspc    100 all-released    (game vimnav mouse mouse-f mao)
+    (j   l) ret     100 all-released    (game vimnav mouse mouse-f mao)
+    (j k l) C-bspc  100 all-released    (game vimnav mouse mouse-f mao)
+)
+
 (defalias
     esctrl  (tap-hold-press 150 $hold-time esc lctl)
     vimnav  (layer-toggle vimnav)
