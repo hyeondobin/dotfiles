@@ -11,3 +11,6 @@ emacs/eln-cache/29.4-631e5fd8
 emacs/elpa
 emacs/transient
 *.~undo-tree~
+emacs/elpaca
+emacs/recentf
+emacs/tramp
