@@ -14,3 +14,5 @@ emacs/transient
 emacs/elpaca
 emacs/recentf
 emacs/tramp
+emacs/emacs-config.org~
+emacs/.lsp-session-v1
