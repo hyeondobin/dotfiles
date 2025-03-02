@@ -58,11 +58,16 @@
 			  :keymaps '(normal insert visual emacs)
 			  :prefix ","
 			  :global-prefix "C-,")
+
   (dobin/leader-keys
     "w" '(save-buffer :which-key "Save buffer")
     "f" '(:ignore t :which-key "Files")
     "fr" '(recentf :which-key "Files - recent")
     )
+(dobin/leader-keys
+  "g" '(:ignore t :which-key "git")
+  "gs" 'magit-status
+  "gd" 'magit-diff-unstaged)
   )
 
 ;; evil
@@ -86,12 +91,15 @@
   (setq evil-vsplit-window-right t)
   (setq evil-split-window-below t)
   (evil-mode)
+  :hook (evil-mode . dobin/evil-hook)
   :config
+  (evil-set-undo-system 'undo-redo)
   (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
   (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
 
   (evil-global-set-key 'motion "j" 'evil-next-visual-line)
   (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
+  (evil-global-set-key 'insert (kbd "<TAB>") 'up-list)
 
   (evil-set-initial-state 'messages-buffer-mode 'normal)
   (evil-set-initial-state 'dashboard-mode 'normal))
@@ -100,6 +108,7 @@
   :after evil
   :config
   (evil-collection-init))
+
 (use-package evil-numbers
   :after evil)
 
@@ -110,15 +119,25 @@
 	  ("k" text-scale-decrease "out")
 	  ("f" nil "finished" :exit t))))
 (add-hook 'elpaca-after-init-hook (lambda () (defhydra hydra-window-scale (:timeout 4)
-  ("j" evil-window-increase-width "less")
-  ("k" evil-window-decrease-width "more")
+  ("j" evil-window-increase-width "more")
+  ("k" evil-window-decrease-width "less")
   ("=" balance-windows "equal")
   ("f" nil "finished" :exit t))))
-(add-hook 'elpaca-after-init-hook (lambda () (dobin/leader-keys
+(add-hook 'elpaca-after-init-hook (lambda () (dobin/leader-keys  
+  "s" '(:ignore t :which-key "Scale")
   "st" '(hydra-text-scale/body :which-key "scale text")
   "sw" '(hydra-window-scale/body :which-key "scale window"))))
 
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+
+; theme
+(use-package catppuccin-theme
+  :custom
+  (catppuccin-flavor 'macchiato)
+  :config
+  (load-theme 'catppuccin :no-confirm))
+
+
 
 ;; disable ui
 (setq inhibit-startup-message t)
@@ -133,7 +152,10 @@
 
 ; line numbers
 (column-number-mode) ;; display column number
+
+(setq display-line-numbers-type 'relative)
 (global-display-line-numbers-mode t)
+
 ;; disable line numbers for some modes
 (dolist (mode '(org-mode-hook 
 		term-mode-hook 
@@ -158,28 +180,25 @@
 		    :font "JetBrainsMono NF"
 		    :height 120
 		    :weight 'medium)
-(set-face-attribute 'variable-pitch nil
-		    :font "JetBrainsMono NF"
-		    :height 130
-		    :weight 'medium)
-(set-face-attribute 'fixed-pitch nil
-		    :font "JetBrainsMono NF"
-		    :height 120
-		    :weight 'medium)
+;; (set-face-attribute 'variable-pitch nil
+;; 		    :font "Ubuntu Nerd Font"
+;; 		    :height 130
+;; 		    :weight 'medium)
+;; (set-face-attribute 'fixed-pitch nil
+;; 		    :font "JetBrainsMono NF"
+;; 		    :height 120
+;; 		    :weight 'medium)
+
 ;; ref: https://gitlab.com/dwt1/configuring-emacs/-/blob/main/07-the-final-touches/config.org?ref_type=heads#evil
-(set-face-attribute 'font-lock-comment-face nil
-		    :slant 'italic)
 (set-face-attribute 'font-lock-keyword-face nil
 		    :slant 'italic)
+(set-face-attribute 'font-lock-comment-face nil
+		    :slant 'italic)
+
 (add-to-list 'default-frame-alist '(font . "JetBrainsMono NF-12"))
 (setq-default line-spacing 0.13)
 
 
-; theme
-(use-package catppuccin-theme
-  :custom
-  (catppuccin-flavor 'macchiato))
-(add-hook 'elpaca-after-init-hook (lambda () (load-theme 'catppuccin :no-confirm)))
 
 ;; completion - CO(mpletion in) R(egion) FU(unction)
 (use-package corfu
@@ -187,6 +206,11 @@
   (corfu-cycle t)
   (corfu-preview-current t)
   (corfu-auto t)
+  (corfu-auto-delay 0)
+  (corfu-auto-prefix 0)
+  (corfu-preselect-first t)
+  (corfu-quit-at-boundary 'separator)
+  (corfu-separator ?\s)
   (corfu-quit-no-match 'separator)
   :init
   (global-corfu-mode)
@@ -197,8 +221,20 @@
   (define-key corfu-map "\C-y" #'corfu-insert)
   (define-key corfu-map "\C-e" #'corfu-quit)
   (define-key corfu-map "\C-n" #'corfu-next)
-  (define-key corfu-map "\C-p" #'corfu-previous)
-  )
+  (define-key corfu-map "\C-p" #'corfu-previous))
+
+(use-package kind-icon
+  :after corfu
+  :custom
+  (kind-icon-use-icons t)
+  (kind-icon-default-face 'corfu-default)
+  (kind-icon-blend-background nil)
+  (kind-icon-blend-frac 0.08)
+  ;;(svg-lib-icons-dir (no-littering-expand-var-file-name "svg-lib/cache/"))
+  :config
+  (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
+
+
 (use-package orderless
   :custom
   (completion-styles '(orderless basic))
@@ -261,7 +297,7 @@
   :config
   (setq ivy-initial-inputs-alist nil)) ; don't start search with ^
 
-; command log mode
+;; command log mode
 (use-package command-log-mode
   :config
   (global-command-log-mode 1)
@@ -313,21 +349,33 @@
 
 ;; LSP-MODE
 (use-package lsp-mode
-  :hook (lsp-mode . lsp-enable-which-key-integration)
+  :init
+  (setq lsp-keymap-prefix "C-c l")
+  :hook (nix-mode . lsp)
   :commands lsp)
-(use-package lsp-nix
-  :after (lsp-mode)
-  :demand t
-  :custom
-  (lsp-nix-nil-formatter ["nixfmt"]))
+
 
 (use-package nix-mode
-  :hook (nix-mode . lsp-deferred))
-  ;; :mode "\\.nix\\'")
+  :hook (nix-mode . lsp-deferred)
+  :mode "\\.nix\\'")
+(with-eval-after-load 'lsp-mode
+  (lsp-register-client
+   (make-lsp-client :new-connection (lsp-stdio-connection "nixd")
+		    :major-modes '(nix-mode)
+		    :priority 0
+		    :server-id 'nixd)))
 
 (use-package lsp-ui
   :commands lsp-ui-mode)
 
-
+;; cannot use in current state (25.03.01)
 ;; (use-package nix-ts-mode
+;;   :hook (nix-ts-mode . lsp-deferred)
 ;;   :mode "\\.nix\\'")
+
+(use-package hyprlang-ts-mode
+  :custom
+  (hyprlang-ts-mode-indent-offset 4))
+
+(use-package magit)
+

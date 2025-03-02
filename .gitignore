@@ -16,3 +16,5 @@ emacs/recentf
 emacs/tramp
 emacs/emacs-config.org~
 emacs/.lsp-session-v1
+emacs/.cache/svg-lib
+emacs/projects
