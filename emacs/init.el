@@ -64,10 +64,14 @@
     "f" '(:ignore t :which-key "Files")
     "fr" '(recentf :which-key "Files - recent")
     )
-(dobin/leader-keys
-  "g" '(:ignore t :which-key "git")
-  "gs" 'magit-status
-  "gd" 'magit-diff-unstaged)
+  (dobin/leader-keys
+    "g" '(:ignore t :which-key "git")
+    "gs" 'magit-status
+    "gd" 'magit-diff-unstaged)
+  (dobin/leader-keys
+    "b" '(:ignore t :which-key "buffer")
+    "bd" '(kill-current-buffer :which-key "Buffer Delete")
+    )
   )
 
 ;; evil
@@ -139,16 +143,19 @@
 
 
 
-;; disable ui
+;; UI
 (setq inhibit-startup-message t)
 
+;; disable
 (scroll-bar-mode 0)
 (tool-bar-mode 0)
 (menu-bar-mode 0)
 (tooltip-mode 0)
 (set-fringe-mode 10)
 
+;; enable
 (setq visible-bell t)
+(tab-bar-mode 1)
 
 ; line numbers
 (column-number-mode) ;; display column number
@@ -379,3 +386,47 @@
 
 (use-package magit)
 
+(use-package dirvish
+  :init
+  (dirvish-override-dired-mode)
+  :custom
+  (dirvish-quick-access-entries
+   '(("h" "~/" "Home")
+     ("d" "~/Downloads/" "Downloads")
+     ("m" "/mnt/" "Drives")
+     ("c" "~/repo/dotfiles/emacs/" "Config")))
+  :config
+  (dirvish-peek-mode)
+  (dirvish-side-follow-mode)
+  (setq dirvish-mode-line-format
+	'(:left (sort symlink) :right (omit yank index)))
+  (setq dirvish-att
+	'(nerd-icons file-time file-size collapse subtree-state vc-state git-msg)
+	dirvish-side-attributes
+	'(vc-state file-size nerd-icons collapse))
+  (setq delete-by-moving-to-trash t)
+  (setq dired-listing-switches
+	"-l --almost-all --human-readable --group-directories-first --no-group")
+  :bind
+  (("C-c f" . dirvish)
+   :map dirvish-mode-map
+   ("?" . dirvish-dispatch)
+   ("a" . dirvish-quick-access)
+    ("f" . dirvish-file-info-menu)
+    ("y" . dirvish-yank-menu)
+    ("N" . dirvish-narrow)
+    ("^" . dirvish-history-last)
+    ("h" . dirvish-history-jump)
+    ("s" . dirvish-quicksort)
+    ("v" . dirvish-vc-menu)
+   )
+  )
+
+(use-package diredfl
+  :hook
+  ((dired-mode . diredfl-mode)
+   (dirvish-directory-view-mode . diredfl-mode))
+  :config
+  (set-face-attribute 'diredfl-dir-name nil :bold t))
+
+(use-package nerd-icons)
