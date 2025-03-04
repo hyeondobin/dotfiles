@@ -20,3 +20,5 @@ emacs/.cache/svg-lib
 emacs/projects
 fcitx/dbus/0c42dd0befed41fcb353b3f4516f1c8d-0
 fcitx5/profile
+emacs/.emacs.desktop
+emacs/.emacs.desktop.lock
