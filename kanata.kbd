@@ -72,7 +72,7 @@
 
 (defvar
     tap-time 300
-    hold-time 150
+    hold-time 200
 )
 
 (defchordsv2
@@ -80,6 +80,8 @@
     (j k  ) bspc    100 all-released    (game vimnav mouse mouse-f mao)
     (j   l) ret     100 all-released    (game vimnav mouse mouse-f mao)
     (j k l) C-bspc  100 all-released    (game vimnav mouse mouse-f mao)
+
+    ;; (s d f) 
 )
 
 (defalias
