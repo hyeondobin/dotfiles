@@ -386,46 +386,46 @@
 
 (use-package magit)
 
-(use-package dirvish
-  :init
-  (dirvish-override-dired-mode)
-  :custom
-  (dirvish-quick-access-entries
-   '(("h" "~/" "Home")
-     ("d" "~/Downloads/" "Downloads")
-     ("m" "/mnt/" "Drives")
-     ("c" "~/repo/dotfiles/emacs/" "Config")))
-  :config
-  (dirvish-peek-mode)
-  (dirvish-side-follow-mode)
-  (setq dirvish-mode-line-format
-	'(:left (sort symlink) :right (omit yank index)))
-  (setq dirvish-att
-	'(nerd-icons file-time file-size collapse subtree-state vc-state git-msg)
-	dirvish-side-attributes
-	'(vc-state file-size nerd-icons collapse))
-  (setq delete-by-moving-to-trash t)
-  (setq dired-listing-switches
-	"-l --almost-all --human-readable --group-directories-first --no-group")
-  :bind
-  (("C-c f" . dirvish)
-   :map dirvish-mode-map
-   ("?" . dirvish-dispatch)
-   ("a" . dirvish-quick-access)
-    ("f" . dirvish-file-info-menu)
-    ("y" . dirvish-yank-menu)
-    ("N" . dirvish-narrow)
-    ("^" . dirvish-history-last)
-    ("h" . dirvish-history-jump)
-    ("s" . dirvish-quicksort)
-    ("v" . dirvish-vc-menu)
-   )
-  )
+;; (use-package dirvish
+;;   :init
+;;   (dirvish-override-dired-mode)
+;;   :custom
+;;   (dirvish-quick-access-entries
+;;    '(("h" "~/" "Home")
+;;      ("d" "~/Downloads/" "Downloads")
+;;      ("m" "/mnt/" "Drives")
+;;      ("c" "~/repo/dotfiles/emacs/" "Config")))
+;;   :config
+;;   (dirvish-peek-mode)
+;;   (dirvish-side-follow-mode)
+;;   (setq dirvish-mode-line-format
+;; 	'(:left (sort symlink) :right (omit yank index)))
+;;   (setq dirvish-att
+;; 	'(nerd-icons file-time file-size collapse subtree-state vc-state git-msg)
+;; 	dirvish-side-attributes
+;; 	'(vc-state file-size nerd-icons collapse))
+;;   (setq delete-by-moving-to-trash t)
+;;   (setq dired-listing-switches
+;; 	"-l --almost-all --human-readable --group-directories-first --no-group")
+;;   :bind
+;;   (("C-c f" . dirvish)
+;;    :map dirvish-mode-map
+;;    ("?" . dirvish-dispatch)
+;;    ("a" . dirvish-quick-access)
+;;     ("f" . dirvish-file-info-menu)
+;;     ("y" . dirvish-yank-menu)
+;;     ("N" . dirvish-narrow)
+;;     ("^" . dirvish-history-last)
+;;     ("h" . dirvish-history-jump)
+;;     ("s" . dirvish-quicksort)
+;;     ("v" . dirvish-vc-menu)
+;;    )
+;;   )
 
 (use-package diredfl
   :hook
-  ((dired-mode . diredfl-mode)
-   (dirvish-directory-view-mode . diredfl-mode))
+  ((dired-mode . diredfl-mode))
+  ;;  (dirvish-directory-view-mode . diredfl-mode))
   :config
   (set-face-attribute 'diredfl-dir-name nil :bold t))
 
