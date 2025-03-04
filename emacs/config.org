@@ -6,7 +6,7 @@
 
 Use elpaca as package manager. 
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp 
   (defun my/nixos-p ()
     "Return t if operating system is NixOS, nil otherwise."
     (string-match-p "NixOS" (shell-command-to-string "uname -v")))
@@ -143,6 +143,7 @@ Use evil mode as can't bare with emacs keybindings
     (dobin/leader-keys
       "r" '(:ignore t :which-key "Reload")
       "r c" '((lambda () (interactive) (load-file "~/.config/emacs/init.el")) :which-key "Reload Config")
+      "r s" '(desktop-read :which-key "Reload Session")
       )
     )
 
@@ -161,7 +162,7 @@ Use evil mode as can't bare with emacs keybindings
 
 #+begin_src emacs-lisp
   (electric-pair-mode 1)
-  (electric-indent-mode -1)
+  (electric-indent-mode 1)
 #+end_src
 
 
@@ -353,7 +354,10 @@ Diasble for some modes
 Restore session ?
 
 #+begin_src emacs-lisp
-(desktop-save-mode 1)
+  (add-hook 'after-init-hook
+  	  (lambda ()
+  	    (run-with-timer 1 nil (lambda()
+  				    (desktop-save-mode 1)))))
 #+end_src
 
 * Helpful
