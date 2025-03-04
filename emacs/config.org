@@ -2,6 +2,43 @@
 #+AUTHOR: Dobin Hyeon
 #+OPTIONS: toc:2
 
+* Table Of Contents :toc:
+- [[#package-manager---elpacael][Package Manager - elpaca.el]]
+- [[#evil-mode][Evil-mode]]
+- [[#general-for-evil-mode-keybindings][General for evil mode keybindings]]
+- [[#catppuccin-theme][Catppuccin Theme]]
+- [[#defaults][Defaults]]
+- [[#dired][Dired]]
+  - [[#remove-some-ui][Remove Some UI]]
+- [[#eshell][Eshell]]
+- [[#vterm][Vterm]]
+- [[#ivy--counsel][Ivy | Counsel]]
+- [[#org-mode][Org Mode]]
+  - [[#org-tempo][Org Tempo]]
+  - [[#org-keymap][Org Keymap]]
+  - [[#toc-org][TOC-Org]]
+  - [[#diminish---org-indent-mode][Diminish - Org Indent Mode]]
+  - [[#bullets][Bullets]]
+- [[#which-key][Which-key]]
+- [[#fonts][Fonts]]
+- [[#diminish][Diminish]]
+- [[#rainbow-delimiters][Rainbow Delimiters]]
+- [[#backup-files][Backup Files]]
+- [[#line-numbers][Line Numbers]]
+- [[#dashboard][Dashboard]]
+- [[#hydra][Hydra]]
+- [[#session][Session]]
+- [[#helpful][Helpful]]
+- [[#magit][Magit]]
+- [[#languages][Languages]]
+  - [[#lsp-mode][LSP-Mode]]
+  - [[#nix][Nix]]
+- [[#default-keybindings-fix][Default Keybindings fix]]
+  - [[#escape][Escape]]
+  - [[#c-l][C-l]]
+- [[#utf-8][UTF-8]]
+- [[#company][Company]]
+
 * Package Manager - elpaca.el
 
 Use elpaca as package manager. 
@@ -98,7 +135,7 @@ Use evil mode as can't bare with emacs keybindings
     ;; (evil-global-set-key 'motion "j" 'evil-next-visual-line)
     ;; (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
     (evil-global-set-key 'insert (kbd "<TAB>") 'up-list)
-    (evil-global-set-key 'insert (kbd "<M-TAB>") 'tempo-complete-tag)
+    (evil-global-set-key 'insert (kbd "<M-TAB>") (lambda () (interactive) (tempo-complete-tag) (org-edit-src-code) (evil-insert-state)))
 
     (evil-set-initial-state 'messages-buffer-mode 'normal)
     (evil-set-initial-state 'dashboard-mode 'normal))
@@ -139,14 +176,15 @@ Use evil mode as can't bare with emacs keybindings
     (dobin/leader-keys
       "b" '(:ignore t :which-key "buffer")
       "b d" '(kill-current-buffer :which-key "Buffer Delete")
+      "b l" '(ibuffer :which-key "Buffer List")
       )
     (dobin/leader-keys
       "r" '(:ignore t :which-key "Reload")
       "r c" '((lambda () (interactive) (load-file "~/.config/emacs/init.el")) :which-key "Reload Config")
       "r s" '(desktop-read :which-key "Reload Session")
+      "r e y" '(restart-emacs :which-key "Restart Emacs YEAH")
       )
     )
-
 #+end_src
 
 * Catppuccin Theme
@@ -165,6 +203,27 @@ Use evil mode as can't bare with emacs keybindings
   (electric-indent-mode 1)
 #+end_src
 
+* Dired
+아직 무슨 기능인지 모르겠음.
+#+begin_src emacs-lisp
+  (use-package dired-open
+    :config
+    (setq dired-open-extension '(("gif" . "sxiv")
+  			       ("jpg" . "sxiv")
+  			       ("png" . "sxiv")
+  			       ("mkv" . "mpv")
+  			       ("mp4" . "mpv"))))
+
+  (use-package peep-dired
+    :after dired
+    :hook (evil-normalize-keymaps . peep-dired-hook)
+    :config
+    (evil-define-key 'normal dired-mode-map (kbd "h") 'dired-up-directory)
+    (evil-define-key 'normal dired-mode-map (kbd "l") 'dired-open-file)
+    (evil-define-key 'normal peep-dired-mode-map (kbd "j") 'peep-dired-next-file)
+    (evil-define-key 'normal peep-dired-mode-map (kbd "k") 'peep-dired-prev-file)
+    )
+#+end_src
 
 ** Remove Some UI
 
@@ -184,7 +243,6 @@ Use evil mode as can't bare with emacs keybindings
   (tab-bar-mode 1)
 #+end_src
 
-* Reload Init File
 
 * Eshell
 
@@ -226,8 +284,8 @@ Use evil mode as can't bare with emacs keybindings
   (use-package swiper)
   (use-package counsel
     :bind (("M-x" . counsel-M-x)
-	   ("C-M-j" . counsel-switch-buffer)
-  	 ("C-x b" . counsel-ibuffer)
+	   ("C-M-j" . ibuffer)
+  	 ("C-x b" . counsel-Ibuffer)
   	 ("C-x C-f" . counsel-find-file)
   	 :map minibuffer-local-map
   	 ("C-r" . 'counsel-minibuffer-history))
@@ -238,9 +296,10 @@ Use evil mode as can't bare with emacs keybindings
 #+end_src
 
 * Org Mode
-
 ** Org Tempo
-
+빠르게 블록을 추가할 수 있게 해준다.
+기본적으로 =C-c C-,= 로 추가할 수 있는 걸 =<s`<TAB>`= 등으로 추가할 수 있게 해준다.
+추가로 =Emacs-lisp= 블럭을 추가할 수 있는 템플릿을 별도로 만들었다.
 #+begin_src emacs-lisp
   (require 'org-tempo)
   (tempo-define-template "Emacs-Lisp"
@@ -253,6 +312,37 @@ Use evil mode as can't bare with emacs keybindings
   			   (setq-local electric-pair-inhibit-predicate
   				       `(lambda (c)
   					  (if (char-equal c ?<) t (,electric-pair-inhibit-predicate c))))))
+#+end_src
+
+** Org Keymap
+자동으로 Insert모드에 들어가기 / 나오기
+컨트롤 떼기 귀찮아서 누른 상태의 키도 추가.
+#+begin_src emacs-lisp
+  (define-key org-mode-map (kbd "C-c '") '("Org enter code block" . (lambda()(interactive)(org-edit-special)(evil-insert-state))))
+  (define-key org-mode-map (kbd "C-c C-'") '("Org enter code block" . (lambda()(interactive)(org-edit-special)(evil-insert-state))))
+  (define-key org-src-mode-map (kbd "C-c '") '("Org exit code block" . (lambda ()(interactive)(org-edit-src-exit)(evil-normal-state))))
+  (define-key org-src-mode-map (kbd "C-c C-'") '("Org exit code block" . (lambda ()(interactive)(org-edit-src-exit)(evil-normal-state))))
+#+end_src
+
+** TOC-Org
+#+begin_src emacs-lisp
+  (use-package toc-org
+    :commands toc-org-enable
+    :init (add-hook 'org-mode-hook 'toc-org-enable))
+#+end_src
+
+** Diminish - Org Indent Mode
+모드라인의 Ind 표시를 없애준다.
+#+begin_src emacs-lisp
+  (eval-after-load 'org-indent '(diminish 'org-indent-mode))
+#+end_src
+
+** Bullets
+=org-bullets= Org-mode의 *표시를 불릿 모양으로 바꿔준다.
+#+begin_src emacs-lisp
+  (add-hook 'org-mode-hook 'org-indent-mode)
+  (use-package org-bullets)
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 #+end_src
 
 * Which-key
@@ -289,6 +379,12 @@ modes with :diminish will be hidden
   :hook (prog-mode . rainbow-delimiters-mode))
 #+end_src
 
+* Backup Files
+
+#+begin_src emacs-lisp
+  (setq backup-directory-alist '((".*" . "~/repo/dotfiles/emacs/backups")))
+#+end_src
+
 * Line Numbers
 Set relative line numbers for default
 And also enable column number from modeline
@@ -310,23 +406,23 @@ Diasble for some modes
 * Dashboard
 
 #+begin_src emacs-lisp
-(use-package dashboard
-  :init
-  (setq initial-buffer-choice 'dashboard-open)
-  (setq dahshboard-set-heading-icons t)
-  (setq dashboard-set-file-icons t)
-  (setq dashboard-banner-logo-title "EMACS")
-  (setq dashboard-center-content nil)
-  (setq dashboard-items '((recents . 5)
-			  (agenda . 5)
-			  (bookmarks . 3)
-			  (projects . 3)
-			  (registers . 3)))
-  :custom
-  (dashboard-modify-heading-icons '((recents . "file-text")
-				    (bookmarks . "book")))
-  :config
-  (dashboard-setup-startup-hook))
+  (use-package dashboard
+    :init
+    (setq initial-buffer-choice 'dashboard-open)
+    (setq dahshboard-set-heading-icons t)
+    (setq dashboard-set-file-icons t)
+    (setq dashboard-banner-logo-title "EMACS")
+    (setq dashboard-center-content nil)
+    (setq dashboard-items '((recents . 5)
+  			  (agenda . 5)
+  			  (bookmarks . 3)
+  			  (projects . 3)
+  			  (registers . 3)))
+    :custom
+    (dashboard-modify-heading-icons '((recents . "file-text")
+  				    (bookmarks . "book")))
+    :config
+    (dashboard-setup-startup-hook))
 
 #+end_src
 
@@ -408,10 +504,16 @@ Restore session ?
   
 #+End_src
 
-* Escape Fix
+* Default Keybindings fix
+** Escape
 No more 3 times of esc to close minibuffer
 #+begin_src emacs-lisp
 (global-set-key [escape] 'keyboard-escape-quit)
+#+end_src
+** C-l
+C-l을 자동완성으로 사용하기 때문에 기본인 center line 을 비활성화.
+#+begin_src emacs-lisp
+  (define-key global-map (kbd "C-l") nil)
 #+end_src
 
 * UTF-8
@@ -420,3 +522,28 @@ No more 3 times of esc to close minibuffer
 (set-language-environment "UTF-8")
 #+end_src
 
+* Company
+자동완성 기능.
+#+begin_src emacs-lisp
+  (use-package company
+    :diminish
+    :custom
+    (company-begin-commands '(self-insert-command))
+    (company-idle-delay .1)
+    (company-minimum-prefix-length 1)
+    (company-show-numbers t)
+    (company-tooltip-align-annonations 't)
+    (global-company-mode t)
+    :config
+    (define-key company-active-map (kbd "<tab>") nil)
+    (define-key company-active-map (kbd "<return>") nil)
+    (define-key company-active-map (kbd "RET") nil)
+    (define-key company-active-map (kbd "C-l") #'company-complete)
+    )
+
+  (use-package company-box
+    :after company
+    :diminish
+    :hook (company-mode . company-box-mode)
+    )
+#+end_src

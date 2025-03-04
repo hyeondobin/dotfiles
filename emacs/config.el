@@ -83,7 +83,7 @@
   ;; (evil-global-set-key 'motion "j" 'evil-next-visual-line)
   ;; (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
   (evil-global-set-key 'insert (kbd "<TAB>") 'up-list)
-  (evil-global-set-key 'insert (kbd "<M-TAB>") 'tempo-complete-tag)
+  (evil-global-set-key 'insert (kbd "<M-TAB>") (lambda () (interactive) (tempo-complete-tag) (org-edit-src-code) (evil-insert-state)))
 
   (evil-set-initial-state 'messages-buffer-mode 'normal)
   (evil-set-initial-state 'dashboard-mode 'normal))
@@ -120,11 +120,13 @@
   (dobin/leader-keys
     "b" '(:ignore t :which-key "buffer")
     "b d" '(kill-current-buffer :which-key "Buffer Delete")
+    "b l" '(ibuffer :which-key "Buffer List")
     )
   (dobin/leader-keys
     "r" '(:ignore t :which-key "Reload")
     "r c" '((lambda () (interactive) (load-file "~/.config/emacs/init.el")) :which-key "Reload Config")
     "r s" '(desktop-read :which-key "Reload Session")
+    "r e y" '(restart-emacs :which-key "Restart Emacs YEAH")
     )
   )
 
@@ -137,6 +139,24 @@
 (electric-pair-mode 1)
 (electric-indent-mode 1)
 
+(use-package dired-open
+  :config
+  (setq dired-open-extension '(("gif" . "sxiv")
+			       ("jpg" . "sxiv")
+			       ("png" . "sxiv")
+			       ("mkv" . "mpv")
+			       ("mp4" . "mpv"))))
+
+(use-package peep-dired
+  :after dired
+  :hook (evil-normalize-keymaps . peep-dired-hook)
+  :config
+  (evil-define-key 'normal dired-mode-map (kbd "h") 'dired-up-directory)
+  (evil-define-key 'normal dired-mode-map (kbd "l") 'dired-open-file)
+  (evil-define-key 'normal peep-dired-mode-map (kbd "j") 'peep-dired-next-file)
+  (evil-define-key 'normal peep-dired-mode-map (kbd "k") 'peep-dired-prev-file)
+  )
+
 (setq inhibit-startup-message t)
 (scroll-bar-mode 0)
 (tool-bar-mode 0)
@@ -147,7 +167,7 @@
 (setq visible-bell t)
 (tab-bar-mode 1)
 
-;;(use-package eshell-toggle)
+(use-package eshell-toggle)
 
 (use-package vterm
   :config
@@ -176,8 +196,8 @@
 (use-package swiper)
 (use-package counsel
   :bind (("M-x" . counsel-M-x)
-	   ("C-M-j" . counsel-switch-buffer)
-	 ("C-x b" . counsel-ibuffer)
+	   ("C-M-j" . ibuffer)
+	 ("C-x b" . counsel-Ibuffer)
 	 ("C-x C-f" . counsel-find-file)
 	 :map minibuffer-local-map
 	 ("C-r" . 'counsel-minibuffer-history))
@@ -197,6 +217,21 @@
 				       `(lambda (c)
 					  (if (char-equal c ?<) t (,electric-pair-inhibit-predicate c))))))
 
+(define-key org-mode-map (kbd "C-c '") '("Org enter code block" . (lambda()(interactive)(org-edit-special)(evil-insert-state))))
+(define-key org-mode-map (kbd "C-c C-'") '("Org enter code block" . (lambda()(interactive)(org-edit-special)(evil-insert-state))))
+(define-key org-src-mode-map (kbd "C-c '") '("Org exit code block" . (lambda ()(interactive)(org-edit-src-exit)(evil-normal-state))))
+(define-key org-src-mode-map (kbd "C-c C-'") '("Org exit code block" . (lambda ()(interactive)(org-edit-src-exit)(evil-normal-state))))
+
+(use-package toc-org
+  :commands toc-org-enable
+  :init (add-hook 'org-mode-hook 'toc-org-enable))
+
+(eval-after-load 'org-indent '(diminish 'org-indent-mode))
+
+(add-hook 'org-mode-hook 'org-indent-mode)
+(use-package org-bullets)
+(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+
 (use-package which-key
 :init (which-key-mode)
 :config
@@ -212,6 +247,8 @@
 
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
+
+(setq backup-directory-alist '((".*" . "~/repo/dotfiles/emacs/backups")))
 
 (setq display-line-numbers-type 'relative)
 (global-display-line-numbers-mode t)
@@ -293,4 +330,28 @@
 
 (global-set-key [escape] 'keyboard-escape-quit)
 
+(define-key global-map (kbd "C-l") nil)
+
 (set-language-environment "UTF-8")
+
+(use-package company
+  :diminish
+  :custom
+  (company-begin-commands '(self-insert-command))
+  (company-idle-delay .1)
+  (company-minimum-prefix-length 1)
+  (company-show-numbers t)
+  (company-tooltip-align-annonations 't)
+  (global-company-mode t)
+  :config
+  (define-key company-active-map (kbd "<tab>") nil)
+  (define-key company-active-map (kbd "<return>") nil)
+  (define-key company-active-map (kbd "RET") nil)
+  (define-key company-active-map (kbd "C-l") #'company-complete)
+  )
+
+(use-package company-box
+  :after company
+  :diminish
+  :hook (company-mode . company-box-mode)
+  )
