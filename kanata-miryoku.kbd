@@ -198,16 +198,16 @@
            (         kp   ) (multi p @bfast)
            (            kb) (multi b @bfast)
 
-           (ka            ) (multi (tap-hold $tt $ht a lmet) @bfast)
-           (   kr         ) (multi (tap-hold $tt $ht r lalt) @bfast)
-           (      ks      ) (multi (tap-hold $tt $ht s lsft) @bfast)
-           (         kt   ) (multi (tap-hold $tt $ht t lctl) @bfast)
+           (ka            ) (multi a @bfast)
+           (   kr         ) (multi r @bfast)
+           (      ks      ) (multi s @bfast)
+           (         kt   ) (multi t @bfast)
            (            kg) (multi g @bfast)
 
-           (kz            ) (multi z @bfast)
-           (   kx         ) (multi x @bfast)
-           (      kc      ) (multi c @bfast)
-           (         kd   ) (multi d @bfast)
+           (kz            ) (multi (tap-hold $tt $ht z lmet) @bfast)
+           (   kx         ) (multi (tap-hold $tt $ht x lalt) @bfast)
+           (      kc      ) (multi (tap-hold $tt $ht c lsft) @bfast)
+           (         kd   ) (multi (tap-hold $tt $ht d lctl) @bfast)
            (            kv) (multi v @bfast)
 
 
@@ -216,19 +216,19 @@
            (   kl         ) (multi l @bfast)
            (      ku      ) (multi u @bfast)
            (         ky   ) (multi y @bfast)
-           (            k') (multi ' @bfast)
+           ;;(            k') (multi ' @bfast)
 
            (km            ) (multi m @bfast)
-           (   kn         ) (multi (tap-hold $tt $ht n rctl) @bfast)
-           (      ke      ) (multi (tap-hold $tt $ht e rsft) @bfast)
-           (         ki   ) (multi (tap-hold $tt $ht i lalt) @bfast)
-           (            ko) (multi (tap-hold $tt $ht o rmet) @bfast)
+           (   kn         ) (multi n @bfast)
+           (      ke      ) (multi e @bfast)
+           (         ki   ) (multi i @bfast)
+           (            ko) (multi o @bfast)
            
            (kk            ) (multi k @bfast)
-           (   kh         ) (multi h @bfast)
-           (      k,      ) (multi , @bfast)
-           (         k.   ) (multi . @bfast)
-           (            k/) (multi / @bfast)
+           (   kh         ) (multi (tap-hold $tt $ht h rctl) @bfast)
+           (      k,      ) (multi (tap-hold $tt $ht , rsft) @bfast)
+           (         k.   ) (multi (tap-hold $tt $ht . lalt) @bfast)
+           (            k/) (multi (tap-hold $tt $ht / rmet) @bfast)
 
            (kf kp) tab
            ;; (kc kd) @paste
@@ -241,14 +241,15 @@
            (kd kh) @kor
            (kj kl) S-]
            (km kn) ]
-           (kn ke) bks
-           (ke ki) esc
-           (kn ki) ret
+           (kl ku) bks
+           (ku ky) esc
+           (kl ky) ret
            (kk kh) S-0
            (kx kc) -
            (kc kd) =
            (kx kd) '
-           
+           (kz kx kc kd) lrld
+           (kw kp) @at
 )
 
 (defalias
@@ -277,7 +278,7 @@
   bas-l   (chord bas-chords kl)
   bas-u   (chord bas-chords ku)
   bas-y   (chord bas-chords ky)
-  bas-'   (chord bas-chords k')
+  ;;bas-'   (chord bas-chords k')
   ;; second row
   bas-m   (chord bas-chords km)
   bas-n   (chord bas-chords kn)
@@ -307,24 +308,24 @@
   @bas-q  @bas-w  @bas-f  @bas-p  @bas-b
   @bas-a  @bas-r  @bas-s  @bas-t  @bas-g
   @bas-z  @bas-x  @bas-c  @bas-d  @bas-v
-  @bas-tab        @bas-bks
+  @bas-bks        @bas-tab
   ;; right
-  @bas-j  @bas-l  @bas-u  @bas-y  @bas-'
+  @bas-j  @bas-l  @bas-u  @bas-y  @bas-bks
   @bas-m  @bas-n  @bas-e  @bas-i  @bas-o
   @bas-k  @bas-h  @bas-,  @bas-.  @bas-/
   @bas-spc        @bas-but
   ;; extra keys - not actually used, needed to intercept events
-  XX        x
+  pp        x
 )
 
 (deflayer U_BASE_FAST
-    q       w       f       p       b
+    q       @bas-w  @bas-f  @bas-p  @bas-b
     a       r       s       t       g
     z       @bas-x  @bas-c  @bas-d  v
     @bas-tab        @bas-bks
 
-    j       @bas-l  @bas-u  @bas-y  '
-    m       @bas-n  @bas-e  @bas-i  o
+    j       @bas-l  @bas-u  @bas-y  bks
+    m       n       e       i       o
     k       h       @bas-,       .       /
     @bas-spc        @bas-but
     
@@ -344,7 +345,7 @@
   q-jctl (tap-hold $tt $ht j (multi @lwh-baf ctl))
   )
 
-;; U_QWERTY
+;; U_QWERTY 한글 입력용 쿼티 베이스 
 (defchords qwe-chords 40
   (qe qi) @capw
   (qz q/) (one-shot 1000 (layer-while-held U_BUTTON))
@@ -358,17 +359,16 @@
   (         qr   ) (multi r @qfast)
   (            qt) (multi t @qfast)
   ;;
-  (qa            ) (multi (tap-hold $tt $ht a lmet) @qfast)
-  (   qs         ) (multi (tap-hold $tt $ht s lalt) @qfast)
-  (      qd      ) (multi (tap-hold $tt $ht d lsft) @qfast)
-;;  (         qf   ) (multi (tap-hold $tt $ht f lctl) @qfast)
-  (      qf      ) (multi @q-fctl @qfast)
+  (qa            ) (multi a @qfast)
+  (   qs         ) (multi s @qfast)
+  (      qd      ) (multi d @qfast)
+  (         qf   ) (multi f @qfast)
   (            qg) (multi g @qfast)
   ;;
-  (qz            ) (multi z @qfast)
-  (   qx         ) (multi x @qfast)
-  (      qc      ) (multi c @qfast)
-  (         qv   ) (multi v @qfast)
+  (qz            ) (multi z (tap-hold $tt $ht z lmet) @qfast)
+  (   qx         ) (multi x (tap-hold $tt $ht x lalt) @qfast)
+  (      qc      ) (multi c (tap-hold $tt $ht c lsft) @qfast)
+  (         qv   ) (multi v (tap-hold $tt $ht v lctl) @qfast)
   (            qb) (multi b @qfast)
 
   (qe qr) tab
@@ -502,11 +502,11 @@
   lsft            @dot               
   ;; right
   6         7       8       9       0
-  ret     ctl     sft     alt     met
   XX      bspc    tab     caps    @backsl
+  ret     ctl     sft     alt     met
   XX              XX             
   ;; extra keys - not actually used, needed to intercept events
-  XX  x
+  XX        @lsw-fun
 )
 
 (deflayer U_SYM
@@ -534,7 +534,7 @@
   XX      @n-bas  @n-qwe  XX      XX
   ret     ctl     sft     alt     met
   XX      bspc    tab     caps    @backsl
-  XX              XX              
+  @lsw-bas            XX              
   ;; extra keys - not actually used, needed to intercept events
   XX x
 
@@ -549,15 +549,15 @@
 (deflayer U_NAV
   ;; left
   ;; added keys {[^$]} for VIM navigation
-  lrld    XX      @n-qwe  @n-bas  @lbrace
-  met     alt     sft     ctl     @lbrack
-  XX      XX      @paste  XX      @caret
-  @nav-vim        XX             
+  lrld          XX          @n-qwe      @n-bas      @lbrace
+  XX            XX          pp          XX          @lbrack
+  lmet          lalt        lsft        lctl        @caret
+  @nav-vim      XX             
   ;; right
-  @rbrace home    up      end     pgup
-  @rbrack left    down    right   pgdn
-  @doll   XX      XX      XX      XX
-  @lsw-bas        M-tab           
+  @rbrace       home        up          end         pgup
+  @rbrack       left        down        right       pgdn
+  @doll         rctl        rsft        lalt        rmet
+  @nav-vim      M-tab           
   ;; extra keys - not actually used, needed to intercept events
   XX  x
 )
@@ -566,8 +566,8 @@
   ;; left
   ;; added keys {[^$]} for VIM navigation
   lrld    XX      @n-qwe  @n-bas  @lbrack
-  met     alt     sft     ctl     @lbrack
-  XX      @copy   @paste  d       @caret
+  a       r       s       t       @lbrack
+  met     lalt    lsft    lctl    @caret
   lctl            XX             
 
   ;; right
@@ -601,10 +601,10 @@
   mwl (mwheel-left 50 120)
   mwr (mwheel-right 50 120)
 
-  mm-up (movemouse-up 5 1)
-  mm-le (movemouse-left 5 1)
-  mm-dn (movemouse-down 5 1)
-  mm-ri (movemouse-right 5 1)
+  mm-up (movemouse-up 1 1)
+  mm-le (movemouse-left 1 1)
+  mm-dn (movemouse-down 1 1)
+  mm-ri (movemouse-right 1 1)
 
   ma-up (movemouse-accel-up 1 1000 1 5)
   ma-le (movemouse-accel-left 1 1000 1 5)
@@ -613,23 +613,29 @@
 )
 
 (defalias
-  lwh-mof (layer-while-held U_MOUSE_FAST))
+  lwh-mof (layer-while-held U_MOUSE_FAST)
+  mou-f1    (tap-hold $tt $ht f1 lalt)
+  mou-f2    (tap-hold $tt $ht f2 lsft)
+  mou-f3    (tap-hold $tt $ht f3 lctl)
+  mou-prev  (tap-hold $tt $ht prev lctl)
+  mou-pp    (tap-hold $tt $ht pp   lctl)
+  mou-next  (tap-hold $tt $ht next lctl)
+  mou-mute  (tap-hold $tt $ht mute lctl)
+  )
 
 (deflayer U_MOUSE
   ;; left half
-  XX      XX      @n-qwe  @n-bas  ret
-  met     alt     sft     ctl     ins
-  XX      mmtp    mrgt    mlft    del
+  XX        f4          f5          f6          f7 
+  met       mmtp        mrgt        mlft        f8 
+  met       @mou-f1     @mou-f2     @mou-f3     f4 
   ;; thumbs
-  XX              XX              
+  XX        XX              
   ;; right half
-  @eng      @mwl    @mm-up  @mwr    @mwu
-  @kor      @mm-le  @mm-dn  @mm-ri  @mwd
-  XX        @paste  @copy   @cut    XX
-
-  
-  ;; thumbs - r/l/m mouse tapt (as opposed to clicks)
-  @lwh-mof           XX             
+  @eng      @mwl            @mm-up      @mwr            @mwu
+  @kor      @mm-le          @mm-dn      @mm-ri          @mwd
+  XX        @mou-prev       @mou-pp     @mou-next       @mou-mute
+  ;; thumbs 
+  @lwh-mof  XX             
   ;; extra keys - not actually used, needed to intercept events
   XX  x
 )
