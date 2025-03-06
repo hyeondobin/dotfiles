@@ -1,0 +1,652 @@
+;; vim: ft=lisp
+;;(evnironment (KANATA_PLATFORM hardware)
+ (defcfg
+  process-unmapped-keys yes
+  block-unmapped-keys yes
+  danger-enable-cmd yes
+  movemouse-inherit-accel-state yes
+  linux-unicode-u-code u
+ )
+;;)
+
+
+(defsrc
+  ;; left half
+  1       2       3       4       5 
+  tab     q       w       e       r 
+  caps    a       s       d       f
+  ;; thumbs
+  lalt            left            
+  ;; right half
+  u       i       o       p       [ 
+  j       k       l       ;       ' 
+  m       ,       .       /       rsft
+  ;; thumbs
+  spc             ralt
+  ;; extra keys - not actually used, needed to intercept events
+  lctl x
+)
+
+
+;; global variables
+(defvar
+    tap-time 200
+    hold-time 150
+    tt $tap-time
+    ht $hold-time
+)
+
+;; 버추얼 키를 만들어서 실제 키 대신 사용하여 이벤트가 중복되는 것을 막는다.
+(defvirtualkeys 
+  fake-win-eng (multi (release-key rctl)(release-key rmet) lalt lctl 1)
+  fake-win-kor (multi (release-key rctl) (release-key rmet) lalt lctl 2)
+
+  ;; permanent layer switching
+  fake-lsw-bas (layer-switch U_BASE)
+  fake-lsw-baf (layer-switch U_BASE_FAST)
+  fake-lsw-fun (layer-switch U_FUN)
+  fake-lsw-nav (layer-switch U_NAV)
+  fake-lsw-num (layer-switch U_NUM)
+  fake-lsw-mou (layer-switch U_MOUSE)
+  fake-lsw-qwe (layer-switch U_QWERTY)
+  fake-lsw-qwf (layer-switch U_QWERTY_FAST)
+  fake-lsw-sym (layer-switch U_SYM)
+
+  ;; symbols to be handled by OS
+  fake-hyper-a (multi rmet rctl lalt a)
+  fake-hyper-b (multi lmet lctl lalt b)
+  fake-hyper-c (multi lmet lctl lalt c)
+  fake-hyper-d (multi lmet lctl lalt d)
+  fake-hyper-e (multi lmet lctl lalt e)
+  fake-hyper-f (multi lmet lctl lalt f)
+  fake-hyper-g (multi lmet lctl lalt g)
+  fake-hyper-h (multi lmet lctl lalt h)
+  fake-hyper-i (multi lmet lctl lalt i)
+  fake-hyper-j (multi lmet lctl lalt j)
+  fake-hyper-k (multi lmet lctl lalt k)
+
+  ;;
+  fake-lang-switch-eng (multi
+                         (on-press  tap-virtualkey fake-win-eng)
+                         (on-press  tap-virtualkey fake-lsw-bas)
+  )
+  fake-lang-switch-kor (multi
+                         (on-press  tap-virtualkey fake-win-kor)
+                         (on-press  tap-virtualkey fake-lsw-qwe)
+                         )
+)
+
+;; shorter names for fake keys
+(defalias
+  lsw-bas (on-press tap-virtualkey fake-lsw-bas)
+  lsw-baf (on-press tap-virtualkey fake-lsw-baf)
+  lsw-fun (on-press tap-virtualkey fake-lsw-fun)
+  lsw-nav (on-press tap-virtualkey fake-lsw-nav)
+  lsw-num (on-press tap-virtualkey fake-lsw-num)
+  lsw-mou (on-press tap-virtualkey fake-lsw-mou)
+  lsw-qwe (on-press tap-virtualkey fake-lsw-qwe)
+  lsw-qwf (on-press tap-virtualkey fake-lsw-qwf)
+  lsw-sym (on-press tap-virtualkey fake-lsw-sym)
+  ;; shorter names for input switching in Windows
+  eng (on-press tap-virtualkey fake-lang-switch-eng)
+  kor (on-press tap-virtualkey fake-lang-switch-kor)
+)
+
+;; shorter names for layer maps
+(defalias
+  ;; temp layer switching
+  lwh-bas   (layer-while-held U_BASE)
+  lwh-baf   (layer-while-held U_BASE_FAST)
+  lwh-but   (layer-while-held U_BUTTON)
+  lwh-fun   (layer-while-held U_FUN)
+  lwh-nav   (layer-while-held U_NAV)
+  lwh-num   (layer-while-held U_NUM)
+  lwh-mou   (layer-while-held U_MOUSE)
+  lwh-sym   (layer-while-held U_SYM)
+  lwh-qwe   (layer-while-held U_QWERTY)
+
+  ;; switch to English and then send tab / escape
+  eng-tab (macro @eng 100 tab)
+  eng-esc (macro @eng 100 esc)
+
+  ;; do eng-tab if any of Rside HRMs are active, tab otherwise
+  smart-tab (fork tab @eng-tab (lalt rctl rmet))
+  smart-esc (fork esc @eng-esc (lalt rctl rmet))
+
+  ;; tap-hold thumb keys
+  esc-qwe   (tap-hold-press $tt $ht @smart-esc @lwh-qwe)
+  spc-nav   (tap-hold-press $tt $ht spc @lwh-nav)
+  spc-fun   (tap-hold-press $tt $ht spc @lwh-nav)
+  d-nav     (tap-hold-press $tt $ht (chord bas-chords kd) @lwh-nav)
+  tab-mou   (tap-hold-press $tt $ht @smart-tab @lwh-mou)
+  bks-nav   (tap-hold-press $tt $ht bks @lwh-nav)
+  del-fun   (tap-hold-press $tt $ht del @lwh-sym)
+  esc-num   (tap-hold-press $tt $ht esc @lwh-num)
+)
+
+;; symbols
+(defalias
+  lparen    (macro S-9)
+  rparen    (macro S-0)
+  lbrace    (macro S-{)
+  rbrace    (macro S-})
+  ;; lbrack    (unicode [)
+  ;; rbrack    (unicode ])
+  lbrack    (macro [)
+  rbrack    (macro ])
+  
+
+  grave     (macro  `)
+  tilde     (macro S-`)
+  slash     (macro /)
+  backsl    (macro \)
+  colon     (macro S-;)
+  semicol   (macro ;)
+  plus      (macro +)
+  equal     (macro =)
+  minus     (macro -)
+  unders    (macro S--)
+  dot       (macro .)
+  comma     (macro ,)
+  quesma    (macro S-/)
+  at        (macro S-2)
+  hash      (macro S-3)
+  doll      (macro S-4)
+  perc      (macro S-5)
+  caret     (macro S-6)
+  amps      (macro S-7)
+  apo       (macro S-8)
+  gt        (macro S-9)
+  lt        (macro S-0)
+  dh-gmail  (macro d o b i n h y e o n S-2 g m a i l . c o m)
+  jl-gmail  (macro j a y l i 2 5 5 8 S-2 g m a i l . c o m)
+  pr-gmail  (macro p a n r u y a l S-2 g m a i l . c o m)
+)
+(defalias
+  ;; first tap => no action
+  ;; second in 200ms => permanently switch to layer
+  n-qwe (tap-dance $tt (XX @lsw-qwe))
+  n-bas (tap-dance $tt (XX @lsw-bas))
+
+  copy      (macro C-ins)
+  paste     (macro S-ins)
+  cut       (macro S-del)
+  undo      (macro C-z)
+  redo      (macro C-y)
+
+  ;; caps word for 3 sec or caps
+  capw (caps-word 3000)
+
+  ;; fast layer
+  bfast (multi
+          @lsw-baf
+          (on-idle 35 tap-virtualkey fake-lsw-bas)
+  )
+)
+
+(defchords bas-chords 80
+
+           ;; z+/ = Button layer
+           (kz k/) (one-shot 1000 (layer-while-held U_BUTTON))
+
+           (ka ko) lmet
+           (kr ki) lalt
+
+           (kq            ) (multi q @bfast)
+           (   kw         ) (multi w @bfast)
+           (      kf      ) (multi f @bfast)
+           (         kp   ) (multi p @bfast)
+           (            kb) (multi b @bfast)
+
+           (ka            ) (multi (tap-hold $tt $ht a lmet) @bfast)
+           (   kr         ) (multi (tap-hold $tt $ht r lalt) @bfast)
+           (      ks      ) (multi (tap-hold $tt $ht s lsft) @bfast)
+           (         kt   ) (multi (tap-hold $tt $ht t lctl) @bfast)
+           (            kg) (multi g @bfast)
+
+           (kz            ) (multi z @bfast)
+           (   kx         ) (multi x @bfast)
+           (      kc      ) (multi c @bfast)
+           (         kd   ) (multi d @bfast)
+           (            kv) (multi v @bfast)
+
+
+
+           (kj            ) (multi j @bfast)
+           (   kl         ) (multi l @bfast)
+           (      ku      ) (multi u @bfast)
+           (         ky   ) (multi y @bfast)
+           (            k') (multi ' @bfast)
+
+           (km            ) (multi m @bfast)
+           (   kn         ) (multi (tap-hold $tt $ht n rctl) @bfast)
+           (      ke      ) (multi (tap-hold $tt $ht e rsft) @bfast)
+           (         ki   ) (multi (tap-hold $tt $ht i lalt) @bfast)
+           (            ko) (multi (tap-hold $tt $ht o rmet) @bfast)
+           
+           (kk            ) (multi k @bfast)
+           (   kh         ) (multi h @bfast)
+           (      k,      ) (multi , @bfast)
+           (         k.   ) (multi . @bfast)
+           (            k/) (multi / @bfast)
+
+           (kf kp) tab
+           ;; (kc kd) @paste
+           (kw kf) (macro esc S-; w ret)
+           (kp kb) S-[
+           (kt kg) [
+           (kd kv) S-9
+           (kp kl) @eng
+           (kf ku) @capw
+           (kd kh) @kor
+           (kj kl) S-]
+           (km kn) ]
+           (kn ke) bks
+           (ke ki) esc
+           (kn ki) ret
+           (kk kh) S-0
+           (kx kc) -
+           (kc kd) =
+           (kx kd) '
+           
+)
+
+(defalias
+  ;; left half
+  ;; first row
+  bas-q   (chord bas-chords kq)
+  bas-w   (chord bas-chords kw)
+  bas-f   (chord bas-chords kf)
+  bas-p   (chord bas-chords kp)
+  bas-b   (chord bas-chords kb)
+  ;;second row
+  bas-a   (chord bas-chords ka)
+  bas-r   (chord bas-chords kr)
+  bas-s   (chord bas-chords ks)
+  bas-t   (chord bas-chords kt)
+  bas-g   (chord bas-chords kg)
+  ;; third row
+  bas-z   (chord bas-chords kz)
+  bas-x   (chord bas-chords kx)
+  bas-c   (chord bas-chords kc)
+  bas-d   (chord bas-chords kd)
+  bas-v   (chord bas-chords kv)
+  ;; right half
+  ;; first row
+  bas-j   (chord bas-chords kj)
+  bas-l   (chord bas-chords kl)
+  bas-u   (chord bas-chords ku)
+  bas-y   (chord bas-chords ky)
+  bas-'   (chord bas-chords k')
+  ;; second row
+  bas-m   (chord bas-chords km)
+  bas-n   (chord bas-chords kn)
+  bas-e   (chord bas-chords ke)
+  bas-i   (chord bas-chords ki)
+  bas-o   (chord bas-chords ko)
+  ;; third row
+  bas-k   (chord bas-chords kk)
+  bas-h   (chord bas-chords kh)
+  bas-,   (chord bas-chords k,)
+  bas-.   (chord bas-chords k.)
+  bas-/   (chord bas-chords k/)
+
+  ;; thumbs
+  bas-esc @esc-num
+  bas-fun (one-shot 1000 @lwh-fun)
+  bas-spc @spc-nav
+  bas-tab @tab-mou
+  bas-bks @bks-nav
+  bas-sym (tap-hold-press $tt $ht (one-shot 1000 (layer-while-held U_SYM)) @lwh-nav)
+  bas-but (tap-hold-press $tt $ht (one-shot 1000 (layer-while-held U_BUTTON)) @lwh-num)
+)
+
+
+(deflayer U_BASE
+  ;; left half
+  @bas-q  @bas-w  @bas-f  @bas-p  @bas-b
+  @bas-a  @bas-r  @bas-s  @bas-t  @bas-g
+  @bas-z  @bas-x  @bas-c  @bas-d  @bas-v
+  @bas-tab        @bas-bks
+  ;; right
+  @bas-j  @bas-l  @bas-u  @bas-y  @bas-'
+  @bas-m  @bas-n  @bas-e  @bas-i  @bas-o
+  @bas-k  @bas-h  @bas-,  @bas-.  @bas-/
+  @bas-spc        @bas-but
+  ;; extra keys - not actually used, needed to intercept events
+  XX        x
+)
+
+(deflayer U_BASE_FAST
+    q       w       f       p       b
+    a       r       s       t       g
+    z       @bas-x  @bas-c  @bas-d  v
+    @bas-tab        @bas-bks
+
+    j       @bas-l  @bas-u  @bas-y  '
+    m       @bas-n  @bas-e  @bas-i  o
+    k       h       @bas-,       .       /
+    @bas-spc        @bas-but
+    
+    XX    x
+)
+
+;; qwerty
+(defalias 
+  qfast (multi @lsw-qwf 
+               (on-idle 35 tap-virtualkey fake-lsw-qwe)
+               )
+  qcomma (fork @comma   @lt     (lsft))
+  qdot   (fork @dot     @gt     (lsft))
+  qslash (fork @slash   @quesma (lsft))
+
+  q-fctl (tap-hold $tt $ht f (multi @lwh-baf ctl))
+  q-jctl (tap-hold $tt $ht j (multi @lwh-baf ctl))
+  )
+
+;; U_QWERTY
+(defchords qwe-chords 40
+  (qe qi) @capw
+  (qz q/) (one-shot 1000 (layer-while-held U_BUTTON))
+
+  (qr qu) @eng
+  (qb qn) @kor
+
+  (qq            ) (multi q @qfast)
+  (   qw         ) (multi w @qfast)
+  (      qe      ) (multi e @qfast)
+  (         qr   ) (multi r @qfast)
+  (            qt) (multi t @qfast)
+  ;;
+  (qa            ) (multi (tap-hold $tt $ht a lmet) @qfast)
+  (   qs         ) (multi (tap-hold $tt $ht s lalt) @qfast)
+  (      qd      ) (multi (tap-hold $tt $ht d lsft) @qfast)
+;;  (         qf   ) (multi (tap-hold $tt $ht f lctl) @qfast)
+  (      qf      ) (multi @q-fctl @qfast)
+  (            qg) (multi g @qfast)
+  ;;
+  (qz            ) (multi z @qfast)
+  (   qx         ) (multi x @qfast)
+  (      qc      ) (multi c @qfast)
+  (         qv   ) (multi v @qfast)
+  (            qb) (multi b @qfast)
+
+  (qe qr) tab
+  (qr qt) @lbrace
+  (qf qg) @lbrack
+  (qv qb) @lparen
+  
+
+  (qy            ) (multi y @qfast)
+  (   qu         ) (multi u @qfast)
+  (      qi      ) (multi i @qfast)
+  (         qo   ) (multi o @qfast)
+  (            qp) (multi p @qfast)
+  ;;
+  (qh            ) (multi h @qfast)
+  ;;(   qj         ) (multi (tap-hold $tt $ht j lctl) @qfast)
+  (   qj         ) (multi @q-jctl @qfast)
+  (      qk      ) (multi (tap-hold $tt $ht k lsft) @qfast)
+  (         ql   ) (multi (tap-hold $tt $ht l lalt) @qfast)
+  (            q;) (multi (tap-hold $tt $ht ; lmet) @qfast)
+  ;;
+  (qn            ) (multi n @qfast)
+  (   qm         ) (multi m @qfast)
+  (      q,      ) (multi , @qfast)
+  (         q.   ) (multi @qdot   @qfast)
+  (            q/) (multi @qslash @qfast)
+  ;;
+  (qi qo) ret
+  ;; l + u = shift+enter, since the "real" enter is disabled
+  (qu qi) S-ret
+  (qj ql) ret
+  (qj qk) bks
+  (qk ql) esc
+  (qy qu) @rbrace
+  (qh qj) @rbrack
+  (qn qm) @rparen
+  (qm q,) @comma
+  (q, q.) @dot
+  (q. q/) @quesma
+    (qx qc) -
+    (qc qv) =
+    (qx qv) '
+)
+
+ ;; qwerty aliases 
+(defalias
+  ;; left half
+  ;; first row
+  qwe-q   (chord qwe-chords qq)
+  qwe-w   (chord qwe-chords qw)
+  qwe-e   (chord qwe-chords qe)
+  qwe-r   (chord qwe-chords qr)
+  qwe-t   (chord qwe-chords qt)
+  ;; second row
+  qwe-a   (chord qwe-chords qa)
+  qwe-s   (chord qwe-chords qs)
+  qwe-d   (chord qwe-chords qd)
+  qwe-f   (chord qwe-chords qf)
+  qwe-g   (chord qwe-chords qg)
+  ;; third row
+  qwe-z   (chord qwe-chords qz)
+  qwe-x   (chord qwe-chords qx)
+  qwe-c   (chord qwe-chords qc)
+  qwe-v   (chord qwe-chords qv)
+  qwe-b   (chord qwe-chords qb)
+  ;; thumbs
+  qwe-esc @esc-qwe
+  qwe-spc @spc-nav
+  qwe-tab @tab-mou
+  ;; right half(chord qwe-chords qz)
+  ;; first row
+  qwe-y   (chord qwe-chords qy)
+  qwe-u   (chord qwe-chords qu)
+  qwe-i   (chord qwe-chords qi)
+  qwe-o   (chord qwe-chords qo)
+  qwe-p   (chord qwe-chords qp)
+  ;; second row
+  qwe-h   (chord qwe-chords qh)
+  qwe-j   (chord qwe-chords qj)
+  qwe-k   (chord qwe-chords qk)
+  qwe-l   (chord qwe-chords ql)
+  qwe-;   (chord qwe-chords q;)
+  ;; third row
+  qwe-n   (chord qwe-chords qn)
+  qwe-m   (chord qwe-chords qm)
+  qwe-,   (chord qwe-chords q,)
+  qwe-.   (chord qwe-chords q.)
+  qwe-/   (chord qwe-chords q/)
+  ;; thumbs
+  qwe-bks @bks-nav
+  qwe-del @del-fun
+)
+
+
+(deflayer U_QWERTY
+  ;; left
+  @qwe-q  @qwe-w  @qwe-e  @qwe-r  @qwe-t
+  @qwe-a  @qwe-s  @qwe-d  @qwe-f  @qwe-g
+  @qwe-z  @qwe-x  @qwe-c  @qwe-v  @qwe-b
+  @qwe-bks        @qwe-tab        
+  ;; right
+  @qwe-y  @qwe-u  @qwe-i  @qwe-o  @qwe-p
+  @qwe-h  @qwe-j  @qwe-k  @qwe-l  @qwe-;
+  @qwe-n  @qwe-m  @qwe-,  @qwe-.  @qwe-/
+  @qwe-spc        @qwe-bks        
+  ;; extra keys - not actually used, needed to intercept events
+  XX  x
+)
+
+(deflayer U_QWERTY_FAST
+  ;; left
+  q       w       e        r      t
+  a       s       d        f      g
+  z       x       @qwe-c   @qwe-v b
+  @qwe-bks        @qwe-tab       
+  ;; right
+  y       @qwe-u  @qwe-i   @qwe-o p
+  h       j       k        l      ;
+  n       m       @qwe-,   @qwe-. @qwe-/
+  @qwe-spc        @qwe-bks        
+  ;; extra keys - not actually used, needed to intercept events
+  XX  x
+)
+
+
+(deflayer U_NUM
+  ;; left
+  1         2       3       4       5
+  @colon    -       eql     apo     `
+  @doll     scln    bksl    S-\     kp/
+  lsft            @dot               
+  ;; right
+  6         7       8       9       0
+  ret     ctl     sft     alt     met
+  XX      bspc    tab     caps    @backsl
+  XX              XX             
+  ;; extra keys - not actually used, needed to intercept events
+  XX  x
+)
+
+(deflayer U_SYM
+  ;; left
+  S-1     S-2     S-3     S-4     S-5
+  S-\     S-`     S-apo   S-scln  eql
+  \       `       apo     scln    S--
+  S-0             S-0           
+  ;; right
+  S-6     S-7     S-8     S-9     S-0
+  ret     lctl    lsft    lalt    lmet
+  XX      bspc    tab     caps    \
+  XX              XX              
+  ;; extra keys - not actually used, needed to intercept events
+  XX x
+)
+
+(deflayer U_FUN
+  ;; left
+  f12     f7      f8      f9      prtsc
+  f11     f4      f5      f6      slck
+  f10     f1      f2      f3      pause
+  tab             spc             
+  ;; right
+  XX      @n-bas  @n-qwe  XX      XX
+  ret     ctl     sft     alt     met
+  XX      bspc    tab     caps    @backsl
+  XX              XX              
+  ;; extra keys - not actually used, needed to intercept events
+  XX x
+
+)
+
+(defalias
+  nav-vim (layer-switch U_NAV_VI)
+  c-d (macro C-d)
+  c-u (macro C-u)
+  )
+
+(deflayer U_NAV
+  ;; left
+  ;; added keys {[^$]} for VIM navigation
+  lrld    XX      @n-qwe  @n-bas  @lbrace
+  met     alt     sft     ctl     @lbrack
+  XX      XX      @paste  XX      @caret
+  @nav-vim        XX             
+  ;; right
+  @rbrace home    up      end     pgup
+  @rbrack left    down    right   pgdn
+  @doll   XX      XX      XX      XX
+  @lsw-bas        M-tab           
+  ;; extra keys - not actually used, needed to intercept events
+  XX  x
+)
+
+(deflayer U_NAV_VI
+  ;; left
+  ;; added keys {[^$]} for VIM navigation
+  lrld    XX      @n-qwe  @n-bas  @lbrack
+  met     alt     sft     ctl     @lbrack
+  XX      @copy   @paste  d       @caret
+  lctl            XX             
+
+  ;; right
+  @rbrack home    u       o       pgup
+  h       j       k       l       XX
+  @doll   n       XX      XX      / 
+  @lsw-bas        @n-bas
+  ;; extra keys - not actually used, needed to intercept events
+  XX  XX
+)
+
+(deflayer U_BUTTON
+  ;; left
+  @dh-gmail @jl-gmail   @pr-gmail   XX      XX
+  XX        alt         sft         ctl     XX
+  XX        ins         XX          XX      XX    
+  mmtp                  mltp            
+  ;; right
+  @redo   @paste  @cut    @copy   @undo
+  XX      ctl     sft     alt     met
+  @redo   @paste  @cut    @copy   @undo
+  mrtp            esc
+  ;; extra keys - not actually used, needed to intercept events
+  XX  x
+)
+
+;; some aliases for the mouse
+(defalias
+  mwu (mwheel-up 100 120)
+  mwd (mwheel-down 100 120)
+  mwl (mwheel-left 50 120)
+  mwr (mwheel-right 50 120)
+
+  mm-up (movemouse-up 5 1)
+  mm-le (movemouse-left 5 1)
+  mm-dn (movemouse-down 5 1)
+  mm-ri (movemouse-right 5 1)
+
+  ma-up (movemouse-accel-up 1 1000 1 5)
+  ma-le (movemouse-accel-left 1 1000 1 5)
+  ma-dn (movemouse-accel-down 1 1000 1 5)
+  ma-ri (movemouse-accel-right 1 1000 1 5)
+)
+
+(defalias
+  lwh-mof (layer-while-held U_MOUSE_FAST))
+
+(deflayer U_MOUSE
+  ;; left half
+  XX      XX      @n-qwe  @n-bas  ret
+  met     alt     sft     ctl     ins
+  XX      mmtp    mrgt    mlft    del
+  ;; thumbs
+  XX              XX              
+  ;; right half
+  @eng      @mwl    @mm-up  @mwr    @mwu
+  @kor      @mm-le  @mm-dn  @mm-ri  @mwd
+  XX        @paste  @copy   @cut    XX
+
+  
+  ;; thumbs - r/l/m mouse tapt (as opposed to clicks)
+  @lwh-mof           XX             
+  ;; extra keys - not actually used, needed to intercept events
+  XX  x
+)
+
+(deflayer U_MOUSE_FAST
+  ;; left half
+  XX      XX      @n-qwe  @n-bas  XX
+  met     alt     sft     ctl     XX
+  XX      mmtp    mrgt    mlft    del
+  ;; thumbs
+  XX              XX              
+  ;; right half
+  @eng      @mwl    @ma-up  @mwr    @mwu
+  @kor      @ma-le  @ma-dn  @ma-ri  @mwd
+  XX        XX      XX      XX      XX
+  ;; thumbs - r/l/m mouse tapt (as opposed to clicks)
+  mrtp            mltp           
+  ;; extra keys - not actually used, needed to intercept events
+  XX  x
+          )
