@@ -269,6 +269,7 @@
 
   (kw kp) scln
   (kn ke ki) spc
+  (kr ks kt) spc
 )
 
   ;; base aliases
