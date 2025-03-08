@@ -126,15 +126,6 @@
 
 ;; symbols
 (defalias
-  lparen    (macro S-9)
-  rparen    (macro S-0)
-  lbrace    (macro S-{)
-  rbrace    (macro S-})
-  ;; lbrack    (unicode [)
-  ;; rbrack    (unicode ])
-  lbrack    (macro [)
-  rbrack    (macro ])
-  
 
   grave     (macro  `)
   tilde     (macro S-`)
@@ -149,6 +140,7 @@
   dot       (macro .)
   comma     (macro ,)
   quesma    (macro S-/)
+  bang      (macro S-1)
   at        (macro S-2)
   hash      (macro S-3)
   doll      (macro S-4)
@@ -156,8 +148,17 @@
   caret     (macro S-6)
   amps      (macro S-7)
   apo       (macro S-8)
-  gt        (macro S-9)
-  lt        (macro S-0)
+  lparen    (macro S-9)
+  rparen    (macro S-0)
+  lbrace    (macro S-[)
+  rbrace    (macro S-])
+  ;; lbrack    (unicode [)
+  ;; rbrack    (unicode ])
+  lbrack    (macro [)
+  rbrack    (macro ])
+  
+  gt        (macro S-.)
+  lt        (macro S-,)
   dh-gmail  (macro d o b i n h y e o n S-2 g m a i l . c o m)
   jl-gmail  (macro j a y l i 2 5 5 8 S-2 g m a i l . c o m)
   pr-gmail  (macro p a n r u y a l S-2 g m a i l . c o m)
@@ -184,74 +185,93 @@
   )
 )
 
+;; U_BASE 영문 입력용 기본 베이스
 (defchords bas-chords 80
 
-           ;; z+/ = Button layer
-           (kz k/) (one-shot 1000 (layer-while-held U_BUTTON))
+  (kq            ) (multi q @bfast)
+  (   kw         ) (multi w @bfast)
+  (      kf      ) (multi f @bfast)
+  (         kp   ) (multi p @bfast)
+  (            kb) (multi b @bfast)
 
-           (ka ko) lmet
-           (kr ki) lalt
+  (ka            ) (multi a @bfast)
+  (   kr         ) (multi r @bfast)
+  (      ks      ) (multi s @bfast)
+  (         kt   ) (multi t @bfast)
+  (            kg) (multi g @bfast)
 
-           (kq            ) (multi q @bfast)
-           (   kw         ) (multi w @bfast)
-           (      kf      ) (multi f @bfast)
-           (         kp   ) (multi p @bfast)
-           (            kb) (multi b @bfast)
-
-           (ka            ) (multi a @bfast)
-           (   kr         ) (multi r @bfast)
-           (      ks      ) (multi s @bfast)
-           (         kt   ) (multi t @bfast)
-           (            kg) (multi g @bfast)
-
-           (kz            ) (multi (tap-hold $tt $ht z lmet) @bfast)
-           (   kx         ) (multi (tap-hold $tt $ht x lalt) @bfast)
-           (      kc      ) (multi (tap-hold $tt $ht c lsft) @bfast)
-           (         kd   ) (multi (tap-hold $tt $ht d lctl) @bfast)
-           (            kv) (multi v @bfast)
+  (kz            ) (multi (tap-hold $tt $ht z lmet) @bfast)
+  (   kx         ) (multi (tap-hold $tt $ht x lalt) @bfast)
+  (      kc      ) (multi (tap-hold $tt $ht c lsft) @bfast)
+  (         kd   ) (multi (tap-hold $tt $ht d lctl) @bfast)
+  (            kv) (multi v @bfast)
 
 
 
-           (kj            ) (multi j @bfast)
-           (   kl         ) (multi l @bfast)
-           (      ku      ) (multi u @bfast)
-           (         ky   ) (multi y @bfast)
-           ;;(            k') (multi ' @bfast)
+  (kj            ) (multi j @bfast)
+  (   kl         ) (multi l @bfast)
+  (      ku      ) (multi u @bfast)
+  (         ky   ) (multi y @bfast)
+  ;;(            k') (multi ' @bfast)
+  (         k-bks) (multi bks @bfast)
 
-           (km            ) (multi m @bfast)
-           (   kn         ) (multi n @bfast)
-           (      ke      ) (multi e @bfast)
-           (         ki   ) (multi i @bfast)
-           (            ko) (multi o @bfast)
-           
-           (kk            ) (multi k @bfast)
-           (   kh         ) (multi (tap-hold $tt $ht h rctl) @bfast)
-           (      k,      ) (multi (tap-hold $tt $ht , rsft) @bfast)
-           (         k.   ) (multi (tap-hold $tt $ht . lalt) @bfast)
-           (            k/) (multi (tap-hold $tt $ht / rmet) @bfast)
+  (km            ) (multi m @bfast)
+  (   kn         ) (multi n @bfast)
+  (      ke      ) (multi e @bfast)
+  (         ki   ) (multi i @bfast)
+  (            ko) (multi o @bfast)
 
-           (kf kp) tab
-           ;; (kc kd) @paste
-           (kw kf) (macro esc S-; w ret)
-           (kp kb) S-[
-           (kt kg) [
-           (kd kv) S-9
-           (kp kl) @eng
-           (kf ku) @capw
-           (kd kh) @kor
-           (kj kl) S-]
-           (km kn) ]
-           (kl ku) bks
-           (ku ky) esc
-           (kl ky) ret
-           (kk kh) S-0
-           (kx kc) -
-           (kc kd) =
-           (kx kd) '
-           (kz kx kc kd) lrld
-           (kw kp) @at
+  (kk            ) (multi k @bfast)
+  (   kh         ) (multi (tap-hold $tt $ht h rctl) @bfast)
+  (      k,      ) (multi (tap-hold $tt $ht , rsft) @bfast)
+  (         k.   ) (multi (tap-hold $tt $ht . lalt) @bfast)
+  (            k/) (multi (tap-hold $tt $ht / rmet) @bfast)
+
+  ;; z+/ = Button layer
+  (kz k/) (one-shot 1000 (layer-while-held U_BUTTON))
+
+  (ka ko) lmet
+  (kr ki) lalt
+
+  (k-ret) (multi ret @bfast)
+
+  ;; chords
+  (kf kp) tab
+  (kw kf) (macro esc S-; w ret)
+  (kp kb) @lbrace
+  (kt kg) @lbrack
+  (kd kv) @lparen
+  (kp kl) @eng
+  (kf ku) @capw
+  (kd kh) @kor
+  (kj kl) @rbrace
+  (km kn) @rbrack
+  (kk kh) @rparen
+  (kl ky) ret
+  (kl ku) bks
+  (ku ky) esc
+  (kx kc) -
+  (kc kd) =
+  (kx kd) '
+  (kx kc kd) scln
+
+  (kz kx kc kd) lrld
+  (kq k,) @bang
+  (kw k,) @at
+  (kf k,) @hash
+  (kp k,) @doll
+  (kb k,) @perc
+  (kc kj) @caret
+  (kc kl) @amps
+  (kc ku) @apo
+  (kc ky) @lparen
+  (kc k-bks) @rparen
+
+  (kw kp) scln
+  (kn ke ki) spc
 )
 
+  ;; base aliases
 (defalias
   ;; left half
   ;; first row
@@ -295,11 +315,16 @@
   ;; thumbs
   bas-esc @esc-num
   bas-fun (one-shot 1000 @lwh-fun)
+  bas-bks (chord bas-chords k-bks)
+  ;;bas-bks (tap-hold-press $tt $ht (chord bas-chords k-bks) bks)
+  bas-sym (tap-hold-press $tt $ht (one-shot 1000 (layer-while-held U_SYM)) @lwh-nav)
+
+  ;; currently used
+  bas-ret (chord bas-chords k-ret)
   bas-spc @spc-nav
   bas-tab @tab-mou
-  bas-bks @bks-nav
-  bas-sym (tap-hold-press $tt $ht (one-shot 1000 (layer-while-held U_SYM)) @lwh-nav)
-  bas-but (tap-hold-press $tt $ht (one-shot 1000 (layer-while-held U_BUTTON)) @lwh-num)
+  bas-but (tap-hold-press $tt $ht (one-shot 1000 @lwh-but) @lwh-num)
+
 )
 
 
@@ -308,7 +333,7 @@
   @bas-q  @bas-w  @bas-f  @bas-p  @bas-b
   @bas-a  @bas-r  @bas-s  @bas-t  @bas-g
   @bas-z  @bas-x  @bas-c  @bas-d  @bas-v
-  @bas-bks        @bas-tab
+  @bas-ret        @bas-tab
   ;; right
   @bas-j  @bas-l  @bas-u  @bas-y  @bas-bks
   @bas-m  @bas-n  @bas-e  @bas-i  @bas-o
@@ -322,7 +347,7 @@
     q       @bas-w  @bas-f  @bas-p  @bas-b
     a       r       s       t       g
     z       @bas-x  @bas-c  @bas-d  v
-    @bas-tab        @bas-bks
+    @bas-ret        @bas-tab
 
     j       @bas-l  @bas-u  @bas-y  bks
     m       n       e       i       o
@@ -331,6 +356,7 @@
     
     XX    x
 )
+
 
 ;; qwerty
 (defalias 
@@ -341,17 +367,10 @@
   qdot   (fork @dot     @gt     (lsft))
   qslash (fork @slash   @quesma (lsft))
 
-  q-fctl (tap-hold $tt $ht f (multi @lwh-baf ctl))
-  q-jctl (tap-hold $tt $ht j (multi @lwh-baf ctl))
   )
 
 ;; U_QWERTY 한글 입력용 쿼티 베이스 
 (defchords qwe-chords 40
-  (qe qi) @capw
-  (qz q/) (one-shot 1000 (layer-while-held U_BUTTON))
-
-  (qr qu) @eng
-  (qb qn) @kor
 
   (qq            ) (multi q @qfast)
   (   qw         ) (multi w @qfast)
@@ -371,12 +390,6 @@
   (         qv   ) (multi v (tap-hold $tt $ht v lctl) @qfast)
   (            qb) (multi b @qfast)
 
-  (qe qr) tab
-  (qr qt) @lbrace
-  (qf qg) @lbrack
-  (qv qb) @lparen
-  
-
   (qy            ) (multi y @qfast)
   (   qu         ) (multi u @qfast)
   (      qi      ) (multi i @qfast)
@@ -384,33 +397,60 @@
   (            qp) (multi p @qfast)
   ;;
   (qh            ) (multi h @qfast)
-  ;;(   qj         ) (multi (tap-hold $tt $ht j lctl) @qfast)
-  (   qj         ) (multi @q-jctl @qfast)
-  (      qk      ) (multi (tap-hold $tt $ht k lsft) @qfast)
-  (         ql   ) (multi (tap-hold $tt $ht l lalt) @qfast)
-  (            q;) (multi (tap-hold $tt $ht ; lmet) @qfast)
+  (   qj         ) (multi j @qfast)
+  (      qk      ) (multi k @qfast)
+  (         ql   ) (multi l @qfast)
+  ;;(            q;) (multi ; @qfast)
+  (            q-bks) (multi ; @qfast)
   ;;
   (qn            ) (multi n @qfast)
-  (   qm         ) (multi m @qfast)
-  (      q,      ) (multi , @qfast)
-  (         q.   ) (multi @qdot   @qfast)
-  (            q/) (multi @qslash @qfast)
-  ;;
-  (qi qo) ret
-  ;; l + u = shift+enter, since the "real" enter is disabled
-  (qu qi) S-ret
-  (qj ql) ret
-  (qj qk) bks
-  (qk ql) esc
+  (   qm         ) (multi (tap-hold $tt $ht m lctl) @qfast)
+  (      q,      ) (multi (tap-hold $tt $ht , lsft) @qfast)
+  (         q.   ) (multi (tap-hold $tt $ht . lalt) @qfast)
+  (            q/) (multi (tap-hold $tt $ht / lmet) @qfast)
+
+  ;; z+/ = button layer
+  (qz q/) (one-shot 1000 (layer-while-held U_BUTTON))
+
+  (qa q-bks) lmet
+  (qs ql) lalt
+
+  (q-ret) (multi ret @qfast)
+
+  ;; chords
+  (qe qr) tab
+  (qw qe) (macro esc S-; w ret)
+  (qr qt) @lbrace
+  (qf qg) @lbrack
+  (qv qb) @lparen
+  (qv qm) @kor
+  (qe qi) @capw
+  (qr qu) @eng
   (qy qu) @rbrace
   (qh qj) @rbrack
   (qn qm) @rparen
-  (qm q,) @comma
-  (q, q.) @dot
-  (q. q/) @quesma
-    (qx qc) -
-    (qc qv) =
-    (qx qv) '
+  (qu qo) ret
+  (qu qi) bks
+  (qi qo) esc
+  (qx qc) -
+  (qc qv) =
+  (qx qv) '
+  (qx qc qd) scln
+
+  (qz qx qc qv) lrld
+  (qq q,) @bang
+  (qw q,) @at
+  (qe q,) @hash
+  (qr q,) @doll
+  (qt q,) @perc
+  (qc qy) @caret
+  (qc qu) @amps
+  (qc qi) @apo
+  (qc qo) @lparen
+  (qc qp) @rparen
+
+  (qw qr) scln
+  (qj qk ql) spc
 )
 
  ;; qwerty aliases 
@@ -434,11 +474,7 @@
   qwe-c   (chord qwe-chords qc)
   qwe-v   (chord qwe-chords qv)
   qwe-b   (chord qwe-chords qb)
-  ;; thumbs
-  qwe-esc @esc-qwe
-  qwe-spc @spc-nav
-  qwe-tab @tab-mou
-  ;; right half(chord qwe-chords qz)
+  ;; right half
   ;; first row
   qwe-y   (chord qwe-chords qy)
   qwe-u   (chord qwe-chords qu)
@@ -450,16 +486,26 @@
   qwe-j   (chord qwe-chords qj)
   qwe-k   (chord qwe-chords qk)
   qwe-l   (chord qwe-chords ql)
-  qwe-;   (chord qwe-chords q;)
+  ;;qwe-;   (chord qwe-chords q;)
   ;; third row
   qwe-n   (chord qwe-chords qn)
   qwe-m   (chord qwe-chords qm)
   qwe-,   (chord qwe-chords q,)
   qwe-.   (chord qwe-chords q.)
   qwe-/   (chord qwe-chords q/)
+  
   ;; thumbs
-  qwe-bks @bks-nav
-  qwe-del @del-fun
+  qwe-esc @esc-qwe
+  qwe-fun (one-shot 1000 @lwh-fun)
+  qwe-bks (chord qwe-chords q-bks)
+  ;;qwe-bks @bks-nav
+
+  ;; currently used
+  qwe-ret (chord qwe-chords q-ret)
+  qwe-spc @spc-nav
+  qwe-tab @tab-mou
+  qwe-but (tap-hold-press $tt $ht (one-shot 1000 @lwh-but) @lwh-num)
+  
 )
 
 
@@ -468,12 +514,12 @@
   @qwe-q  @qwe-w  @qwe-e  @qwe-r  @qwe-t
   @qwe-a  @qwe-s  @qwe-d  @qwe-f  @qwe-g
   @qwe-z  @qwe-x  @qwe-c  @qwe-v  @qwe-b
-  @qwe-bks        @qwe-tab        
+  @qwe-ret        @qwe-tab        
   ;; right
   @qwe-y  @qwe-u  @qwe-i  @qwe-o  @qwe-p
-  @qwe-h  @qwe-j  @qwe-k  @qwe-l  @qwe-;
+  @qwe-h  @qwe-j  @qwe-k  @qwe-l  @qwe-bks
   @qwe-n  @qwe-m  @qwe-,  @qwe-.  @qwe-/
-  @qwe-spc        @qwe-bks        
+  @qwe-spc        @qwe-but        
   ;; extra keys - not actually used, needed to intercept events
   XX  x
 )
@@ -483,12 +529,12 @@
   q       w       e        r      t
   a       s       d        f      g
   z       x       @qwe-c   @qwe-v b
-  @qwe-bks        @qwe-tab       
+  @qwe-ret        @qwe-tab       
   ;; right
   y       @qwe-u  @qwe-i   @qwe-o p
   h       j       k        l      ;
   n       m       @qwe-,   @qwe-. @qwe-/
-  @qwe-spc        @qwe-bks        
+  @qwe-spc        @qwe-but        
   ;; extra keys - not actually used, needed to intercept events
   XX  x
 )
@@ -549,14 +595,14 @@
 (deflayer U_NAV
   ;; left
   ;; added keys {[^$]} for VIM navigation
-  lrld          XX          @n-qwe      @n-bas      @lbrace
-  XX            XX          pp          XX          @lbrack
-  lmet          lalt        lsft        lctl        @caret
+  lrld          @dh-gmail   @jl-gmail   @pr-gmail   @rbrace
+  XX            @cut        @copy       @paste      @rbrack
+  lmet          lalt        lsft        lctl        @doll
   @nav-vim      XX             
   ;; right
-  @rbrace       home        up          end         pgup
-  @rbrack       left        down        right       pgdn
-  @doll         rctl        rsft        lalt        rmet
+  @lbrace       home        up          end         pgup
+  @lbrack       left        down        right       pgdn
+  @caret        rctl        rsft        lalt        rmet
   @nav-vim      M-tab           
   ;; extra keys - not actually used, needed to intercept events
   XX  x
@@ -582,7 +628,7 @@
 (deflayer U_BUTTON
   ;; left
   @dh-gmail @jl-gmail   @pr-gmail   XX      XX
-  XX        alt         sft         ctl     XX
+  XX        XX          XX          XX      XX
   XX        ins         XX          XX      XX    
   mmtp                  mltp            
   ;; right
@@ -601,10 +647,10 @@
   mwl (mwheel-left 50 120)
   mwr (mwheel-right 50 120)
 
-  mm-up (movemouse-up 1 1)
-  mm-le (movemouse-left 1 1)
-  mm-dn (movemouse-down 1 1)
-  mm-ri (movemouse-right 1 1)
+  mm-up (movemouse-up 5 1)
+  mm-le (movemouse-left 5 1)
+  mm-dn (movemouse-down 5 1)
+  mm-ri (movemouse-right 5 1)
 
   ma-up (movemouse-accel-up 1 1000 1 5)
   ma-le (movemouse-accel-left 1 1000 1 5)
