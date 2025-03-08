@@ -384,8 +384,9 @@
   (   qj         ) (multi j @qfast)
   (      qk      ) (multi k @qfast)
   (         ql   ) (multi l @qfast)
-  ;;(            q;) (multi ; @qfast)
-  (            q-bks) (multi ; @qfast)
+  (            q;) (multi ; @qfast)
+  (            q-bks) (multi bks @qfast)
+  
   ;;
   (qn            ) (multi n @qfast)
   (   qm         ) (multi (tap-hold $tt $ht m lctl) @qfast)
@@ -470,7 +471,7 @@
   qwe-j   (chord qwe-chords qj)
   qwe-k   (chord qwe-chords qk)
   qwe-l   (chord qwe-chords ql)
-  ;;qwe-;   (chord qwe-chords q;)
+  qwe-;   (chord qwe-chords q;)
   ;; third row
   qwe-n   (chord qwe-chords qn)
   qwe-m   (chord qwe-chords qm)
@@ -551,9 +552,9 @@
 (deflayer U_QWERTY
     ;; left
     @qwe-q      @qwe-w      @qwe-e      @qwe-r      @qwe-t      @qwe-y      @qwe-u      @qwe-i      @qwe-o      @qwe-p
-    @qwe-a      @qwe-s      @qwe-d      @qwe-f      @qwe-g      @qwe-h      @qwe-j      @qwe-k      @qwe-l      @qwe-bks
+    @qwe-a      @qwe-s      @qwe-d      @qwe-f      @qwe-g      @qwe-h      @qwe-j      @qwe-k      @qwe-l      @qwe-;
     @qwe-z      @qwe-x      @qwe-c      @qwe-v      @qwe-b      @qwe-n      @qwe-m      @qwe-,      @qwe-.      @qwe-/
-    @qwe-ret    @qwe-tab                                                                            @qwe-spc    @qwe-but
+    @qwe-ret    @qwe-tab                                                                            @qwe-spc    @qwe-bks
     ;; extra keys - not actually used, needed to intercept events
     XX          x
 )
@@ -564,7 +565,7 @@
     a           s           d           f           g           h           j           k           l           ;
     z           x           @qwe-c      @qwe-v      b           n           m           @qwe-,      @qwe-.      @qwe-/
     ;; thumbs
-    @qwe-ret    @qwe-tab                                                                            @qwe-spc    @qwe-but    
+    @qwe-ret    @qwe-tab                                                                            @qwe-spc    @qwe-bks    
     ;; extra keys - not actually used, needed to intercept events
     XX          x
 )
