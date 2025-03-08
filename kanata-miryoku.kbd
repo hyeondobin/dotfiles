@@ -38,8 +38,8 @@
 
 ;; 버추얼 키를 만들어서 실제 키 대신 사용하여 이벤트가 중복되는 것을 막는다.
 (defvirtualkeys 
-  fake-win-eng (multi (release-key rctl)(release-key rmet) lalt lctl 1)
-  fake-win-kor (multi (release-key rctl) (release-key rmet) lalt lctl 2)
+  fake-win-eng (multi (release-key rctl)(release-key rmet) lalt lsft 1)
+  fake-win-kor (multi (release-key rctl) (release-key rmet) lalt lsft 2)
 
   ;; permanent layer switching
   fake-lsw-bas (layer-switch U_BASE)
