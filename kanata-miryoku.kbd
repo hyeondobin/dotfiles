@@ -344,12 +344,11 @@
 
 ;; qwerty
 (defalias 
-  qfast (multi @lsw-qwf 
-               (on-idle 35 tap-virtualkey fake-lsw-qwe)
-               )
-  qcomma (fork @comma   @lt     (lsft))
-  qdot   (fork @dot     @gt     (lsft))
-  qslash (fork @slash   @quesma (lsft))
+  qfast     (multi @lsw-qwf (on-idle 35 tap-virtualkey fake-lsw-qwe))
+  ;;qfast     @lsw-qwe
+  qcomma    (fork @comma   @lt     (lsft))
+  qdot      (fork @dot     @gt     (lsft))
+  qslash    (fork @slash   @quesma (lsft))
 
   )
 
@@ -587,7 +586,7 @@
     XX          @cut        @copy       @paste      @rbrack     @lbrack     left        down        right       pgdn
     lmet        lalt        lsft        lctl        @doll       @caret      rctl        rsft        lalt        rmet
     ;; thumbs
-    @nav-vim    XX                                                                                  @nav-vim    M-tab           
+    @nav-vim    del                                                                                 @nav-vim    M-tab           
     ;; extra keys - not actually used, needed to intercept events
     XX          x
 )
