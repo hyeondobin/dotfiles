@@ -368,10 +368,10 @@
   (         qf   ) (multi f @qfast)
   (            qg) (multi g @qfast)
   ;;
-  (qz            ) (multi z (tap-hold $tt $ht z lmet) @qfast)
-  (   qx         ) (multi x (tap-hold $tt $ht x lalt) @qfast)
-  (      qc      ) (multi c (tap-hold $tt $ht c lsft) @qfast)
-  (         qv   ) (multi v (tap-hold $tt $ht v lctl) @qfast)
+  (qz            ) (multi (tap-hold $tt $ht z lmet) @qfast)
+  (   qx         ) (multi (tap-hold $tt $ht x lalt) @qfast)
+  (      qc      ) (multi (tap-hold $tt $ht c lsft) @qfast)
+  (         qv   ) (multi (tap-hold $tt $ht v lctl) @qfast)
   (            qb) (multi b @qfast)
 
   (qy            ) (multi y @qfast)
@@ -385,7 +385,7 @@
   (      qk      ) (multi k @qfast)
   (         ql   ) (multi l @qfast)
   (            q;) (multi ; @qfast)
-  (            q-bks) (multi bks @qfast)
+  (         q-bks) (multi bks @qfast)
   
   ;;
   (qn            ) (multi n @qfast)
@@ -563,7 +563,7 @@
     ;; left
     q           w           e           r           t           y           @qwe-u      @qwe-i      @qwe-o      p
     a           s           d           f           g           h           j           k           l           ;
-    z           x           @qwe-c      @qwe-v      b           n           m           @qwe-,      @qwe-.      @qwe-/
+    z           x           c           v           b           n           m           ,           .           /
     ;; thumbs
     @qwe-ret    @qwe-tab                                                                            @qwe-spc    @qwe-bks    
     ;; extra keys - not actually used, needed to intercept events
