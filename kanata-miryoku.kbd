@@ -265,8 +265,18 @@
   (kx kc) -
   (kc kd) =
   (kx kd) '
+  (kx kc k,) S--
+  (kc kd k,) +
+  (kx kd k,) S-'
   (kx kc kd) scln
+  (kx kc kd k,) S-scln
+  (kx kc kd kh) C-scln
+
+  (kz kc) @grave
   (kz kd) @tilde
+  
+  (kc k,) @lt
+  (kc k.) @gt
 
   (kz kx kc kd) lrld
   (kq k,) @bang
@@ -586,7 +596,7 @@
     XX          @cut        @copy       @paste      @rbrack     @lbrack     left        down        right       pgdn
     lmet        lalt        lsft        lctl        @doll       @caret      rctl        rsft        lalt        rmet
     ;; thumbs
-    @nav-vim    del                                                                                 @nav-vim    M-tab           
+    @bas-ret    del                                                                                 @nav-vim    M-tab           
     ;; extra keys - not actually used, needed to intercept events
     XX          x
 )
