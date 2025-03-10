@@ -261,17 +261,15 @@
   (kk kh) @rparen
   (kl ky) ret
   (kl ku) bks
-  (kl ku kd) C-bks
+  (kl ku kd) (macro C-bks)
   (ku ky) esc
+  (kx kd) scln
+  (kx kd k,) (macro S-scln)
+  (kx kd kh) (macro C-scln)
   (kx kc) -
+  (kx kc k,) (macro S--)
   (kc kd) =
-  (kx kd) '
-  (kx kc k,) S--
-  (kc kd k,) +
-  (kx kd k,) S-'
-  (kx kc kd) scln
-  (kx kc kd k,) S-scln
-  (kx kc kd kh) C-scln
+  (kc kd k,) (macro S-=)
 
   (kz kc) @grave
   (kz kd) @tilde
@@ -588,20 +586,20 @@
 )
 
 (deflayer U_NUM
-    ;; left
+    ;; 
     1           2           3           4           5           6           7           8           9           0
-    @colon      -           eql         apo         `           XX          bspc        tab         caps        @backsl
-    @doll       scln        bksl        S-\         kp/         ret         ctl         sft         alt         met
+    scln        -           eql         apo         `           XX          @lparen     tab         @rparen     @backsl
+    @colon      @unders     S-eql       S-'         S-`         XX          @lbrace     ,           .           /  
     ;;thumbs
-    lsft        @dot                                                                                XX          XX      
+    lsft        ret                                                                                 XX          XX      
     ;; extra keys - not actually used, needed to intercept events
     XX          XX
 )
 (deflayer U_NAV
     ;; left
     ;; added keys {[^$]} for VIM navigation
-    lrld        @dh-gmail   @jl-gmail   @pr-gmail   @rbrace     @lbrace     home        up          end         pgup
-    XX          @cut        @copy       @paste      @rbrack     @lbrack     left        down        right       pgdn
+    lrld        @dh-gmail   @jl-gmail   @pr-gmail   @rbrace     @lbrack     home        up          end         pgup
+    XX          @cut        @copy       @paste      @rbrack     @lbrace     left        down        right       pgdn
     lmet        lalt        lsft        lctl        @doll       @caret      rctl        rsft        lalt        rmet
     ;; thumbs
     @bas-ret    del                                                                                 @nav-vim    M-tab           
