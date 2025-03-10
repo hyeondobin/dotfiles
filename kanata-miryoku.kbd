@@ -36,7 +36,7 @@
 ;; src for laptop
 (environment (KANATA_HOST "")
   (defsrc
-    ;; left half
+    ;; main
     1       2       3       4       5       8       9       0       -       =
     q       w       e       r       t       i       o       p       [       ]
     a       s       d       f       g       k       l       ;       '       ret
@@ -182,8 +182,11 @@
   n-bas (tap-dance $tt (XX @lsw-bas))
 
   copy      (macro C-ins)
+  ccopy     (macro C-c)
   paste     (macro S-ins)
+  cpaste    (macro C-v)
   cut       (macro S-del)
+  ccut      (macro C-x)
   undo      (macro C-z)
   redo      (macro C-y)
 
@@ -250,14 +253,14 @@
   ;; chords
   (kf kp) tab
   (kw kf) (macro esc S-; w ret)
-  (kp kb) @lbrace
-  (kt kg) @lbrack
+  (kp kb) @lbrack
+  (kt kg) @lbrace
   (kd kv) @lparen
   (kp kl) @eng
   (kf ku) @capw
   (kd kh) @kor
-  (kj kl) @rbrace
-  (km kn) @rbrack
+  (kj kl) @rbrack
+  (km kn) @rbrace
   (kk kh) @rparen
   (kl ky) ret
   (kl ku) bks
@@ -294,11 +297,17 @@
   (kr ks kt) spc
 
   (kh kc) C-c
+  (kd ky) C-y
+
+  (kt kn) (one-shot 1000 sft)
+
+  (kh k,) @quesma
+  (ks ke) '
 )
 
   ;; base aliases
 (defalias
-  ;; left half
+  ;; main
   ;; first row
   bas-q   (chord bas-chords kq)
   bas-w   (chord bas-chords kw)
@@ -426,11 +435,21 @@
   (qn qm) @rparen
   (qu qo) ret
   (qu qi) bks
+  (qv qu qi) (macro C-bks)
   (qi qo) esc
+  (qx qv) scln
+  (qx qv q,) (macro S-scln)
+  (qx qv qm) (macro C-scln)
   (qx qc) -
+  (qx qc q,) (macro S--)
   (qc qv) =
-  (qx qv) '
-  (qx qc qd) scln
+  (qc qv q,) (macro S-=)
+
+  (qz qc) @grave
+  (qz qv) @tilde
+
+  (qc q,) @lt
+  (qc q.) @gt
 
   (qz qx qc qv) lrld
   (qq q,) @bang
@@ -446,11 +465,20 @@
 
   (qw qr) scln
   (qj qk ql) spc
+  (qs qd qf) spc
+
+  (qm qc) C-c
+  (qv qy) C-y
+
+  (qf qj) (one-shot 1000 sft)
+
+  (qm q,) @quesma
+  (qd qk) '
 )
 
  ;; qwerty aliases 
 (defalias
-  ;; left half
+  ;; main
   ;; first row
   qwe-q   (chord qwe-chords qq)
   qwe-w   (chord qwe-chords qw)
@@ -491,14 +519,15 @@
   
   ;; thumbs
   qwe-esc @esc-qwe
-  qwe-bks (chord qwe-chords q-bks)
+  qwe-but (tap-hold-press $tt $ht (one-shot 1000 @lwh-but) @lwh-num)
   ;;qwe-bks @bks-nav
 
   ;; currently used
   qwe-ret (chord qwe-chords q-ret)
   qwe-spc @spc-nav
   qwe-tab @tab-mou
-  qwe-but (tap-hold-press $tt $ht (one-shot 1000 @lwh-but) @lwh-num)
+  qwe-bks (tap-hold-press $tt $ht (chord qwe-chords q-bks) @lwh-num)
+  ;;qwe-bks (chord qwe-chords q-bks)
   
 )
 
@@ -546,7 +575,7 @@
   )
 
 (deflayer U_BASE
-    ;; left half
+    ;; main
     @bas-q      @bas-w      @bas-f      @bas-p      @bas-b      @bas-j      @bas-l      @bas-u      @bas-y      @bas-bks
     @bas-a      @bas-r      @bas-s      @bas-t      @bas-g      @bas-m      @bas-n      @bas-e      @bas-i      @bas-o
     @bas-z      @bas-x      @bas-c      @bas-d      @bas-v      @bas-k      @bas-h      @bas-,      @bas-.      @bas-/
@@ -555,17 +584,19 @@
     ;; extra keys - not actually used, needed to intercept events
     pp          x
 )
+
 (deflayer U_BASE_FAST
+    ;; main
     q           @bas-w      @bas-f      @bas-p      @bas-b      j           @bas-l      @bas-u      @bas-y      bks
     a           r           s           t           g           m           n           e           i           o
-    z           @bas-x      @bas-c      @bas-d      v           k           h           @bas-,      .           /
+    z           x           c           d           v           k           h           ,           .           /
     ;; thumbs
     @bas-ret    @bas-tab                                                                            @bas-spc    @bas-but      
     ;; extra keys - not actually used, needed to intercept events
     XX          x
 )
 (deflayer U_QWERTY
-    ;; left
+    ;; main
     @qwe-q      @qwe-w      @qwe-e      @qwe-r      @qwe-t      @qwe-y      @qwe-u      @qwe-i      @qwe-o      @qwe-p
     @qwe-a      @qwe-s      @qwe-d      @qwe-f      @qwe-g      @qwe-h      @qwe-j      @qwe-k      @qwe-l      @qwe-;
     @qwe-z      @qwe-x      @qwe-c      @qwe-v      @qwe-b      @qwe-n      @qwe-m      @qwe-,      @qwe-.      @qwe-/
@@ -575,7 +606,7 @@
 )
 
 (deflayer U_QWERTY_FAST
-    ;; left
+    ;; main
     q           w           e           r           t           y           @qwe-u      @qwe-i      @qwe-o      p
     a           s           d           f           g           h           j           k           l           ;
     z           x           c           v           b           n           m           ,           .           /
@@ -586,20 +617,19 @@
 )
 
 (deflayer U_NUM
-    ;; 
+    ;; main
     1           2           3           4           5           6           7           8           9           0
-    scln        -           eql         apo         `           XX          @lparen     tab         @rparen     @backsl
-    @colon      @unders     S-eql       S-'         S-`         XX          @lbrace     ,           .           /  
+    scln        -           eql         apo         `           \           @lbrace     @lparen     @rparen     @rbrace
+    @colon      @unders     S-eql       S-'         S-`         S-\         @lbrack     S-,         S-.         @rbrack
     ;;thumbs
-    lsft        ret                                                                                 XX          XX      
+    ret         spc                                                                                 XX          XX      
     ;; extra keys - not actually used, needed to intercept events
     XX          XX
 )
 (deflayer U_NAV
-    ;; left
-    ;; added keys {[^$]} for VIM navigation
-    lrld        @dh-gmail   @jl-gmail   @pr-gmail   @rbrace     @lbrack     home        up          end         pgup
-    XX          @cut        @copy       @paste      @rbrack     @lbrace     left        down        right       pgdn
+    ;; main
+    lrld        @dh-gmail   @jl-gmail   @pr-gmail   @rbrack     @lbrack     home        up          end         pgup
+    XX          @cut        @copy       @paste      @rbrace     @lbrace     left        down        right       pgdn
     lmet        lalt        lsft        lctl        @doll       @caret      rctl        rsft        lalt        rmet
     ;; thumbs
     @bas-ret    del                                                                                 @nav-vim    M-tab           
@@ -608,8 +638,7 @@
 )
 
 (deflayer U_NAV_VI
-    ;; left
-    ;; added keys {[^$]} for VIM navigation
+    ;; main
     lrld        XX          @n-qwe      @n-bas      @lbrack     @rbrack     home        u           o           pgup
     a           r           s           t           @lbrack     h           j           k           l           XX
     met         lalt        lsft        lctl        @caret      @doll       n           XX          XX          / 
@@ -620,17 +649,17 @@
 )
 
 (deflayer U_BUTTON
-    ;; left
+    ;; main
     @dh-gmail   @jl-gmail   @pr-gmail   XX          XX          @redo       @paste      @cut        @copy       @undo
-    XX          XX          XX          XX          XX          XX          ctl         sft         alt         met
-    XX          ins         XX          XX          XX          @redo       @paste      @cut        @copy       @undo
-    mmtp        mltp                                                                                mrtp        esc
+    XX          ins         del         pp          XX          XX          @cpaste     @ccut       @ccopy      XX
+    met         alt         sft         ctl         XX          XX          ctl         sft         alt         met
+    XX          XX                                                                                  XX          XX
     ;; extra keys - not actually used, needed to intercept events
     XX          x
 )
 
 (deflayer U_MOUSE
-    ;; left half
+    ;; main
     f10         f4          f5          f6          f7          @eng        @mwl        @mf-up      @mwr        @mwu
     f11         mmtp        mrgt        mlft        f8          @kor        @mf-le      @mf-dn      @mf-ri      @mwd
     f12         @mou-f1     @mou-f2     @mou-f3     f9          XX          @mou-prev   @mou-pp     @mou-next   @mou-mute
@@ -641,7 +670,7 @@
 )
 
 (deflayer U_MOUSE_ALT
-    ;; left half
+    ;; main
     XX          XX          @n-qwe      @n-bas      XX          @eng        @mwl        @mm-up      @mwr        @mwu
     XX          mmtp        mrgt        mlft        XX          @kor        @mm-le      @mm-dn      @mm-ri      @mwd
     met         alt         sft         ctl         del         XX          XX          XX          XX          XX
