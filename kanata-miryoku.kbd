@@ -294,6 +294,8 @@
   (kw kp) scln
   (kn ke ki) spc
   (kr ks kt) spc
+
+  (kh kc) C-c
 )
 
   ;; base aliases
@@ -523,6 +525,11 @@
   mm-dn (movemouse-down 5 1)
   mm-ri (movemouse-right 5 1)
 
+  mf-up (movemouse-up 1 1)
+  mf-le (movemouse-left 1 1)
+  mf-dn (movemouse-down 1 1)
+  mf-ri (movemouse-right 1 1)
+
   ma-up (movemouse-accel-up 1 1000 1 5)
   ma-le (movemouse-accel-left 1 1000 1 5)
   ma-dn (movemouse-accel-down 1 1000 1 5)
@@ -530,7 +537,7 @@
 )
 
 (defalias
-  lwh-mof (layer-while-held U_MOUSE_FAST)
+  lwh-moa (layer-while-held U_MOUSE_ALT)
   mou-f1    (tap-hold $tt $ht f1 lalt)
   mou-f2    (tap-hold $tt $ht f2 lsft)
   mou-f3    (tap-hold $tt $ht f3 lctl)
@@ -626,20 +633,20 @@
 
 (deflayer U_MOUSE
     ;; left half
-    f10         f4          f5          f6          f7          @eng        @mwl        @mm-up      @mwr        @mwu
-    f11         mmtp        mrgt        mlft        f8          @kor        @mm-le      @mm-dn      @mm-ri      @mwd
+    f10         f4          f5          f6          f7          @eng        @mwl        @mf-up      @mwr        @mwu
+    f11         mmtp        mrgt        mlft        f8          @kor        @mf-le      @mf-dn      @mf-ri      @mwd
     f12         @mou-f1     @mou-f2     @mou-f3     f9          XX          @mou-prev   @mou-pp     @mou-next   @mou-mute
     ;; thumbs
-    XX          XX                                                                                  @lwh-mof    XX             
+    XX          XX                                                                                  @lwh-moa    XX             
     ;; extra keys - not actually used, needed to intercept events
     XX          x
 )
 
-(deflayer U_MOUSE_FAST
+(deflayer U_MOUSE_ALT
     ;; left half
-    XX          XX          @n-qwe      @n-bas      XX          @eng        @mwl        @ma-up      @mwr        @mwu
-    met         alt         sft         ctl         XX          @kor        @ma-le      @ma-dn      @ma-ri      @mwd
-    XX          mmtp        mrgt        mlft        del         XX          XX          XX          XX          XX
+    XX          XX          @n-qwe      @n-bas      XX          @eng        @mwl        @mm-up      @mwr        @mwu
+    XX          mmtp        mrgt        mlft        XX          @kor        @mm-le      @mm-dn      @mm-ri      @mwd
+    met         alt         sft         ctl         del         XX          XX          XX          XX          XX
     ;; thumbs
     XX          XX                                                                                  mrtp        mltp           
     ;; extra keys - not actually used, needed to intercept events
