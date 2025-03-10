@@ -261,6 +261,7 @@
   (kk kh) @rparen
   (kl ky) ret
   (kl ku) bks
+  (kl ku kd) C-bks
   (ku ky) esc
   (kx kc) -
   (kc kd) =
