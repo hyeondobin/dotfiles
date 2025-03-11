@@ -221,8 +221,6 @@
   (         kd   ) (multi (tap-hold $tt $ht d lctl) @bfast)
   (            kv) (multi v @bfast)
 
-
-
   (kj            ) (multi j @bfast)
   (   kl         ) (multi l @bfast)
   (      ku      ) (multi u @bfast)
@@ -302,6 +300,7 @@
   (kt kn) (one-shot 1000 sft)
 
   (kh k,) @quesma
+  (k, k.) @quesma
   (ks ke) '
 )
 
@@ -620,7 +619,7 @@
     ;; main
     1           2           3           4           5           6           7           8           9           0
     scln        -           eql         apo         `           \           @lbrace     @lparen     @rparen     @rbrace
-    @colon      @unders     S-eql       S-'         S-`         S-\         @lbrack     S-,         S-.         @rbrack
+    @colon      @unders     S-eql       S-'         S-`         S-\         @lbrack     ,           .           @rbrack
     ;;thumbs
     ret         spc                                                                                 XX          XX      
     ;; extra keys - not actually used, needed to intercept events
@@ -660,8 +659,8 @@
 
 (deflayer U_MOUSE
     ;; main
-    f10         f4          f5          f6          f7          @eng        @mwl        @mf-up      @mwr        @mwu
-    f11         mmtp        mrgt        mlft        f8          @kor        @mf-le      @mf-dn      @mf-ri      @mwd
+    f10         f4          f5          f6          f7          @eng        @mwl        @ma-up      @mwr        @mwu
+    f11         mmtp        mrgt        mlft        f8          @kor        @ma-le      @ma-dn      @ma-ri      @mwd
     f12         @mou-f1     @mou-f2     @mou-f3     f9          XX          @mou-prev   @mou-pp     @mou-next   @mou-mute
     ;; thumbs
     XX          XX                                                                                  @lwh-moa    XX             
