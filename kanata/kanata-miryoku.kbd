@@ -241,7 +241,8 @@
   (            k/) (multi (tap-hold $tt $ht / rmet) @bfast)
 
   ;; z+/ = Button layer
-  (kz k/) (one-shot 1000 (layer-while-held U_BUTTON))
+  (kz k/) (one-shot 1000 @lwh-but)
+  (kz kx) (one-shot 1000 @lwh-but)
 
   (ka ko) lmet
   (kr ki) lalt
@@ -413,7 +414,8 @@
   (            q/) (multi (tap-hold $tt $ht / lmet) @qfast)
 
   ;; z+/ = button layer
-  (qz q/) (one-shot 1000 (layer-while-held U_BUTTON))
+  (qz q/) (one-shot 1000 @lwh-but)
+  (qz qx) (one-shot 1000 @lwh-but)
 
   (qa q-bks) lmet
   (qs ql) lalt
