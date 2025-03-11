@@ -243,6 +243,7 @@
   ;; z+/ = Button layer
   (kz k/) (one-shot 1000 @lwh-but)
   (kz kx) (one-shot 1000 @lwh-but)
+  
 
   (ka ko) lmet
   (kr ki) lalt
@@ -252,15 +253,15 @@
   ;; chords
   (kf kp) tab
   (kw kf) (macro esc S-; w ret)
-  (kp kb) @lbrack
-  (kt kg) @lbrace
-  (kd kv) @lparen
+  (kp kb) [
+  (kt kg) {
+  (kd kv) S-9
   (kp kl) @eng
   (kf ku) @capw
   (kd kh) @kor
-  (kj kl) @rbrack
-  (km kn) @rbrace
-  (kk kh) @rparen
+  (kj kl) ]
+  (km kn) }
+  (kk kh) S-0
   (kl ky) ret
   (kl ku) bks
   (kl ku kd) (macro C-bks)
@@ -275,6 +276,8 @@
 
   (kz kc) @grave
   (kz kd) @tilde
+
+  (kz kc km) M-S-m
   
   (kc k,) @lt
   (kc k.) @gt
@@ -616,12 +619,12 @@
     ;; extra keys - not actually used, needed to intercept events
     XX          x
 )
-
+ 
 (deflayer U_NUM
     ;; main
     1           2           3           4           5           6           7           8           9           0
-    scln        -           eql         apo         `           \           @lbrace     @lparen     @rparen     @rbrace
-    @colon      @unders     S-eql       S-'         S-`         S-\         @lbrack     ,           .           @rbrack
+    scln        -           eql         apo         `           \           S-[         S-9         S-0         S-]
+    S-scln      S--         S-eql       S-'         S-`         S-\         [           ,           .           ]
     ;;thumbs
     ret         spc                                                                                 XX          XX      
     ;; extra keys - not actually used, needed to intercept events
