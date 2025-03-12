@@ -59,6 +59,7 @@
 (defvirtualkeys 
   fake-win-eng (multi (release-key rctl)(release-key rmet) lalt lsft 1)
   fake-win-kor (multi (release-key rctl) (release-key rmet) lalt lsft 2)
+  fake-win-jap (multi (release-key rctl) (release-key rmet) lalt lsft 3)
 
   ;; permanent layer switching
   fake-lsw-bas (layer-switch U_BASE)
@@ -91,6 +92,9 @@
                          (on-press  tap-virtualkey fake-win-kor)
                          (on-press  tap-virtualkey fake-lsw-qwe)
                          )
+  fake-lang-switch-jap (multi (on-press tap-virtualkey fake-win-jap)
+                              (on-press tap-virtualkey fake-lsw-bas)
+                              )
 )
 
 ;; shorter names for fake keys
@@ -105,6 +109,7 @@
   ;; shorter names for input switching in Windows
   eng (on-press tap-virtualkey fake-lang-switch-eng)
   kor (on-press tap-virtualkey fake-lang-switch-kor)
+  jap (on-press tap-virtualkey fake-lang-switch-jap)
 )
 
 ;; shorter names for layer maps
@@ -259,6 +264,7 @@
   (kp kl) @eng
   (kf ku) @capw
   (kd kh) @kor
+  (kq k-bks) @jap
   (kj kl) ]
   (km kn) }
   (kk kh) S-0
