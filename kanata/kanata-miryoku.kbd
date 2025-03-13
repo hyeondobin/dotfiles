@@ -178,7 +178,7 @@
   gt        (macro S-.)
   lt        (macro S-,)
   dh-gmail  (macro d o b i n h y e o n S-2 g m a i l . c o m)
-  jl-gmail  (macro j a y l i 2 5 5 8 S-2 g m a i l . c o m)
+  jl-gmail  (macro j a y l i Digit2 Digit5 Digit5 Digit8 S-2 g m a i l . c o m)
   pr-gmail  (macro p a n r u y a l S-2 g m a i l . c o m)
 )
 ;; buttons
@@ -673,8 +673,8 @@
 
 (deflayer U_MOUSE
     ;; main
-    f10         f4          f5          f6          f7          @eng        @mwl        @ma-up      @mwr        @mwu
-    f11         mmtp        mrgt        mlft        f8          @kor        @ma-le      @ma-dn      @ma-ri      @mwd
+    f10         f4          f5          f6          f7          mftp        @mwl        @ma-up      @mwr        @mwu
+    f11         mmtp        mrgt        mlft        f8          mbtp        @ma-le      @ma-dn      @ma-ri      @mwd
     f12         @mou-f1     @mou-f2     @mou-f3     f9          XX          @mou-prev   @mou-pp     @mou-next   @mou-mute
     ;; thumbs
     XX          XX                                                                                  @lwh-moa    XX             
