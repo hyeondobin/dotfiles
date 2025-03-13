@@ -43,7 +43,7 @@
     q       w       e       r       t       i       o       p       [       ]
     a       s       d       f       g       k       l       ;       '       ret
     ;; thumbs
-    c       v                                                       ,      .
+    v       c                                                       ,      .
     ;; extra keys - not actually used, needed to intercept events
     lmet    z
   )
