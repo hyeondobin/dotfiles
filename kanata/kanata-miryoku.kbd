@@ -261,14 +261,14 @@
   (kf kp) tab
   (kw kf) (macro esc S-; w ret)
   (kp kb) [
-  (kt kg) {
+  (kt kg) S-[
   (kd kv) S-9
   (kp kl) @eng
   (kf ku) @capw
   (kd kh) @kor
   (kq k-bks) @jap
   (kj kl) ]
-  (km kn) }
+  (km kn) S-]
   (kk kh) S-0
   (kl ky) ret
   (kl ku) bks
@@ -602,7 +602,7 @@
     ;; main
     q           @bas-w      @bas-f      @bas-p      @bas-b      j           @bas-l      @bas-u      @bas-y      bks
     a           r           s           t           g           m           n           e           i           o
-    z           x           c           d           v           k           h           ,           .           /
+    @bas-z      @bas-x      @bas-c      @bas-d      v           k           @bas-h      @bas-,      @bas-.      @bas-/
     ;; thumbs
     @bas-ret    @bas-tab                                                                            @bas-spc    @bas-but      
     ;; extra keys - not actually used, needed to intercept events
