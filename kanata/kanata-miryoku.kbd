@@ -25,7 +25,7 @@
     ;; thumbs
     lalt    left                                                    spc     ralt    
     ;; extra keys - not actually used, needed to intercept events
-    lmet    x       ralt    rctl
+    lmet    x       rmet    rctl
   )
 )
 
