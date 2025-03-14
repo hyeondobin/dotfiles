@@ -25,7 +25,7 @@
     ;; thumbs
     lalt    left                                                    spc     ralt    
     ;; extra keys - not actually used, needed to intercept events
-    lmet    x
+    lmet    x       ralt    rctl
   )
 )
 
@@ -39,7 +39,7 @@
     ;; thumbs
     v       c                                                       ,      .
     ;; extra keys - not actually used, needed to intercept events
-    lmet    z
+    lmet            ralt    rctl
   )
 )
 
@@ -53,7 +53,7 @@
 
 ;; 버추얼 키를 만들어서 실제 키 대신 사용하여 이벤트가 중복되는 것을 막는다.
 (defvirtualkeys 
-  fake-win-eng (multi (release-key rctl)(release-key rmet) lalt lsft 1)
+  fake-win-eng (multi (release-key rctl) (release-key rmet) lalt lsft 1)
   fake-win-kor (multi (release-key rctl) (release-key rmet) lalt lsft 2)
   fake-win-jap (multi (release-key rctl) (release-key rmet) lalt lsft 3)
 
@@ -236,7 +236,7 @@
   (            ko) (multi o @bfast)
 
   (kk            ) (multi k @bfast)
-  (   kh         ) (multi (tap-hold $tt $ht h rctl) @bfast)
+  (   kh         ) (multi (tap-hold $tt $ht h lctl) @bfast)
   (      k,      ) (multi (tap-hold $tt $ht , rsft) @bfast)
   (         k.   ) (multi (tap-hold $tt $ht . lalt) @bfast)
   (            k/) (multi (tap-hold $tt $ht / rmet) @bfast)
@@ -589,7 +589,7 @@
     ;; thumbs
     @bas-ret    @bas-tab                                                                            @bas-spc    @bas-but      
     ;; extra keys - not actually used, needed to intercept events
-    pp          x
+    pp          x           ralt        rctl
 )
 
 (deflayer U_BASE_FAST
@@ -600,7 +600,7 @@
     ;; thumbs
     @bas-ret    @bas-tab                                                                            @bas-spc    @bas-but      
     ;; extra keys - not actually used, needed to intercept events
-    XX          x
+    XX          x           ralt        rctl
 )
 (deflayer U_QWERTY
     ;; main
@@ -609,7 +609,7 @@
     @qwe-z      @qwe-x      @qwe-c      @qwe-v      @qwe-b      @qwe-n      @qwe-m      @qwe-,      @qwe-.      @qwe-/
     @qwe-ret    @qwe-tab                                                                            @qwe-spc    @qwe-bks
     ;; extra keys - not actually used, needed to intercept events
-    XX          x
+    XX          x           ralt        rctl
 )
 
 (deflayer U_QWERTY_FAST
@@ -620,7 +620,7 @@
     ;; thumbs
     @qwe-ret    @qwe-tab                                                                            @qwe-spc    @qwe-bks    
     ;; extra keys - not actually used, needed to intercept events
-    XX          x
+    XX          x           ralt        rctl
 )
  
 (deflayer U_NUM
@@ -631,17 +631,17 @@
     ;;thumbs
     ret         spc                                                                                 XX          XX      
     ;; extra keys - not actually used, needed to intercept events
-    XX          XX
+    XX          XX          ralt        rctl
 )
 (deflayer U_NAV
     ;; main
     lrld        @dh-gmail   @jl-gmail   @pr-gmail   @rbrack     @lbrack     home        up          end         pgup
     XX          @cut        @copy       @paste      @rbrace     @lbrace     left        down        right       pgdn
-    lmet        lalt        lsft        lctl        @doll       @caret      rctl        rsft        lalt        rmet
+    lmet        lalt        lsft        lctl        @doll       @caret      lctl        rsft        lalt        rmet
     ;; thumbs
     @bas-ret    del                                                                                 @nav-vim    M-tab           
     ;; extra keys - not actually used, needed to intercept events
-    XX          x
+    XX          x           ralt        rctl
 )
 
 (deflayer U_NAV_VI
@@ -652,7 +652,7 @@
     ;; thumbs
     lctl        XX                                                                                  @lsw-bas    @n-bas
     ;; extra keys - not actually used, needed to intercept events
-    XX          XX
+    XX          XX          ralt        rctl
 )
 
 (deflayer U_BUTTON
@@ -662,7 +662,7 @@
     met         alt         sft         ctl         XX          XX          ctl         sft         alt         met
     XX          XX                                                                                  XX          XX
     ;; extra keys - not actually used, needed to intercept events
-    XX          x
+    XX          x           ralt        rctl
 )
 
 (deflayer U_MOUSE
@@ -673,7 +673,7 @@
     ;; thumbs
     XX          XX                                                                                  @lwh-moa    XX             
     ;; extra keys - not actually used, needed to intercept events
-    XX          x
+    XX          x           ralt        rctl
 )
 
 (deflayer U_MOUSE_ALT
@@ -684,5 +684,5 @@
     ;; thumbs
     XX          XX                                                                                  mrtp        mltp           
     ;; extra keys - not actually used, needed to intercept events
-    XX          x
+    XX          x           ralt        rctl
 )
