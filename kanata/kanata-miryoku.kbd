@@ -39,7 +39,7 @@
     ;; thumbs
     v       c                                                       ,      .
     ;; extra keys - not actually used, needed to intercept events
-    lmet            ralt    rctl
+    lmet    x       ralt    rctl
   )
 )
 
