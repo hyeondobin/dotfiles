@@ -669,7 +669,7 @@
     ;; main
     f10         f4          f5          f6          f7          mftp        @mwl        @ma-up      @mwr        @mwu
     f11         mmtp        mrgt        mlft        f8          mbtp        @ma-le      @ma-dn      @ma-ri      @mwd
-    f12         @mou-f1     @mou-f2     @mou-f3     f9          XX          @mou-prev   @mou-pp     @mou-next   @mou-mute
+    f12         @mou-f1     @mou-f2     @mou-f3     f9          prnt        @mou-prev   @mou-pp     @mou-next   @mou-mute
     ;; thumbs
     XX          XX                                                                                  @lwh-moa    XX             
     ;; extra keys - not actually used, needed to intercept events
