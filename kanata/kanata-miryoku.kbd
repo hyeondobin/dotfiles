@@ -16,12 +16,6 @@
                      danger-enable-cmd yes
                      movemouse-inherit-accel-state yes))
 
-;; fallback config
-(environment (KANATA_HOST "")
-             (defcfg process-unmapped-keys yes
-                     block-unmapped-keys no
-                     danger-enable-cmd yes))
-
 ;; src for desktop (with tartarus)
 (environment (KANATA_HOST DT)
   (defsrc
