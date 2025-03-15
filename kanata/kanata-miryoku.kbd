@@ -7,7 +7,8 @@
                      block-unmapped-keys yes
                      danger-enable-cmd yes
                      movemouse-inherit-accel-state yes
-                     linux-unicode-u-code u))
+                     linux-unicode-u-code u
+                     icon-match-layer-name no))
 
 ;; laptop config
 (environment (KANATA_HOST LT)
