@@ -623,6 +623,16 @@
     ;; extra keys - not actually used, needed to intercept events
     XX          x           ralt        rctl
 )
+
+(deflayer U_GAME
+    ;; main
+    1           2           3           4           5           u           i           o           p           [
+    tab         q           w           e           r           j           k           l           ;           '
+    caps        a           s           d           f           m           ,           .           /           rsft
+    lalt        left                                                                                spc         ralt    
+    ;; extra keys - not actually used, needed to intercept events
+    lmet        x           @lsw-bas    rctl
+)
  
 (deflayer U_NUM
     ;; main
