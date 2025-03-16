@@ -203,7 +203,7 @@
 )
 
 ;; U_BASE 영문 입력용 기본 베이스
-(defchords bas-chords 80
+(defchords bas-chords 40
 
   (kq            ) (multi q @bfast)
   (   kw         ) (multi w @bfast)
@@ -669,7 +669,7 @@
 (deflayer U_BUTTON
     ;; main
     @dh-gmail   @jl-gmail   @pr-gmail   XX          XX          @redo       @paste      @cut        @copy       @undo
-    XX          ins         del         pp          XX          XX          @cpaste     @ccut       @ccopy      XX
+    XX          ins         del         pp          XX          C-caps      @cpaste     @ccut       @ccopy      XX
     met         alt         sft         ctl         XX          XX          ctl         sft         alt         met
     XX          XX                                                                                  XX          XX
     ;; extra keys - not actually used, needed to intercept events
