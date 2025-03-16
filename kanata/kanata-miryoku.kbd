@@ -671,7 +671,7 @@
     @dh-gmail   @jl-gmail   @pr-gmail   XX          XX          @redo       @paste      @cut        @copy       @undo
     XX          ins         del         pp          XX          C-caps      @cpaste     @ccut       @ccopy      XX
     met         alt         sft         ctl         XX          XX          ctl         sft         alt         met
-    XX          XX                                                                                  XX          XX
+    XX          @lwh-but                                                                            XX          XX
     ;; extra keys - not actually used, needed to intercept events
     XX          x           ralt        rctl
 )
