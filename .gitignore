@@ -19,3 +19,5 @@ fcitx5/profile
 kanata/Interception
 kanata/kanata_link.lnk
 kanata/kanata_log.txt
+emacs/auto-save-list
+emacs/undo

@@ -437,16 +437,16 @@
   ;; chords
   (qe qr) tab
   (qw qe) (macro esc S-; w ret)
-  (qr qt) @lbrace
-  (qf qg) @lbrack
-  (qv qb) @lparen
+  (qr qt) [
+  (qf qg) S-[
+  (qv qb) S-9
   (qv qm) @kor
   (qe qi) @capw
   (qr qu) @eng
   (qq qp) @jap
-  (qy qu) @rbrace
-  (qh qj) @rbrack
-  (qn qm) @rparen
+  (qy qu) ]
+  (qh qj) }
+  (qn qm) S-0
   (qu qo) ret
   (qu qi) bks
   (qv qu qi) (macro C-bks)
