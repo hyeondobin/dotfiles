@@ -107,6 +107,7 @@
   eng (on-press tap-virtualkey fake-lang-switch-eng)
   kor (on-press tap-virtualkey fake-lang-switch-kor)
   jap (on-press tap-virtualkey fake-lang-switch-jap)
+  nav-vim (layer-switch U_NAV_VI)
 )
 
 ;; shorter names for layer maps
@@ -176,6 +177,7 @@
   jl-gmail  (macro j a y l i Digit2 Digit5 Digit5 Digit8 S-2 g m a i l . c o m)
   pr-gmail  (macro p a n r u y a l S-2 g m a i l . c o m)
 )
+
 ;; buttons
 (defalias
   ;; first tap => no action
@@ -191,6 +193,10 @@
   ccut      (macro C-x)
   undo      (macro C-z)
   redo      (macro C-y)
+
+  ;; vim
+  lbd       (macro [ d)
+  rbd       (macro ] d)
 
   ;; caps word for 3 sec or caps
   capw (caps-word 3000)
@@ -542,11 +548,6 @@
 
 
 
-(defalias
-  nav-vim (layer-switch U_NAV_VI)
-  c-d (macro C-d)
-  c-u (macro C-u)
-  )
 
 ;; some aliases for the mouse
 (defalias
@@ -669,8 +670,8 @@
 (deflayer U_BUTTON
     ;; main
     @dh-gmail   @jl-gmail   @pr-gmail   XX          XX          @redo       @paste      @cut        @copy       @undo
-    XX          ins         del         pp          XX          C-caps      @cpaste     @ccut       @ccopy      XX
-    met         alt         sft         ctl         XX          XX          ctl         sft         alt         met
+    XX          ins         del         pp          @lbd        C-caps      @cpaste     @ccut       @ccopy      XX
+    met         alt         sft         ctl         @rbd        XX          ctl         sft         alt         met
     XX          @lwh-but                                                                            XX          XX
     ;; extra keys - not actually used, needed to intercept events
     XX          x           ralt        rctl
