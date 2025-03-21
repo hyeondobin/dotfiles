@@ -83,15 +83,19 @@
   ;;
   fake-lang-switch-eng (multi
                          (on-press  tap-virtualkey fake-win-eng)
+                         (on-press  tap-virtualkey fake-win-eng)
                          (on-press  tap-virtualkey fake-lsw-bas)
   )
   fake-lang-switch-kor (multi
                          (on-press  tap-virtualkey fake-win-kor)
+                         (on-press  tap-virtualkey fake-win-kor)
                          (on-press  tap-virtualkey fake-lsw-qwe)
                          )
-  fake-lang-switch-jap (multi (on-press tap-virtualkey fake-win-jap)
-                              (on-press tap-virtualkey fake-lsw-bas)
-                              )
+  fake-lang-switch-jap (multi 
+                         (on-press tap-virtualkey fake-win-jap)
+                         (on-press tap-virtualkey fake-win-jap)
+                         (on-press tap-virtualkey fake-lsw-bas)
+                         )
 )
 
 ;; shorter names for fake keys
