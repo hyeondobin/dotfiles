@@ -139,7 +139,7 @@
   d-nav     (tap-hold-press $tt $ht (chord bas-chords kd) @lwh-nav)
   tab-mou   (tap-hold-press $tt $ht @smart-tab @lwh-mou)
   bks-nav   (tap-hold-press $tt $ht bks @lwh-nav)
-  esc-num   (tap-hold-press $tt $ht esc @lwh-num)
+  esc-num   (tap-hold-press $tt $ht @eng-esc @lwh-num)
 )
 
 ;; symbols
@@ -281,7 +281,7 @@
   (kl ky) ret
   (kl ku) bks
   (kl ku kd) (macro C-bks)
-  (ku ky) esc
+  (ku ky) @eng-esc
   (kx kd) scln
   (kx kd k,) (macro S-scln)
   (kx kd kh) (macro C-scln)
@@ -457,7 +457,7 @@
   (qu qo) ret
   (qu qi) bks
   (qv qu qi) (macro C-bks)
-  (qi qo) esc
+  (qi qo) @eng-esc
   (qx qv) scln
   (qx qv q,) (macro S-scln)
   (qx qv qm) (macro C-scln)
