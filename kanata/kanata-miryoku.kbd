@@ -61,6 +61,8 @@
   ;; permanent layer switching
   fake-lsw-bas (layer-switch U_BASE)
   fake-lsw-baf (layer-switch U_BASE_FAST)
+  fake-lsw-jap (layer-switch U_JAP)
+  fake-lsw-jaf (layer-switch U_JAP_FAST)
   fake-lsw-nav (layer-switch U_NAV)
   fake-lsw-num (layer-switch U_NUM)
   fake-lsw-mou (layer-switch U_MOUSE)
@@ -94,7 +96,7 @@
   fake-lang-switch-jap (multi 
                          (on-press tap-virtualkey fake-win-jap)
                          (on-press tap-virtualkey fake-win-jap)
-                         (on-press tap-virtualkey fake-lsw-bas)
+                         (on-press tap-virtualkey fake-lsw-jap)
                          )
 )
 
@@ -102,6 +104,8 @@
 (defalias
   lsw-bas (on-press tap-virtualkey fake-lsw-bas)
   lsw-baf (on-press tap-virtualkey fake-lsw-baf)
+  lsw-jap (on-press tap-virtualkey fake-lsw-jap)
+  lsw-jaf (on-press tap-virtualkey fake-lsw-jaf)
   lsw-nav (on-press tap-virtualkey fake-lsw-nav)
   lsw-num (on-press tap-virtualkey fake-lsw-num)
   lsw-mou (on-press tap-virtualkey fake-lsw-mou)
@@ -378,8 +382,171 @@
 
 )
 
+;; japanese
+(defchords jap-chords 40
 
+  (jq            ) (multi q @jfast)
+  (   jw         ) (multi w @jfast)
+  (      jf      ) (multi f @jfast)
+  (         jp   ) (multi p @jfast)
+  (            jb) (multi b @jfast)
 
+  (ja            ) (multi a @jfast)
+  (   jr         ) (multi r @jfast)
+  (      js      ) (multi s @jfast)
+  (         jt   ) (multi t @jfast)
+  (            jg) (multi g @jfast)
+
+  (jz            ) (multi (tap-hold $tt $ht z lmet) @jfast)
+  (   jx         ) (multi (tap-hold $tt $ht x lalt) @jfast)
+  (      jc      ) (multi (tap-hold $tt $ht c lsft) @jfast)
+  (         jd   ) (multi (tap-hold $tt $ht d lctl) @jfast)
+  (            jv) (multi v @jfast)
+
+  (jj            ) (multi j @jfast)
+  (   jl         ) (multi l @jfast)
+  (      ju      ) (multi u @jfast)
+  (         jy   ) (multi y @jfast)
+  ;;(            j') (multi ' @jfast)
+  (         j-bks) (multi bks @jfast)
+
+  (jm            ) (multi m @jfast)
+  (   jn         ) (multi n @jfast)
+  (      je      ) (multi e @jfast)
+  (         ji   ) (multi i @jfast)
+  (            jo) (multi o @jfast)
+
+  (jk            ) (multi k @jfast)
+  (   jh         ) (multi (tap-hold $tt $ht h lctl) @jfast)
+  (      j,      ) (multi (tap-hold $tt $ht , rsft) @jfast)
+  (         j.   ) (multi (tap-hold $tt $ht . lalt) @jfast)
+  (            j/) (multi (tap-hold $tt $ht / rmet) @jfast)
+
+  ;; z+/ = Button layer
+  (jz j/) (one-shot 1000 @lwh-but)
+  (jz jx) (one-shot 1000 @lwh-but)
+  
+
+  (ja jo) lmet
+  (jr ji) lalt
+
+  (j-ret) (multi ret @jfast)
+
+  ;; chords
+  (jf jp) tab
+  (jw jf) (macro esc S-; w ret)
+  (jp jb) [
+  (jt jg) S-[
+  (jd jv) S-9
+  (jp jl) @eng
+  (jf ju) @capw
+  (jd jh) @kor
+  (jq j-bks) @jap
+  (jj jl) ]
+  (jm jn) S-]
+  (jk jh) S-0
+  (jl jy) ret
+  (jl ju) bks
+  (jl ju jd) (macro C-bks)
+  (ju jy) @eng-esc
+  (jl ju jy) esc
+  (jx jd) scln
+  (jx jd j,) (macro S-scln)
+  (jx jd jh) (macro C-scln)
+  (jx jc) -
+  (jx jc j,) (macro S--)
+  (jc jd) =
+  (jc jd j,) (macro S-=)
+
+  (jz jc) @grave
+  (jz jd) @tilde
+
+  (jz jc jm) M-S-m
+  
+  (jc j,) @lt
+  (jc j.) @gt
+
+  (jz jx jc jd) lrld
+  (jq j,) @bang
+  (jw j,) @at
+  (jf j,) @hash
+  (jp j,) @doll
+  (jb j,) @perc
+  (jc jj) @caret
+  (jc jl) @amps
+  (jc ju) @star
+  (jc jy) @lparen
+  (jc j-bks) @rparen
+
+  (jw jp) scln
+  (jn je ji) spc
+  (jr js jt) spc
+
+  (jh jc) C-c
+  (jd jy) C-y
+
+  (jt jn) (one-shot 1000 sft)
+
+  (jh j,) @quesma
+  (j, j.) @quesma
+  (js je) '
+)
+
+  ;;japanese aliases
+(defalias
+  ;; main
+  ;; first row
+  jap-q   (chord jap-chords jq)
+  jap-w   (chord jap-chords jw)
+  jap-f   (chord jap-chords jf)
+  jap-p   (chord jap-chords jp)
+  jap-b   (chord jap-chords jb)
+  ;;second row
+  jap-a   (chord jap-chords ja)
+  jap-r   (chord jap-chords jr)
+  jap-s   (chord jap-chords js)
+  jap-t   (chord jap-chords jt)
+  jap-g   (chord jap-chords jg)
+  ;; third row
+  jap-z   (chord jap-chords jz)
+  jap-x   (chord jap-chords jx)
+  jap-c   (chord jap-chords jc)
+  jap-d   (chord jap-chords jd)
+  jap-v   (chord jap-chords jv)
+  ;; right half
+  ;; first row
+  jap-j   (chord jap-chords jj)
+  jap-l   (chord jap-chords jl)
+  jap-u   (chord jap-chords ju)
+  jap-y   (chord jap-chords jy)
+  ;;jap-'   (chord jap-chords j')
+  ;; second row
+  jap-m   (chord jap-chords jm)
+  jap-n   (chord jap-chords jn)
+  jap-e   (chord jap-chords je)
+  jap-i   (chord jap-chords ji)
+  jap-o   (chord jap-chords jo)
+  ;; third row
+  jap-k   (chord jap-chords jk)
+  jap-h   (chord jap-chords jh)
+  jap-,   (chord jap-chords j,)
+  jap-.   (chord jap-chords j.)
+  jap-/   (chord jap-chords j/)
+
+  ;; thumbs
+  jap-esc (tap-hold-press $tt $ht esc @lwh-num)
+  jap-bks (chord jap-chords j-bks)
+  ;;jap-bks (tap-hold-press $tt $ht (chord jap-chords j-bks) bks)
+
+  ;; currently used
+  jap-ret (chord jap-chords j-ret)
+  jap-spc @spc-nav
+  jap-tab @tab-mou
+  jap-but (tap-hold-press $tt $ht (one-shot 1000 @lwh-but) @lwh-num)
+
+  jfast     (multi @lsw-jaf (on-idle 35 tap-virtualkey fake-lsw-jap))
+
+)
 
 ;; qwerty
 (defalias 
@@ -611,6 +778,28 @@
     ;; extra keys - not actually used, needed to intercept events
     XX          x           ralt        rctl
 )
+
+(deflayer U_JAP
+    ;; main
+    @jap-q      @jap-w      @jap-f      @jap-p      @jap-b      @jap-j      @jap-l      @jap-u      @jap-y      @jap-bks
+    @jap-a      @jap-r      @jap-s      @jap-t      @jap-g      @jap-m      @jap-n      @jap-e      @jap-i      @jap-o
+    @jap-z      @jap-x      @jap-c      @jap-d      @jap-v      @jap-k      @jap-h      @jap-,      @jap-.      @jap-/
+    ;; thumbs
+    @jap-ret    @jap-tab                                                                            @jap-spc    @jap-but      
+    ;; extra keys - not actually used, needed to intercept events
+    pp          x           ralt        rctl
+)
+(deflayer U_JAP_FAST
+    ;; main
+    q           @jap-w      @jap-f      @jap-p      @jap-b      j           @jap-l      @jap-u      @jap-y      bks
+    a           r           s           t           g           m           n           e           i           o
+    @jap-z      @jap-x      @jap-c      @jap-d      v           k           @jap-h      @jap-,      @jap-.      @jap-/
+    ;; thumbs
+    @jap-ret    @jap-tab                                                                            @jap-spc    @jap-but      
+    ;; extra keys - not actually used, needed to intercept events
+    XX          x           ralt        rctl
+)
+
 (deflayer U_QWERTY
     ;; main
     @qwe-q      @qwe-w      @qwe-e      @qwe-r      @qwe-t      @qwe-y      @qwe-u      @qwe-i      @qwe-o      @qwe-p
