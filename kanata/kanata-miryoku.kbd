@@ -26,7 +26,7 @@
     ;; thumbs
     lalt    left                                                    spc     ralt    
     ;; extra keys - not actually used, needed to intercept events
-    lmet    x       rmet    rctl
+    lmet    x       rmet    rctl    n
   )
 )
 
@@ -40,7 +40,7 @@
     ;; thumbs
     v       c                                                       ,      .
     ;; extra keys - not actually used, needed to intercept events
-    lmet    x       ralt    rctl
+    lmet    x       ralt    rctl    n
   )
 )
 
@@ -56,6 +56,7 @@
 (defvirtualkeys 
   fake-win-eng (multi (release-key rctl) (release-key rmet) lalt lsft 1)
   fake-win-kor (multi (release-key rctl) (release-key rmet) lalt lsft 2)
+  fake-kor-kor (multi lsft f13)
   fake-win-jap (multi (release-key rctl) (release-key rmet) lalt lsft 3)
 
   ;; permanent layer switching
@@ -92,6 +93,7 @@
                          (on-press  tap-virtualkey fake-win-kor)
                          (on-press  tap-virtualkey fake-win-kor)
                          (on-press  tap-virtualkey fake-lsw-qwe)
+                         (on-press  tap-virtualkey fake-kor-kor)
                          )
   fake-lang-switch-jap (multi 
                          (on-press tap-virtualkey fake-win-jap)
@@ -114,6 +116,7 @@
   ;; shorter names for input switching in Windows
   eng (on-press tap-virtualkey fake-lang-switch-eng)
   kor (on-press tap-virtualkey fake-lang-switch-kor)
+  kor-kor (on-press tap-virtualkey fake-kor-kor)
   jap (on-press tap-virtualkey fake-lang-switch-jap)
   nav-vim (layer-switch U_NAV_VI)
 )
@@ -143,6 +146,7 @@
   d-nav     (tap-hold-press $tt $ht (chord bas-chords kd) @lwh-nav)
   tab-mou   (tap-hold-press $tt $ht @smart-tab @lwh-mou)
   bks-nav   (tap-hold-press $tt $ht bks @lwh-nav)
+  bks-but   (tap-hold-press $tt $ht bks @lwh-but)
   esc-num   (tap-hold-press $tt $ht @eng-esc @lwh-num)
 )
 
@@ -623,6 +627,7 @@
   (qn qm) S-0
   (qu qo) ret
   (qu qi) bks
+  (qu qi qo) @kor-kor
   (qv qu qi) (macro C-bks)
   (qi qo) @eng-esc
   (qx qv) scln
@@ -714,8 +719,8 @@
   qwe-ret (chord qwe-chords q-ret)
   qwe-spc @spc-nav
   qwe-tab @tab-mou
-  qwe-bks (tap-hold-press $tt $ht (chord qwe-chords q-bks) @lwh-num)
-  ;;qwe-bks (chord qwe-chords q-bks)
+  ;;qwe-bks (tap-hold-press $tt $ht (chord qwe-chords q-bks) @lwh-num)
+  qwe-bks (chord qwe-chords q-bks)
   
 )
 
@@ -765,7 +770,7 @@
     ;; thumbs
     @bas-ret    @bas-tab                                                                            @bas-spc    @bas-but      
     ;; extra keys - not actually used, needed to intercept events
-    pp          x           ralt        rctl
+    pp          x           ralt        rctl        XX
 )
 
 (deflayer U_BASE_FAST
@@ -776,7 +781,7 @@
     ;; thumbs
     @bas-ret    @bas-tab                                                                            @bas-spc    @bas-but      
     ;; extra keys - not actually used, needed to intercept events
-    XX          x           ralt        rctl
+    XX          x           ralt        rctl        XX
 )
 
 (deflayer U_JAP
@@ -787,7 +792,7 @@
     ;; thumbs
     @jap-ret    @jap-tab                                                                            @jap-spc    @jap-but      
     ;; extra keys - not actually used, needed to intercept events
-    pp          x           ralt        rctl
+    pp          x           ralt        rctl        XX
 )
 (deflayer U_JAP_FAST
     ;; main
@@ -797,17 +802,17 @@
     ;; thumbs
     @jap-ret    @jap-tab                                                                            @jap-spc    @jap-but      
     ;; extra keys - not actually used, needed to intercept events
-    XX          x           ralt        rctl
+    XX          x           ralt        rctl        XX
 )
 
 (deflayer U_QWERTY
     ;; main
     @qwe-q      @qwe-w      @qwe-e      @qwe-r      @qwe-t      @qwe-y      @qwe-u      @qwe-i      @qwe-o      @qwe-p
-    @qwe-a      @qwe-s      @qwe-d      @qwe-f      @qwe-g      @qwe-h      @qwe-j      @qwe-k      @qwe-l      @qwe-;
+    @qwe-a      @qwe-s      @qwe-d      @qwe-f      @qwe-g      @qwe-h      @qwe-j      @qwe-k      @qwe-l      @qwe-bks
     @qwe-z      @qwe-x      @qwe-c      @qwe-v      @qwe-b      @qwe-n      @qwe-m      @qwe-,      @qwe-.      @qwe-/
-    @qwe-ret    @qwe-tab                                                                            @qwe-spc    @qwe-bks
+    @qwe-ret    @qwe-tab                                                                            @qwe-spc    @bks-but
     ;; extra keys - not actually used, needed to intercept events
-    XX          x           ralt        rctl
+    @qwe-;      x           ralt        rctl        @qwe-b
 )
 
 (deflayer U_QWERTY_FAST
@@ -816,9 +821,9 @@
     a           s           d           f           g           h           j           k           l           ;
     z           x           c           v           b           n           m           ,           .           /
     ;; thumbs
-    @qwe-ret    @qwe-tab                                                                            @qwe-spc    @qwe-bks    
+    @qwe-ret    @qwe-tab                                                                            @qwe-spc    @bks-but
     ;; extra keys - not actually used, needed to intercept events
-    XX          x           ralt        rctl
+    XX          x           ralt        rctl        b
 )
 
 (deflayer U_GAME
@@ -828,7 +833,7 @@
     caps        a           s           d           f           m           ,           .           /           rsft
     lalt        left                                                                                spc         ralt    
     ;; extra keys - not actually used, needed to intercept events
-    lmet        x           @lsw-bas    rctl
+    lmet        x           @lsw-bas    rctl        XX
 )
  
 (deflayer U_NUM
@@ -839,17 +844,18 @@
     ;;thumbs
     ret         spc                                                                                 XX          XX      
     ;; extra keys - not actually used, needed to intercept events
-    XX          XX          ralt        rctl
+    XX          XX          ralt        rctl        XX
 )
+
 (deflayer U_NAV
     ;; main
     lrld        @dh-gmail   @jl-gmail   @pr-gmail   @rbrack     @lbrack     home        up          end         pgup
     XX          @cut        @copy       @paste      @rbrace     @lbrace     left        down        right       pgdn
     lmet        lalt        lsft        lctl        @doll       @caret      lctl        rsft        lalt        rmet
     ;; thumbs
-    @bas-ret    del                                                                                 @nav-vim    M-tab           
+    @bas-ret    del                                                                                 @nav-vim    A-tab           
     ;; extra keys - not actually used, needed to intercept events
-    XX          x           ralt        rctl
+    XX          x           ralt        rctl        XX
 )
 
 (deflayer U_NAV_VI
@@ -860,7 +866,7 @@
     ;; thumbs
     lctl        XX                                                                                  @lsw-bas    @n-bas
     ;; extra keys - not actually used, needed to intercept events
-    XX          XX          ralt        rctl
+    XX          XX          ralt        rctl        XX
 )
 
 (deflayer U_BUTTON
@@ -870,7 +876,7 @@
     met         alt         sft         ctl         @rbd        @sun        ctl         sft         alt         met
     XX          @lwh-but                                                                            XX          XX
     ;; extra keys - not actually used, needed to intercept events
-    XX          x           ralt        rctl
+    XX          x           ralt        rctl        XX
 )
 
 (deflayer U_MOUSE
@@ -881,16 +887,16 @@
     ;; thumbs
     XX          XX                                                                                  @lwh-moa    XX             
     ;; extra keys - not actually used, needed to intercept events
-    XX          x           ralt        rctl
+    XX          x           ralt        rctl        XX
 )
 
 (deflayer U_MOUSE_ALT
     ;; main
     XX          XX          @n-qwe      @n-bas      XX          @eng        @mwl        @mm-up      @mwr        @mwu
     XX          mmtp        mrgt        mlft        XX          @kor        @mm-le      @mm-dn      @mm-ri      @mwd
-    met         alt         sft         ctl         del         XX          XX          XX          XX          XX
+    met         alt         sft         ctl         del         prnt        XX          XX          XX          XX
     ;; thumbs
     XX          XX                                                                                  mrtp        mltp           
     ;; extra keys - not actually used, needed to intercept events
-    XX          x           ralt        rctl
+    XX          x           ralt        rctl        XX
 )
