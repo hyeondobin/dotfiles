@@ -40,7 +40,7 @@
     ;; thumbs
     v       c                                                       ,      .
     ;; extra keys - not actually used, needed to intercept events
-    lmet    x       ralt    rctl    n
+    lmet    x       ralt    rctl    j
   )
 )
 
@@ -810,7 +810,7 @@
     @qwe-q      @qwe-w      @qwe-e      @qwe-r      @qwe-t      @qwe-y      @qwe-u      @qwe-i      @qwe-o      @qwe-p
     @qwe-a      @qwe-s      @qwe-d      @qwe-f      @qwe-g      @qwe-h      @qwe-j      @qwe-k      @qwe-l      @qwe-bks
     @qwe-z      @qwe-x      @qwe-c      @qwe-v      @qwe-b      @qwe-n      @qwe-m      @qwe-,      @qwe-.      @qwe-/
-    @qwe-ret    @qwe-tab                                                                            @qwe-spc    @bks-but
+    @qwe-ret    @qwe-tab                                                                            @qwe-spc    @qwe-but
     ;; extra keys - not actually used, needed to intercept events
     @qwe-;      x           ralt        rctl        @qwe-b
 )
@@ -819,7 +819,7 @@
     ;; main
     q           w           e           r           t           y           @qwe-u      @qwe-i      @qwe-o      p
     a           s           d           f           g           h           j           k           l           ;
-    z           x           c           v           b           n           m           ,           .           /
+    z           @qwe-x      @qwe-c      @qwe-v      b           n           @qwe-m      @qwe-,      @qwe-.      @qwe-/
     ;; thumbs
     @qwe-ret    @qwe-tab                                                                            @qwe-spc    @bks-but
     ;; extra keys - not actually used, needed to intercept events
