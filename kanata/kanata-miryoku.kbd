@@ -821,7 +821,7 @@
     a           s           d           f           g           h           j           k           l           ;
     z           @qwe-x      @qwe-c      @qwe-v      b           n           @qwe-m      @qwe-,      @qwe-.      @qwe-/
     ;; thumbs
-    @qwe-ret    @qwe-tab                                                                            @qwe-spc    @bks-but
+    @qwe-ret    @qwe-tab                                                                            @qwe-spc    @qwe-but
     ;; extra keys - not actually used, needed to intercept events
     XX          x           ralt        rctl        b
 )
