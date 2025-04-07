@@ -753,9 +753,14 @@
 
 (defalias
   lwh-moa (layer-while-held U_MOUSE_ALT)
+  mdlft     (macro mltp 10 mltp)
+  mdrgt     (macro mrtp 10 mrtp)
   mou-f1    (tap-hold $tt $ht f1 lalt)
   mou-f2    (tap-hold $tt $ht f2 lsft)
   mou-f3    (tap-hold $tt $ht f3 lctl)
+  ;;mou-f4    (tap-hold $tt $ht f4 lmdp)
+  mou-f5    (tap-hold $tt $ht f5 @mdrgt)
+  mou-f6    (tap-hold $tt $ht f5 @mdlft)
   mou-prev  (tap-hold $tt $ht prev lctl)
   mou-pp    (tap-hold $tt $ht pp   lctl)
   mou-next  (tap-hold $tt $ht next lctl)
@@ -881,7 +886,7 @@
 
 (deflayer U_MOUSE
     ;; main
-    f10         f4          f5          f6          f7          mftp        @mwl        @ma-up      @mwr        @mwu
+    f10         f4          @mou-f5     @mou-f6     f7          mftp        @mwl        @ma-up      @mwr        @mwu
     f11         mmtp        mrgt        mlft        f8          mbtp        @ma-le      @ma-dn      @ma-ri      @mwd
     f12         @mou-f1     @mou-f2     @mou-f3     f9          prnt        @mou-prev   @mou-pp     @mou-next   @mou-mute
     ;; thumbs
