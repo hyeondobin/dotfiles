@@ -833,7 +833,7 @@
 
 (deflayer U_GAME
     ;; main
-    1           2           3           4           5           u           i           o           p           [
+    1           q           w           e           r           u           i           o           p           [
     tab         q           w           e           r           j           k           l           ;           '
     caps        a           s           d           f           m           ,           .           /           rsft
     lalt        left                                                                                spc         ralt    
