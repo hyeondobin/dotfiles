@@ -897,7 +897,7 @@
 
 (deflayer U_MOUSE_ALT
     ;; main
-    XX          XX          @n-qwe      @n-bas      XX          @eng        @mwl        @mm-up      @mwr        @mwu
+    XX          XX          @mdrgt      @mdlft      XX          @eng        @mwl        @mm-up      @mwr        @mwu
     XX          mmtp        mrgt        mlft        XX          @kor        @mm-le      @mm-dn      @mm-ri      @mwd
     met         alt         sft         ctl         del         prnt        XX          XX          XX          XX
     ;; thumbs
