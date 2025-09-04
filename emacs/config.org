@@ -358,7 +358,7 @@ Use evil mode as can't bare with emacs keybindings
 
 #+begin_src emacs-lisp
 (set-face-attribute 'default nil
-:font "JetBrainsMono NF"
+:font "D2CodingLigature Nerd Font"
 :height 120
 :weight 'medium)
 (setq-default line-spacing 0.13)
