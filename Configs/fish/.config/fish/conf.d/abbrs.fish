@@ -6,10 +6,11 @@ abbr --add htop "btop "
 #abbr --add kcc  "kanata --check -c ~/repo/dotfiles/kanata/kanata-miryoku.kbd" # Kanata Check Config
 #abbr --add krs  "systemctl --user restart kanata-custom.service" # Kanata Restart Service
 #abbr --add KKK  "pkill kanata | kanata -c ~/repo/dotfiles/kanata/kanata-miryoku.kbd"
-abbr --add l "eza --long --all --header --group-directories-first --color=always "
-abbr --add la "eza --long --all --header --git --group-directories-first --color=always "
-abbr --add lg "eza --long --all --header --grid --smart-group --color=always"
-abbr --add lt "eza --long --all --header --group --tree --group-directories-first --color=always --level=2 "
+abbr --add l "eza --long --all --header --group-directories-first --color=always --icons=always "
+abbr --add ll "eza --long --all --header --group-directories-first --color=always | less"
+abbr --add la "eza --long --all --header --git --group-directories-first --color=always --icons=always "
+abbr --add lg "eza --long --all --header --grid --smart-group --color=always --icons=always "
+abbr --add lt "eza --long --all --header --group --tree --group-directories-first --color=always --level=2 --icons=always "
 abbr --add lz lazygit
 abbr --add mkdir "mkdir -pv "
 abbr --add mv "mv -iv "
