@@ -1,4 +1,5 @@
 fish_add_path ~/.emacs.d/bin/
+set -gx SSH_AUTH_SOCK "/home/dobin/.bitwarden-ssh-agent.sock"
 
 source ~/.config/fish/conf.d/abbrs.fish
 
