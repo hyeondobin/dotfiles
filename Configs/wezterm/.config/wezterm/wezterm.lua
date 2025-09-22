@@ -10,6 +10,6 @@ config.enable_tab_bar = false
 
 config.window_background_opacity = 0.75
 
-config.enable_wayland = true
+config.enable_wayland = false
 
 return config
