@@ -1,4 +1,4 @@
-abbr --add cat bat
+abbr --add cat "bat "
 abbr --add cp "cp -iv "
 abbr --add eh "emacs ~/repo/dotfiles/hyprland/hyprland.conf"
 abbr --add ff "clear && fastfetch"

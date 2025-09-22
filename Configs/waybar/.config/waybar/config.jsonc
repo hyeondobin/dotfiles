@@ -26,7 +26,8 @@
     "format": "{:%H:%M:%S}"
   },
   "tray": {
-    "icon-size": 16
+    "icon-size": 16,
+    "show-passive-items": true
   },
   "hyprland/workspaces": {
     "format": "{icon}",
