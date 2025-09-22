@@ -51,7 +51,7 @@ env = INPUT_METHOD,$ime
 # See https://wiki.hyprland.org/Configuring/Keywords/
 
 # Set programs that you use
-$terminal = wezterm
+$terminal = kitty
 $fileManager = dolphin
 $menu = wofi --show drun
 $webBrowser = vivaldi --disable-gpu # ref: https://www.reddit.com/r/wayland/comments/1cywhh2/anyone_still_seeing_flickering_in/
@@ -213,9 +213,9 @@ input {
 }
 
 # https://wiki.hyprland.org/Configuring/Variables/#gestures
-gestures {
-    workspace_swipe = false
-}
+#gestures {
+#    workspace_swipe = false
+#}
 
 # Example per-device config
 # See https://wiki.hyprland.org/Configuring/Keywords/#per-device-input-configs for more
@@ -254,7 +254,10 @@ bind = $mainMod, R, layoutmsg, swapwithmaster master
 bind = $shiftMod, R, layoutmsg, focusmaster 
 
 # programs
-bind = $mainMod, b, exec, $webBrowser
+bind = $mainMod, b, exec, pgrep vivaldi && hyprctl dispatch workspace name:Vivaldi || $webbrowser
+bind = $shiftMod, b, movetoworkspace, name:Vivaldi
+bind = $ctrlMod, b, exec, $webbrowser
+windowrulev2 = workspace name:Vivaldi, initialClass:^(vivaldi).*$
 
 # bitwarden
 bind = $mainMod, w, togglespecialworkspace, Bitwarden
