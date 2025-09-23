@@ -44,6 +44,17 @@ change the flavor of =catppuccin= to =macchiato= before loading theme
 (setq org-directory "~/org/")
 #+end_src
 
+* orderless
+#+begin_src emacs-lisp
+
+#+end_src
+
+* keybinds
+change leader-key to =,=
+#+begin_src emacs-lisp
+(setq doom-leader-key ",")
+#+end_src
+
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets. It is optional.
 ;; (setq user-full-name "John Doe"
