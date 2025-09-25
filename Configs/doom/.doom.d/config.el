@@ -13,6 +13,11 @@
 (set-fontset-font "fontset-default" 'hangul (font-spec :family "D2CodingLigature Nerd Font"))
 
 (setq catppuccin-flavor 'macchiato)
+
 (setq doom-theme 'catppuccin)
 
 (setq org-directory "~/org/")
+
+
+
+(setq doom-leader-key ",")
