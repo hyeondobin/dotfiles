@@ -5,3 +5,5 @@
 # Please adapt and uncomment the following lines:
 #	name = 
 #	email = dobin@VanLioumLT.(none)
+[init]
+	defaultBranch = main
