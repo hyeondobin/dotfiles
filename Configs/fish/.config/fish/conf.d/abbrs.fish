@@ -1,6 +1,6 @@
 abbr --add cat "bat "
 abbr --add cp "cp -iv "
-abbr --add eh "emacs ~/repo/dotfiles/hyprland/hyprland.conf"
+abbr --add eh "nvim ~/repo/dotfiles/hyprland/hyprland.conf"
 abbr --add ff "clear && fastfetch"
 abbr --add htop "btop "
 #abbr --add kcc  "kanata --check -c ~/repo/dotfiles/kanata/kanata-miryoku.kbd" # Kanata Check Config
