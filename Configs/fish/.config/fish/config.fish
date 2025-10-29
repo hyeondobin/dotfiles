@@ -1,6 +1,9 @@
 fish_add_path ~/.emacs.d/bin/
 set -gx SSH_AUTH_SOCK "/home/dobin/.bitwarden-ssh-agent.sock"
 
+if set -q WSLENV
+	source ~/.config/fish/conf.d/sshAgentBridge.fish
+end
 source ~/.config/fish/conf.d/abbrs.fish
 
 if status is-interactive
