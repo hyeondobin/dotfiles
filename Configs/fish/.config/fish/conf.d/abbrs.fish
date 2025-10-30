@@ -1,8 +1,12 @@
 abbr --add cat "bat "
 abbr --add cp "cp -iv "
-abbr --add eh "nvim ~/repo/dotfiles/hyprland/hyprland.conf"
+abbr --add ef "nvim ~/.config/fish/config.fish "
+abbr --add efa "nvim ~/.config/fish/conf.d/abbrs.fish "
+abbr --add eh "nvim ~/repo/dotfiles/hyprland/hyprland.conf "
+abbr --add en "nvim ~/.config/nvim/init.lua "
 abbr --add ff "clear && fastfetch"
 abbr --add htop "btop "
+abbr --add keyb "cd ~/repo/qmk_userspace"
 #abbr --add kcc  "kanata --check -c ~/repo/dotfiles/kanata/kanata-miryoku.kbd" # Kanata Check Config
 #abbr --add krs  "systemctl --user restart kanata-custom.service" # Kanata Restart Service
 #abbr --add KKK  "pkill kanata | kanata -c ~/repo/dotfiles/kanata/kanata-miryoku.kbd"
@@ -28,9 +32,15 @@ abbr --add mv "mv -iv "
 abbr --add pk "pkill -e "
 abbr --add pkill "pkill -e "
 abbr --add rm "rm -iv "
+if set -q WSLENV
+    abbr --add qfw "~/scripts/qmkFlashWSL.sh"
+else
+    abbr --add qfw "qmk flash"
+end
 #abbr --add sa  "ssh-add"
 abbr --add sofi ". ~/.config/fish/config.fish"
 #abbr --add vi  "neovide "
 abbr --add vi "nvim "
+abbr --add yy "yay --noconfirm "
 abbr --add z "cd "
 abbr --add zi "cdi "
