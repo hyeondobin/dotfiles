@@ -2,8 +2,7 @@
 [user]
 	name = hyeondobin
 	email = dobinhyeon@gmail.com
-# Please adapt and uncomment the following lines:
-#	name = 
-#	email = dobin@VanLioumLT.(none)
 [init]
 	defaultBranch = main
+[pull]
+    rebase = true
