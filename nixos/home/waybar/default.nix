@@ -1,0 +1,93 @@
+{ config, lib, ... }:
+{
+  options = {
+    dbConfig.waybar = lib.mkEnableOption "Enable waybar";
+  };
+  config = lib.mkIf config.dbConfig.waybar {
+    programs.waybar = {
+      enable = true;
+      settings = {
+        mainBar = {
+          layer = "top";
+          position = "top";
+          height = 20;
+          modules-left = [
+            "hyprland/workspaces"
+            "hyprland/submap"
+          ];
+          modules-center = [
+            "hyprland/window"
+          ];
+          modules-right = [
+            "pulseaudio"
+            # "backlight"
+            "cpu"
+            "battery"
+            "clock"
+            "tray"
+            "custom/lock"
+            "custom/power"
+          ];
+          cpu = {
+            interval = 2;
+          };
+          "hyprland/window" = {
+            format = "{}";
+            separate-outputs = true;
+          };
+          clock = {
+            interval = 1;
+            format = "{:%H:%M:%S}";
+          };
+          tray = {
+            icon-size = 16;
+            show-passive-items = true;
+          };
+          "hyprland/workspaces" = {
+            format = "{icon}";
+            format-icons = {
+              "code" = "Code";
+            };
+            show-special = true;
+            sort-by-name = false;
+            sort-by-number = false;
+          };
+          pulseaudio = {
+            format = "{icon} {volume}%";
+            format-bluetooth = "{icon} {volume}% 󰂯"; # {format_source}";
+            format-bluetooth-muted = "󰖁 {icon} 󰂯"; # {format_source}";
+            format-mute = "󰖁 {volume}%";
+            format-icons = {
+              heaphone = "󰋋";
+              hands-free = "󱡒";
+              headset = "󰋎";
+              phone = "";
+              portable = "";
+              car = "";
+              default = [
+                ""
+                ""
+                ""
+              ];
+            };
+            on-click = "pavucontrol";
+          };
+          "custom/lock" = {
+            tooltip = false;
+            # "on-click" = "sh -c '(sleep 0.5s; swaylock --grace 0)' & disown";
+            format = "";
+          };
+          "custom/power" = {
+            tooltip = false;
+            on-click = "wlogout &";
+            format = "⏻";
+          };
+        };
+      };
+      style = ''
+        ${builtins.readFile ./macchiato.css}
+        ${builtins.readFile ./style.css}
+      '';
+    };
+  };
+}
