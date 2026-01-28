@@ -1,7 +1,12 @@
-if set -q WSLENV
-	source ~/.config/fish/conf.d/sshAgentBridge.fish
+if test -n "$WSLENV"
+    source ~/.config/fish/conf.d/sshAgentBridge.fish
+    echo $WSLENV
 else
-    set -gx SSH_AUTH_SOCK "/home/dobin/.bitwarden-ssh-agent.sock"
+    if uname -v | grep Nix -q 
+        echo "Skip exporting SSU_AUTH_SOCK on nixos"
+    else
+        set -gx SSH_AUTH_SOCK "/home/hyeondobin/.bitwarden-ssh-agent.sock"
+    end
 end
 source ~/.config/fish/conf.d/abbrs.fish
 
