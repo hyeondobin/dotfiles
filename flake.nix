@@ -10,7 +10,10 @@
         # allow unfree packages
         config.allowUnfree = true;
       };
-      overlays = [ inputs.rust-overlay.overlays.default ];
+      overlays = [
+        inputs.rust-overlay.overlays.default
+        (import inputs.emacs-overlay)
+      ];
       system = "x86_64-linux";
       systems = [ "x86_64-linux" ];
       forAllSystems = inputs.nixpkgs.lib.getAttrs systems;

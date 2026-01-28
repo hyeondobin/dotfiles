@@ -1,4 +1,5 @@
 {
+  inputs,
   config,
   lib,
   pkgs,
@@ -13,7 +14,13 @@ in
   };
   config = lib.mkIf cfg.emacs {
     environment.systemPackages = [
-      pkgs.emacs
+      # (pkgs.emacsWithPackagesFromUsePackage {
+      #   package = pkgs.emacs-pgtk;
+      #   config = "${inputs.self}" + "/emacs/config.el";
+      #   extraEmacsPackages = epkgs: [
+      #   ];
+      # })
+      pkgs.emacs-pgtk
     ];
   };
 
