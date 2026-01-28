@@ -22,3 +22,4 @@ emacs/auto-save-list
 emacs/undo
 Configs/fcitx5/.config/fcitx/dbus/*
 *.home-manager-backup
+*.el#
