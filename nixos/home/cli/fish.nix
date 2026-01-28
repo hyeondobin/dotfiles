@@ -16,14 +16,15 @@ in
         # need a ' ' at the end of abbrs as we use space as expand-abbr os self-insert
         cat = "bat ";
         cp = "cp -iv ";
-        en = "nvim ~/.config/nxim/flake.nix ";
-        ex = "nvim ~/repo/dobinix/flake.nix ";
+        e = "$EDITOR ";
+        en = "$EDITOR ~/.config/nxim/flake.nix ";
+        ex = "$EDITOR ~/repo/dotfiles/flake.nix ";
         l = "eza ";
         lt = "eza --tree";
         lz = "lazygit ";
         mkdir = "mkdir -pv ";
         mv = "mv -iv ";
-        nhs = "nh home switch --ask -b hm-backup ";
+        nhs = "nh home switch --ask -b home-manager-backup ";
         nhsf = "nh home switch -b hm-backup ";
         nos = "nh os switch --ask ";
         nosf = "nh os switch ";

@@ -6,11 +6,11 @@
   ];
 
   dbConfig = {
-    discord = true;
-    rofi = true;
     cli = true;
+    discord = true;
     hyprland = true;
-    waybar = true;
+    rofi = true;
     telegram = true;
+    waybar = true;
   };
 }
