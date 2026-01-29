@@ -24,6 +24,7 @@
   imports = [
     ./cli
     ./discord.nix
+    ./emacs.nix
     ./hypr.nix
     ./rofi.nix
     ./telegram.nix

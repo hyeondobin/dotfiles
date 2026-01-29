@@ -3,7 +3,6 @@
   imports = [
     ./bluetooth.nix
     ./display.nix
-    ./emacs.nix
     ./hyprland.nix
     ./input.nix
     ./network.nix

@@ -11,7 +11,6 @@
   dbConfig = {
     bluetooth = true;
     display = true;
-    emacs = true;
     hyprland = true;
     ime = true;
     internet = true;

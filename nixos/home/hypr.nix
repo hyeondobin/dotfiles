@@ -121,7 +121,7 @@ in
         "$altMod" = "SUPER ALT";
         "$hyprMod" = "SUPER SHIFT CTRL ALT";
         "$terminal" = "ghostty";
-        "$emacs" = "emacs";
+        "$emacs" = "emacsclient";
         # ref: https://www.reddit.com/r/wayland/comments/1cywhh2/anyone_still_seeing_flickering_in/
         "$webBrowser" = "vivaldi --disable-gpu";
         "$bitwarden" = "bitwarden";
@@ -225,6 +225,11 @@ in
           "$mainMod, T, exec, pgrep $terminal && hyprctl dispatch workspace name:Term || $terminal"
           "$ctrlMod, T, exec, $terminal"
           "$shiftMod, T, movetoworkspace, name:Term"
+
+          # emacs
+          "$mainMod, E, workspace, name:Emacs"
+          "$ctrlMod, E, exec, $emacs"
+          "$shiftMod, E, movetoworkspace, name:Emacs"
 
           # notion
           "$mainMod, N, workspace, name:Notion" # no detecting for electron apps

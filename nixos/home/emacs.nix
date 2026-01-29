@@ -1,4 +1,5 @@
 {
+  self,
   inputs,
   config,
   lib,
@@ -7,21 +8,34 @@
 }:
 let
   cfg = config.dbConfig;
+  emacs = pkgs.emacs-pgtk;
 in
 {
   options = {
     dbConfig.emacs = lib.mkEnableOption "Enable emacs";
   };
   config = lib.mkIf cfg.emacs {
-    environment.systemPackages = [
+    home.packages = [
       # (pkgs.emacsWithPackagesFromUsePackage {
       #   package = pkgs.emacs-pgtk;
       #   config = "${inputs.self}" + "/emacs/config.el";
       #   extraEmacsPackages = epkgs: [
       #   ];
       # })
-      pkgs.emacs-pgtk
+      emacs
     ];
+    services.emacs = {
+      enable = false;
+      package = emacs;
+    };
+    home.sessionVariables = {
+      EDITOR = "emacsclient";
+    };
+    xdg.configFile = {
+      emacs = {
+        source = config.lib.file.mkOutOfStoreSymlink "${self}/emacs";
+      };
+    };
   };
 
 }
