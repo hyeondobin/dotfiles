@@ -105,7 +105,7 @@
 
   environment = {
     variables = {
-      EDITOR = "nvim";
+      # EDITOR = "nvim";
       SSH_AUTH_SOCK = "/home/${username}/.bitwarden-ssh-agent.sock";
     };
     systemPackages = with pkgs; [
