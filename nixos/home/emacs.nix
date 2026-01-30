@@ -8,7 +8,12 @@
 }:
 let
   cfg = config.dbConfig;
-  emacs = pkgs.emacs-pgtk;
+  emacs = (
+    (pkgs.emacsPackagesFor pkgs.emacs-pgtk).emacsWithPackages (epkgs: [
+      epkgs.vterm
+      epkgs.treesit-grammars.with-all-grammars
+    ])
+  );
 in
 {
   options = {
@@ -33,7 +38,7 @@ in
     };
     xdg.configFile = {
       emacs = {
-        source = config.lib.file.mkOutOfStoreSymlink "${self}/emacs";
+        source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/repo/dotfiles/emacs";
       };
     };
   };
