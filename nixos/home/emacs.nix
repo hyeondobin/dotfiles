@@ -30,7 +30,7 @@ in
       emacs
     ];
     services.emacs = {
-      enable = false;
+      enable = true;
       package = emacs;
     };
     home.sessionVariables = {

@@ -228,7 +228,7 @@ in
 
           # emacs
           "$mainMod, E, workspace, name:Emacs"
-          "$ctrlMod, E, exec, $emacs"
+          "$ctrlMod, E, exec, $emacs -c"
           "$shiftMod, E, movetoworkspace, name:Emacs"
 
           # notion
