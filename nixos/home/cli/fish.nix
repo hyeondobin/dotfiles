@@ -17,6 +17,7 @@ in
         cat = "bat ";
         cp = "cp -iv ";
         e = "$EDITOR ";
+	ee = "$EDITOR ~/repo/dotfiles/emacs/init.el ";
         en = "$EDITOR ~/.config/nxim/flake.nix ";
         ex = "$EDITOR ~/repo/dotfiles/flake.nix ";
         l = "eza ";

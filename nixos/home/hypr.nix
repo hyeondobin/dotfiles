@@ -121,7 +121,7 @@ in
         "$altMod" = "SUPER ALT";
         "$hyprMod" = "SUPER SHIFT CTRL ALT";
         "$terminal" = "ghostty";
-        "$emacs" = "emacsclient";
+        "$emacs" = "emacsclient -c";
         # ref: https://www.reddit.com/r/wayland/comments/1cywhh2/anyone_still_seeing_flickering_in/
         "$webBrowser" = "vivaldi --disable-gpu";
         "$bitwarden" = "bitwarden";
@@ -227,8 +227,8 @@ in
           "$shiftMod, T, movetoworkspace, name:Term"
 
           # emacs
-          "$mainMod, E, workspace, name:Emacs"
-          "$ctrlMod, E, exec, $emacs -c"
+          "$mainMod, E, exec, pgrep emacsclient && hyprctl dispatch workspace name:Emacs || $emacs"
+          "$ctrlMod, E, exec, $emacs"
           "$shiftMod, E, movetoworkspace, name:Emacs"
 
           # notion
