@@ -124,6 +124,8 @@
 
       zoxide
       lazygit
+      jujutsu
+      lazyjj
 
       vivaldi
       bitwarden-desktop
