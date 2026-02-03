@@ -22,7 +22,7 @@ in
         ex = "$EDITOR ~/repo/dotfiles/flake.nix ";
         l = "eza ";
         lt = "eza --tree";
-        lz = "lazygit ";
+        lz = "lazyjj ";
         mkdir = "mkdir -pv ";
         mv = "mv -iv ";
         nhs = "nh home switch --ask -b home-manager-backup ";
@@ -42,6 +42,9 @@ in
         bind -M insert \cn down-or-search
         bind -M insert " " expand-abbr or self-insert
         fastfetch
+      '';
+      shellInitLast = ''
+	COMPLETE=fish jj | source
       '';
     };
     home.packages = with pkgs; [
