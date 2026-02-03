@@ -41,7 +41,15 @@
 (elpaca elpaca-use-package
   (elpaca-use-package-mode))
 
-(use-package evil :ensure t :demand t :config (evil-mode 1))
+(use-package evil :ensure t :demand t
+  :config
+  (setq evil-want-C-u-scroll t
+	evil-cross-lines t
+	evil-split-window-below t
+	evil-split-window-right t
+	evil-highlight-closing-paren-at-point-states '(not emacs replace)
+	evil-undo-system 'undo-redo)
+  (evil-mode 1))
 
 (which-key-mode 1)
 
