@@ -57,6 +57,12 @@
   :config
   (evil-mode 1))
 
+(use-package evil-owl
+  :ensure t
+  :diminish ""
+  ;:config
+  )
+
 (which-key-mode 1)
 
 (use-package tree-sitter :ensure t :demand t :config (global-tree-sitter-mode))
@@ -105,9 +111,11 @@
 (use-package orderless
   :ensure t
   :custom
+  (orderless-matching-styles 'orderless-flex)
   (completion-styles '(orderless partial-completion basic))
   (completion-category-defaults nil)
-  (completion-category-overrides nil))
+  (completion-category-overrides '((file (styles partial-completion)))))
+
 
 (use-package dabbrev
   :bind (("M-/" . dabbrev-completion)
