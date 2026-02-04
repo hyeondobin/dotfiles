@@ -32,10 +32,9 @@ in
     services.emacs = {
       enable = true;
       package = emacs;
-      defaultEditor = true;
     };
     home.sessionVariables = {
-      # EDITOR = "emacsclient";
+      EDITOR = "emacsclient -c -a emacs";
     };
     xdg.configFile = {
       emacs = {

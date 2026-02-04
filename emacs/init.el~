@@ -1,9 +1,4 @@
 (menu-bar-mode -1)
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
-
-(setq custom-file "~/repo/dotfiles/emacs/customs.el")
-
 (defvar elpaca-installer-version 0.11)
 (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
 (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
@@ -47,14 +42,13 @@
   (elpaca-use-package-mode))
 
 (use-package evil :ensure t :demand t
-  :init
+  :config
   (setq evil-want-C-u-scroll t
 	evil-cross-lines t
 	evil-split-window-below t
 	evil-split-window-right t
 	evil-highlight-closing-paren-at-point-states '(not emacs replace)
 	evil-undo-system 'undo-redo)
-  :config
   (evil-mode 1))
 
 (which-key-mode 1)
@@ -78,58 +72,18 @@
 (add-to-list 'default-frame-alist '(font . "JetBrains Mono NF-14"))
 (setq-default inhibit-startup-message t
 	      use-short-answers t)
-(recentf-mode t)
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
 
-(use-package rainbow-delimiters
-  :ensure t
-  :hook (prog-mode . rainbow-delimiters-mode))
-
-(use-package corfu
-  :ensure t
-  :hook (prog-mode . (lambda () (setq-local corfu-auto t)))
-  :init
-  (global-corfu-mode)
-  :custom
-  (corfu-auto-prefix 2)
-  (corfu-cycle t)
-  )
-(use-package vertico
-  :ensure t
-  :init (vertico-mode))
-
-(use-package cape
-  :ensure t)
-
-(use-package orderless
-  :ensure t
-  :custom
-  (completion-styles '(orderless basic))
-  (completion-category-overrides '((file (styles partial-completion))))
-  (completion-category-defaults nil)
-  (completion-pcm-leading-wildcard t))
-
-(use-package dabbrev
-  :ensure t
-  :bind (("M-/" . dabbrev-completion)
-	 ("C-M-/" . dabbrev-expand))
-  :config
-  (add-to-list 'dabbrev-ignored-buffer-regexps "\\` ")
-  (add-to-list 'dabbrev-ignored-buffer-modes 'authinfo-mode)
-  (add-to-list 'dabbrev-ignored-buffer-modes 'doc-view-mode)
-  (add-to-list 'dabbrev-ignored-buffer-modes 'pdf-view-mode)
-  (add-to-list 'dabbrev-ignored-buffer-modes 'tags-table-mode)
-  
-  (use-package lsp-mode
-    :ensure t
-    :custom
-    (lsp-completion-provider :none)
-    :init
-    (defun dobin/orderless-dispatch-flex-first (_pattern index _total)
-      (and (eq index 0) 'orderless-flex))
-    (defun dobin/lsp-mode-setup-completion ()
-      (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
-	    '(orderless))
-      (setq-local orderless-style-dispatchers (list #'dobin/orderless-dispatch-flex-first))
-      (setq-local completion-at-point-functions (list (cape-capf-buster #'lsp-completion-at-point))))
-    :hook
-    (lsp-completion-mode . dobin/lsp-mode-setup-completion))
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(evil-undo-system 'undo-redo))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
