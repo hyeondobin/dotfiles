@@ -47,15 +47,25 @@
   (elpaca-use-package-mode))
 
 (use-package evil :ensure t :demand t
+  :custom
+  (evil-want-C-u-scroll t)
+  (evil-cross-lines t)
+  (evil-split-window-below t)
+  (evil-split-window-right t)
+  (evil-highlight-closing-paren-at-point-states '(not emacs replace))
+  (evil-undo-system 'undo-redo)
   :init
-  (setq evil-want-C-u-scroll t
-	evil-cross-lines t
-	evil-split-window-below t
-	evil-split-window-right t
-	evil-highlight-closing-paren-at-point-states '(not emacs replace)
-	evil-undo-system 'undo-redo)
+  (setopt evil-want-integration t)
+  (setopt evil-want-keybinding nil)
   :config
   (evil-mode 1))
+
+(use-package evil-collection
+  :after evil
+  :demand t
+  :ensure t
+  :config
+  (evil-collection-init))
 
 (use-package evil-owl
   :ensure t
@@ -80,15 +90,35 @@
   :config
   (load-theme 'catppuccin :no-confirm))
 
-;; (set-frame-font "JetBrains Mono NF 18" nil t)
-(add-to-list 'default-frame-alist '(font . "JetBrains Mono NF-14"))
+;; 한글 예시문
+;; D2Coding Nerd Font의 Mono는 글자 폭이 잘못 설정되어 있어서 사용할 시 영어의 폭과 맞춰지기 때문에 일반 폰트로 사용해야한다.
+;; https://codepractice.tistory.com/167
+(defun dobin/set-korean-font (frame)
+  "Set font for new frames"
+  (when (display-graphic-p frame)
+    (with-selected-frame frame
+      (set-fontset-font "fontset-default" 'hangul (font-spec :family "D2CodingLigature Nerd Font" :size 18)))))
+(add-hook 'after-make-frame-functions 'dobin/set-korean-font)
+
+(add-to-list 'default-frame-alist '(font . "JetBrains Mono NFM-14"))
+
+(set-language-environment "Korean")
+(prefer-coding-system 'utf-8)
+
 (setq-default inhibit-startup-message t
 	      use-short-answers t)
+
 (recentf-mode t)
 
 (use-package rainbow-delimiters
   :ensure t
   :hook (prog-mode . rainbow-delimiters-mode))
+
+(defun dobin/elisp-mode-init ()
+  "Set completion function to cape"
+  (setq-local completion-at-point-functions
+	      (list (cape-capf-inside-code #'cape-elisp-symbol))))
+(add-hook 'emacs-lisp-mode-hook #'dobin/elisp-mode-init)
 
 (use-package corfu
   :ensure t
