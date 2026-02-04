@@ -92,6 +92,8 @@
   :custom
   (corfu-auto-prefix 2)
   (corfu-cycle t)
+  :config
+  (keymap-unset corfu-map "RET")
   )
 (use-package vertico
   :ensure t
@@ -109,7 +111,6 @@
   (completion-pcm-leading-wildcard t))
 
 (use-package dabbrev
-  :ensure t
   :bind (("M-/" . dabbrev-completion)
 	 ("C-M-/" . dabbrev-expand))
   :config
@@ -117,19 +118,25 @@
   (add-to-list 'dabbrev-ignored-buffer-modes 'authinfo-mode)
   (add-to-list 'dabbrev-ignored-buffer-modes 'doc-view-mode)
   (add-to-list 'dabbrev-ignored-buffer-modes 'pdf-view-mode)
-  (add-to-list 'dabbrev-ignored-buffer-modes 'tags-table-mode)
+  (add-to-list 'dabbrev-ignored-buffer-modes 'tags-table-mode))
   
-  (use-package lsp-mode
-    :ensure t
-    :custom
-    (lsp-completion-provider :none)
-    :init
-    (defun dobin/orderless-dispatch-flex-first (_pattern index _total)
-      (and (eq index 0) 'orderless-flex))
-    (defun dobin/lsp-mode-setup-completion ()
-      (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
-	    '(orderless))
-      (setq-local orderless-style-dispatchers (list #'dobin/orderless-dispatch-flex-first))
-      (setq-local completion-at-point-functions (list (cape-capf-buster #'lsp-completion-at-point))))
-    :hook
-    (lsp-completion-mode . dobin/lsp-mode-setup-completion))
+(use-package lsp-mode
+  :ensure t
+  :custom
+  (lsp-completion-provider :none)
+  :init
+  (defun dobin/orderless-dispatch-flex-first (_pattern index _total)
+    (and (eq index 0) 'orderless-flex))
+  (defun dobin/lsp-mode-setup-completion ()
+    (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
+	  '(orderless))
+    (setq-local orderless-style-dispatchers (list #'dobin/orderless-dispatch-flex-first))
+    (setq-local completion-at-point-functions (list (cape-capf-buster #'lsp-completion-at-point))))
+  :hook
+  (lsp-completion-mode . dobin/lsp-mode-setup-completion))
+
+(use-package kind-icon
+  :ensure t
+  :after corfu
+  :config
+  (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))

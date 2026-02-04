@@ -31,6 +31,7 @@ in
         nosf = "nh os switch ";
         noux = "nh os switch --update-input nxim";
         qfw = "qmk flash";
+	ree = "systemctl --user restart emacs.service";
         sofi = "source ~/.config/fish/config.fish";
         vi = "nvim ";
         z = "cd ";
