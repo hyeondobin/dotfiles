@@ -140,3 +140,5 @@
   :after corfu
   :config
   (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
+
+(setq-default display-line-numbers 'visual)
