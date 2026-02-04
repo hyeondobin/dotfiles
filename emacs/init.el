@@ -105,10 +105,9 @@
 (use-package orderless
   :ensure t
   :custom
-  (completion-styles '(orderless basic))
-  (completion-category-overrides '((file (styles partial-completion))))
+  (completion-styles '(orderless partial-completion basic))
   (completion-category-defaults nil)
-  (completion-pcm-leading-wildcard t))
+  (completion-category-overrides nil))
 
 (use-package dabbrev
   :bind (("M-/" . dabbrev-completion)
@@ -127,6 +126,7 @@
   :init
   (defun dobin/orderless-dispatch-flex-first (_pattern index _total)
     (and (eq index 0) 'orderless-flex))
+
   (defun dobin/lsp-mode-setup-completion ()
     (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
 	  '(orderless))
@@ -142,3 +142,13 @@
   (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
 
 (setq-default display-line-numbers 'visual)
+
+(defun dobin/keyboard-quit ()
+  "Smarter version of the built-in `keyboard-quit'."
+  (interactive)
+  (if (active-minibuffer-window)
+      (if (minibufferp)
+	  (minibuffer-keyboard-quit)
+	(abort-recursive-edit))
+    (keyboard-quit)))
+(global-set-key [remap keyboard-quit] #'dobin/keyboard-quit)
