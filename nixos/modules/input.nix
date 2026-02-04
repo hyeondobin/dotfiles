@@ -25,6 +25,9 @@
               fcitx5-gtk
             ];
             settings = {
+	      addons = {
+		clipboard.TriggerKey = "";
+	      };
               inputMethod = {
                 GroupOrder."0" = "Default";
                 "Groups/0" = {
