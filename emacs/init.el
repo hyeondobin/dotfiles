@@ -58,10 +58,16 @@
   (setopt evil-want-integration t)
   (setopt evil-want-keybinding nil)
   :config
+  (evil-define-key 'motion 'global
+    "j" 'evil-next-visual-line
+    "k" 'evil-previous-visual-line)
   (evil-mode 1))
 
 (use-package evil-collection
   :after evil
+  :custom
+  (evil-collection-setup-minibuffer t)
+  (evil-collection-want-find-usages-bindings t)
   :demand t
   :ensure t
   :config
@@ -72,6 +78,17 @@
   :diminish ""
   ;:config
   )
+
+;; leader map
+(defvar dobin-leader-map (make-sparse-keymap)
+  "\"leader key\"를 위한 키맵")
+(defvar dobin-search-map (make-sparse-keymap)
+  "Search keymap")
+
+(keymap-set evil-normal-state-map "<space>" dobin-leader-map)
+
+(keymap-set dobin-leader-map "s" '("[S]earch" . dobin-search-map))
+(keymap-set dobin-search-map "." 'recentf)
 
 (which-key-mode 1)
 
