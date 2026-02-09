@@ -5,4 +5,5 @@
   email = "dobinhyeon@gmail.com"
 
 [ui]
+default-command = "log"
   
