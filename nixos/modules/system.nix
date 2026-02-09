@@ -118,6 +118,8 @@
       wget
       curl
 
+      trash-cli
+
       wl-clipboard
       kitty
       ghostty
