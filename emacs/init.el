@@ -1,7 +1,3 @@
-(menu-bar-mode -1)
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
-
 (setq custom-file "~/repo/dotfiles/emacs/customs.el")
 
 (defvar elpaca-installer-version 0.11)
@@ -89,6 +85,7 @@
     (setopt load-prefer-newer t)
 
     (show-paren-mode t)
+    (visual-line-mode t)
     )
 
 (use-package electric
@@ -206,7 +203,8 @@
         "C-g" 'dobin/keyboard-quit)
 
     (general-define-key
-        :keymap minibuffer-local-map
+        :keymaps '(minibuffer-mode-map minibuffer-local-map)
+        :states '(normal insert emacs)
         "ESC" 'dobin/keyboard-quit)
 
     (general-unbind
@@ -217,9 +215,10 @@
 
     (dobin/leader-keys
         "SPC" '(execute-extended-command :wk "command 실행") ;; M-x 대체
-        "TAB" '(:keymap tab-prefix-map :wk "[t]ab")) ;; tab 단축키 리맵
-    (dobin/leader-keys
-        "w" '(:keymap evil-window-map :wk "[w]indow")) ;; evil의 윈도우 매핑
+        "TAB" '(:keymap tab-prefix-map :wk "[t]ab") ;; tab 단축키 리맵
+        "w" '(save-buffer :wk ":[w]rite")) ;; 빠른 저장 
+    (general-define-key
+        "M-w" 'dobin/save-and-kill-buffer)
 
     ;; help
     (dobin/leader-keys
@@ -228,8 +227,9 @@
     ;; file
     (dobin/leader-keys
         "f" '(:ignore t :wk "[f]ile")
-        "fc" '(:ignore t :wk "[f]ile [c]onfig")
-        "fci" '(lambda () (interactive) (find-file user-init-file) :wk "[f]ile [c]onfig [i]nit file")
+        "fc" '(:ignore t :wk "[f]ile -> [c]onfig")
+        "fci" '((lambda () (interactive) (find-file user-init-file)) :wk "[f]ile [c]onfig [i]nit file")
+        "fcr" '(dobin/restart-server :wk "[f]ile -> [c]onfig -> [r]eload")
         "ff" '(find-file :wk "[f]ind [f]ile")
         "fs" '(save-buffer :wk "[f]ile [s]ave")
         "fr" '(recentf :wk "[f]ile [r]ecent"))
@@ -342,6 +342,29 @@
     (completion-category-defaults nil)
     (completion-category-overrides '((file (styles partial-completion)))))
 
+;; TODO: Embark Maginalia 
+(use-package marginalia
+    :ensure t
+    :config
+    (marginalia-mode))
+
+(use-package embark
+    :ensure t
+
+    :config
+    (general-define-key
+        "C-," 'embark-act)
+    (general-define-key
+        :states 'insert
+        :keymaps 'minibuffer-mode-map
+        "M-e" 'embark-act)
+    (add-to-list 'display-buffer-alist
+        '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+             nil
+             (window-parameters (mode-line-format . none)))))
+
+(use-package command-log-mode
+    :ensure t)
 
 (use-package dabbrev
     :bind (("M-/" . dabbrev-completion)
@@ -352,6 +375,7 @@
     (add-to-list 'dabbrev-ignored-buffer-modes 'doc-view-mode)
     (add-to-list 'dabbrev-ignored-buffer-modes 'pdf-view-mode)
     (add-to-list 'dabbrev-ignored-buffer-modes 'tags-table-mode))
+
 
 (use-package lsp-mode
     :ensure t
@@ -386,3 +410,12 @@
 	        (abort-recursive-edit))
         (keyboard-quit)))
 (global-set-key [remap keyboard-quit] #'dobin/keyboard-quit)
+
+(defun dobin/save-and-kill-buffer ()
+    "현재 버퍼를 저장하고 제거"
+    (interactive)
+    (save-buffer)
+    (evil-quit))
+(defun dobin/restart-server ()
+    (interactive)
+    (shell-command "systemctl --user restart emacs.service"))
