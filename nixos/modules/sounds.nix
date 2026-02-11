@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 {
   options = {
     dbConfig.sounds = lib.mkEnableOption "Enable sounds";
@@ -12,5 +12,8 @@
       alsa.support32Bit = true;
       pulse.enable = true;
     };
+    environment.systemPackages = [
+      pkgs.pwvucontrol
+    ];
   };
 }
