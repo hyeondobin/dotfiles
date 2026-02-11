@@ -4,11 +4,13 @@ emacs/.cache/svg-lib
 emacs/.emacs.desktop
 emacs/.emacs.desktop.lock
 emacs/.lsp-session-v1
+emacs/backups
 emacs/eln-cache/29.4-631e5fd8
 emacs/elpa
 emacs/elpaca
 emacs/emacs-config.org~
 emacs/eshell/history
+emacs/eshell/lastdir
 emacs/hyeondobin@VanLioum-Desktop.*
 emacs/projects
 emacs/recentf
