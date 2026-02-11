@@ -1,5 +1,5 @@
-(setq custom-file "~/repo/dotfiles/emacs/customs.el")
-
+    (setopt custom-file "~/repo/dotfiles/emacs/customs.el")
+;; bootstrap elpaca
 (defvar elpaca-installer-version 0.11)
 (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
 (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
@@ -54,7 +54,8 @@
     (setopt user-full-name "Jehui Lee")
     (setopt user-mail-address "jayli2558@gmail.com")
 
-    (defalias 'yes-or-no-p 'y-or-n-p)
+    (visual-line-mode +1)
+    (setopt display-line-numbers 'visual)
 
     (setopt indent-tabs-mode nil)
     (setopt tab-width 4)
@@ -74,19 +75,23 @@
 
     (global-set-key (kbd "<escape>") 'dobin/keyboard-quit) ;; ESC를 메타 프리픽스로 사용하지 않는다.
 
-    (setopt custom-file (make-temp-file "")) ; temp file을 place holder로 사용
     (setopt custom-safe-themes t) ; mark all themes as safe
     (setopt enable-local-variables :all) ; fix =defvar= warnings
 
     (setopt delete-by-moving-to-trash t)
 
-    (setq byte-compile-warnings '(not free-vars unresolved noruntime lexical make-local)) ; elisp 컴파일 시의 경고 메세지 줄이기. 
+    (setq byte-compile-warnings '(not free-vars unresolved noruntime lexical make-local)) ; elisp 컴파일 시의 경고 메세지 줄이기.
     (setopt native-comp-async-report-warnings-errors nil)
     (setopt load-prefer-newer t)
 
-    (show-paren-mode t)
-    (visual-line-mode t)
+    :hook
+    (before-save . delete-trailing-whitespace)
     )
+
+(use-package desktop
+    :ensure nil
+    :config
+    (desktop-save-mode +1))
 
 (use-package electric
     :demand t
@@ -175,11 +180,24 @@
 (use-package evil-owl
     :ensure t
     :diminish ""
-                                        ;:config
+    ;; :config
     )
 
-(use-package general
+(use-package evil-org
     :ensure t
+    :after org
+    :hook (org-mode . (lambda () evil-org-mode))
+    :config
+    (require 'evil-org-agenda)
+    (evil-org-agenda-set-keys))
+
+;;When installing a package used in the init file itself,
+;;e.g. a package which adds a use-package key word,
+;;use the :wait recipe keyword to block until that package is installed/configured.
+;;For example:
+;;(use-package general :ensure (:wait t) :demand t)
+(use-package general
+    :ensure (:wait t)
     :demand t
     :config
     (general-evil-setup) ;; general과 evil 연계
@@ -215,8 +233,7 @@
 
     (dobin/leader-keys
         "SPC" '(execute-extended-command :wk "command 실행") ;; M-x 대체
-        "TAB" '(:keymap tab-prefix-map :wk "[t]ab") ;; tab 단축키 리맵
-        "w" '(save-buffer :wk ":[w]rite")) ;; 빠른 저장 
+        "TAB" '(:keymap tab-prefix-map :wk "[t]ab")) ;; tab 단축키 리맵
     (general-define-key
         "M-w" 'dobin/save-and-kill-buffer)
 
@@ -224,21 +241,28 @@
     (dobin/leader-keys
         "h" '(:ignore t :wk "[h]elp"))
 
+    ;; desktop
+    (dobin/leader-keys
+        "d" '(:ignore t :wk "[d]esktop")
+        "dr" '(desktop-revert :wk "[r]evert last desktop")
+        "ds" '(desktop-save :wk "[s]ave current desktop"))
+
     ;; file
     (dobin/leader-keys
         "f" '(:ignore t :wk "[f]ile")
-        "fc" '(:ignore t :wk "[f]ile -> [c]onfig")
-        "fci" '((lambda () (interactive) (find-file user-init-file)) :wk "[f]ile [c]onfig [i]nit file")
-        "fcr" '(dobin/restart-server :wk "[f]ile -> [c]onfig -> [r]eload")
+        "fc" '(:ignore t :wk "[c]onfig")
+        "fci" '((lambda () (interactive) (find-file user-init-file)) :wk "[i]nit file")
+        "fcr" '(dobin/restart-server :wk "[r]eload")
+        "fd" '(dired-jump :wk "[d]ired")
         "ff" '(find-file :wk "[f]ind [f]ile")
         "fs" '(save-buffer :wk "[f]ile [s]ave")
-        "fr" '(recentf :wk "[f]ile [r]ecent"))
+        "fr" '(recentf :wk "[r]ecent [f]ile "))
 
     ;; buffer
     (dobin/leader-keys
         "b" '(:ignore t :wk "[b]uffer")
         "bs" '(switch-to-buffer :wk "[b]uffer [s]witch")
-        "bd" '(kill-this-buffer :wk "[b]uffer [d]elete")
+        "bd" '(kill-current-buffer :wk "[b]uffer [d]elete")
         "br" '(revert-buffer :wk "[b]uffer [r]eload(revert)"))
 
     ;; bookmark
@@ -260,8 +284,46 @@
 (use-package delsel
     :ensure nil
     :config
-    (delete-selection-mode t)
+    (delete-selection-mode t))
+
+(use-package org
+    :ensure (:wait t)
+    :demand t
+    :custom
+    (org-auto-align-tags nil)
+    (org-directory "~/repo/org/agenda")
+    (org-default-notes-file (concat org-directory "/notes.org"))
+    :general
+    (dobin/leader-keys
+        :keymaps 'org-mode-map
+        "e" '(org-edit-special :wk "edit"))
     )
+
+(use-package paren
+    :custom
+    (show-paren-delay 0)
+    (show-paren-style 'expression)
+    (show-paren-when-point-in-periphery t)
+    (show-paren-when-point-inside-paren t)
+    :config
+    (set-face-foreground 'match "#1e2030")
+    (set-face-background 'match "#74c7ec")
+    (show-paren-mode +1))
+
+(use-package avy
+    :ensure t
+    :general
+    (general-def '(normal motion)
+        "s" 'evil-avy-goto-char-timer
+        "f" 'evil-avy-goto-char-in-line
+        "gl" 'evil-avy-goto-line
+        )
+    )
+
+(use-package doom-modeline
+    :ensure t
+    :init
+    (doom-modeline-mode +1))
 
 (use-package which-key
     :after evil
@@ -288,7 +350,6 @@
     :config
     (load-theme 'catppuccin :no-confirm))
 
-;; 한글 예시문
 ;; D2Coding Nerd Font의 Mono는 글자 폭이 잘못 설정되어 있어서 사용할 시 영어의 폭과 맞춰지기 때문에 일반 폰트로 사용해야한다.
 ;; https://codepractice.tistory.com/167
 (defun dobin/set-korean-font (frame)
@@ -299,7 +360,6 @@
 (add-hook 'after-make-frame-functions 'dobin/set-korean-font)
 
 (add-to-list 'default-frame-alist '(font . "JetBrains Mono NFM-14"))
-
 
 (setq-default inhibit-startup-message t
 	use-short-answers t)
@@ -342,7 +402,7 @@
     (completion-category-defaults nil)
     (completion-category-overrides '((file (styles partial-completion)))))
 
-;; TODO: Embark Maginalia 
+;; TODO: Embark Maginalia
 (use-package marginalia
     :ensure t
     :config
@@ -354,10 +414,6 @@
     :config
     (general-define-key
         "C-," 'embark-act)
-    (general-define-key
-        :states 'insert
-        :keymaps 'minibuffer-mode-map
-        "M-e" 'embark-act)
     (add-to-list 'display-buffer-alist
         '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
              nil
@@ -379,8 +435,13 @@
 
 (use-package lsp-mode
     :ensure t
+    :commands lsp
     :custom
     (lsp-completion-provider :none)
+    (lsp-keymap-prefix "C-c l")
+    :hook
+    (lsp-mode . lsp-enable-which-key-integration)
+    (nix-ts-mode . lsp)
     :init
     (defun dobin/orderless-dispatch-flex-first (_pattern index _total)
         (and (eq index 0) 'orderless-flex))
@@ -393,13 +454,15 @@
     :hook
     (lsp-completion-mode . dobin/lsp-mode-setup-completion))
 
+(use-package lsp-ui :ensure t :commands lsp-ui-mode
+    :custom
+    (lsp-ui-sideline-show-hover t))
+
 (use-package kind-icon
     :ensure t
     :after corfu
     :config
     (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
-
-(setq-default display-line-numbers 'visual)
 
 (defun dobin/keyboard-quit ()
     "Smarter version of the built-in `keyboard-quit'."
@@ -418,4 +481,8 @@
     (evil-quit))
 (defun dobin/restart-server ()
     (interactive)
+    (save-buffer )
     (shell-command "systemctl --user restart emacs.service"))
+
+(use-package vterm
+    :ensure nil)
