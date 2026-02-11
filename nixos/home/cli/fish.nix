@@ -21,6 +21,7 @@ in
         en = "$EDITOR ~/.config/nxim/flake.nix ";
         ere = "systemctl --user restart emacs.service";
         ex = "$EDITOR ~/repo/dotfiles/flake.nix ";
+        jl = "jj log -s"; # jj log를 diff 포함해서 보여주기.
         l = "eza ";
         lt = "eza --tree";
         lz = "lazyjj ";

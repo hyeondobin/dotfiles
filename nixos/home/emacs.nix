@@ -28,6 +28,9 @@ in
       #   ];
       # })
       emacs
+
+      # language servers
+      pkgs.nixd
     ];
     services.emacs = {
       enable = true;

@@ -38,7 +38,7 @@
   catppuccin = {
     enable = true;
     accent = "sapphire";
-    flavor = "macchiato";
+    flavor = "mocha";
     cursors = {
       enable = true;
     };
