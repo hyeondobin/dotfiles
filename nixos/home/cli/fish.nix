@@ -16,11 +16,11 @@ in
         # need a ' ' at the end of abbrs as we use space as expand-abbr os self-insert
         cat = "bat ";
         cp = "cp -iv ";
-        e = "$EDITOR ";
-        ee = "$EDITOR ~/repo/dotfiles/emacs/init.el ";
-        en = "$EDITOR ~/.config/nxim/flake.nix ";
+        e = "eval $EDITOR ";
+        ee = "eval $EDITOR ~/repo/dotfiles/emacs/init.el ";
+        en = "eval $EDITOR ~/.config/nxim/flake.nix ";
         ere = "systemctl --user restart emacs.service";
-        ex = "$EDITOR ~/repo/dotfiles/flake.nix ";
+        ex = "eval $EDITOR ~/repo/dotfiles/flake.nix ";
         jl = "jj log -s"; # jj log를 diff 포함해서 보여주기.
         l = "eza ";
         lt = "eza --tree";
