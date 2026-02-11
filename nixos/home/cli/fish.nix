@@ -17,8 +17,9 @@ in
         cat = "bat ";
         cp = "cp -iv ";
         e = "$EDITOR ";
-	ee = "$EDITOR ~/repo/dotfiles/emacs/init.el ";
+        ee = "$EDITOR ~/repo/dotfiles/emacs/init.el ";
         en = "$EDITOR ~/.config/nxim/flake.nix ";
+        ere = "systemctl --user restart emacs.service";
         ex = "$EDITOR ~/repo/dotfiles/flake.nix ";
         l = "eza ";
         lt = "eza --tree";
@@ -31,7 +32,6 @@ in
         nosf = "nh os switch ";
         noux = "nh os switch --update-input nxim";
         qfw = "qmk flash";
-	ree = "systemctl --user restart emacs.service";
         sofi = "source ~/.config/fish/config.fish";
         vi = "nvim ";
         z = "cd ";

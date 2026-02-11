@@ -132,10 +132,10 @@
       vivaldi
       bitwarden-desktop
 
-      (catppuccin-sddm.override {
-        flavor = "macchiato";
-        fontSize = "12";
-      })
+      # (catppuccin-sddm.override {
+      #   flavor = "macchiato";
+      #   fontSize = "12";
+      # })
     ];
     sessionVariables = {
       NIXOS_OZONE_WL = "1";
@@ -144,9 +144,12 @@
   catppuccin = {
     enable = true;
     accent = "sapphire";
-    flavor = "macchiato";
+    flavor = "mocha";
     cursors = {
       enable = true;
+    };
+    sddm = {
+      fontSize = "12";
     };
   };
   nxim =
