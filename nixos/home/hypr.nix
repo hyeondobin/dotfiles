@@ -276,6 +276,13 @@ in
           "$mainMod, S, togglesplit"
           "$mainMod, SPACE, exec, $menu"
 
+          # toggle floating of the window
+          "$mainMod, F, togglefloating"
+
+          # focus other window and bring it to top
+          "$mainMod, TAB, cyclenext"
+          "$mainMod, TAB, bringactivetotop"
+
           # Moving around windows
           "$mainMod, left, movefocus, l"
           "$mainMod, right, movefocus, r"
