@@ -75,8 +75,10 @@
     (native-comp-async-report-warnings-errors nil)
     (load-prefer-newer t)
 
+    (custom-file "~/repo/dotfiles/emacs/customs.el")
+
     :init
-    (visual-line-mode +1) ; 보이는 그대로의 라인으로 이동을 한다. wrapping이 되어도 된 줄을 기준으로 이동한다.
+    (global-visual-line-mode +1) ; 보이는 그대로의 라인으로 이동을 한다. wrapping이 되어도 된 줄을 기준으로 이동한다.
 
     (set-charset-priority 'unicode) ;; utf-8 everywhere
     (set-language-environment "Korean") ; 한글관련 세팅인데 뭐지 잘 모르겠음
@@ -88,25 +90,6 @@
     :hook
     (before-save . delete-trailing-whitespace) ; 저장 시 남은 공백 제거
     )
-
-(setopt custom-file "~/repo/dotfiles/emacs/customs.el")
-
-
-(use-package desktop
-    :ensure nil
-    :config
-    (desktop-save-mode +1))
-
-(use-package electric
-    :demand t
-    :ensure nil
-    :init
-    (electric-pair-mode t)
-    (setopt electric-pair-preserve-balance t))
-
-(use-package ediff
-    :demand t
-    :ensure nil)
 
 (use-package evil
     :ensure t
@@ -141,40 +124,27 @@
     )
 
 (use-package evil-collection
-    :after evil
-    :custom
-    (evil-collection-setup-minibuffer t)
-    (evil-collection-want-find-usages-bindings t)
-    :demand t
-    :ensure t
-    :config
-    (evil-collection-init))
+  :after evil
+  :custom
+  (evil-collection-setup-minibuffer t)
+  (evil-collection-want-find-usages-bindings t)
+  :demand t
+  :ensure t
+  :config
+  (evil-collection-init))
 
-;; vim-commentary의 evil 버전
-;; gc - evil-commentary
-;; gy - evil-commentary-yank
-;; s-/ evil-commentary-line
 (use-package evil-commentary
     :after evil
     :ensure t
     :config
     (evil-commentary-mode))
 
-;; surrounding 관련 모션 추가
-;; surrounding 추가
-;; V -> S or gS
-;; N -> ys or yS
-;; surrounding 변경
-;; cs<old><new>
-;; surrounding 제거
-;; ds
 (use-package evil-surround
     :after evil
     :ensure t
     :config
     (global-evil-surround-mode t))
 
-;; evil motion에 대한 visual 힌트를 제공
 (use-package evil-goggles
     :ensure t
     :config
@@ -182,10 +152,10 @@
     (evil-goggles-use-diff-faces))
 
 (use-package evil-owl
-    :ensure t
-    :diminish ""
-    ;; :config
-    )
+  :ensure t
+  :diminish ""
+  ;; :config
+  )
 
 (use-package evil-org
     :ensure t
@@ -195,11 +165,17 @@
     (require 'evil-org-agenda)
     (evil-org-agenda-set-keys))
 
-;;When installing a package used in the init file itself,
-;;e.g. a package which adds a use-package key word,
-;;use the :wait recipe keyword to block until that package is installed/configured.
-;;For example:
-;;(use-package general :ensure (:wait t) :demand t)
+(use-package electric
+    :demand t
+    :ensure nil
+    :init
+    (electric-pair-mode t)
+    (setopt electric-pair-preserve-balance t))
+
+(use-package ediff
+  :demand t
+  :ensure nil)
+
 (use-package general
     :ensure (:wait t)
     :demand t
@@ -255,12 +231,11 @@
     (dobin/leader-keys
         "f" '(:ignore t :wk "[f]ile")
         "fc" '(:ignore t :wk "[c]onfig")
-        "fci" '((lambda () (interactive) (find-file user-init-file)) :wk "[i]nit file")
+        "fci" '((lambda () (interactive) (find-file (concat user-emacs-directory "config.org"))) :wk "[i]nit file(사실 config.org)")
         "fcr" '(dobin/restart-server :wk "[r]eload")
         "fd" '(dired-jump :wk "[d]ired")
         "ff" '(find-file :wk "[f]ind [f]ile")
-        "fs" '(save-buffer :wk "[f]ile [s]ave")
-        "fr" '(recentf :wk "[r]ecent [f]ile "))
+        "fs" '(save-buffer :wk "[s]ave"))
 
     ;; buffer
     (dobin/leader-keys
@@ -281,11 +256,7 @@
 
     ;; org
     (dobin/leader-keys
-        "o" '(:ignore t :wk "org")
-        "ol" '(org-store-link :wk "store [l]ink")
-        "oa" '(org-agenda :wk "[a]genda")
-        "oc" '(org-capture :wk "[c]apture")
-        )
+        "o" '(:ignore t :wk "[o]rg"))
     )
 
 (use-package delsel
@@ -296,6 +267,8 @@
 (use-package org
     :ensure (:wait t)
     :demand t
+    :config
+    (add-to-list 'org-structure-template-alist '("S" . "src emacs-lisp :lexical t\n"))
     :custom
     (org-auto-align-tags nil)
     (org-directory "~/repo/org/agenda")
@@ -303,7 +276,22 @@
     :general
     (dobin/leader-keys
         :keymaps 'org-mode-map
-        "e" '(org-edit-special :wk "edit"))
+        "oa" '(org-agenda :wk "[a]genda")
+
+        "ob" '(:ignore t :wk "[b]abel")
+        "obt" '(org-babel-tangle :wk "[t]angle")
+
+        "oc" '(org-capture :wk "[c]apture")
+
+        "oe" '(org-edit-special :wk "edit")
+
+        "oi" '(:ignore t :wk "[i]nsert")
+        "ois" '(org-insert-structure-template :wk "[s]tructure template")
+
+        "ol" '(org-store-link :wk "store [l]ink"))
+    (dobin/leader-keys
+        :keymaps 'org-src-mode-map
+        "s" '(org-edit-src-exit :wk "save and quit edit buffer"))
     )
 
 (use-package paren
@@ -318,19 +306,31 @@
     (show-paren-mode +1))
 
 (use-package avy
-    :ensure t
-    :general
-    (general-def '(normal motion)
-        "s" 'evil-avy-goto-char-timer
-        "f" 'evil-avy-goto-char-in-line
-        "gl" 'evil-avy-goto-line
-        )
-    )
+  :ensure t
+    :custom
+    (avy-keys '(?n ?r ?t ?s ?h ?a ?e ?i))
+  :general
+  (general-def '(normal motion)
+      "s" 'evil-avy-goto-char-timer
+      "f" 'evil-avy-goto-char-in-line
+      "gl" 'evil-avy-goto-line
+      )
+  )
 
 (use-package doom-modeline
     :ensure t
     :init
     (doom-modeline-mode +1))
+
+(use-package recentf
+    :ensure nil
+    :config
+    (recentf-mode +1)
+    :general
+    (dobin/leader-keys
+        "fr" '(recentf-open :wk "Show [r]ecent files")
+        "f." '(recentf-open-most-recent-file :wk "open last(.) file"))
+    )
 
 (use-package which-key
     :after evil
@@ -371,7 +371,6 @@
 (setq-default inhibit-startup-message t
 	use-short-answers t)
 
-(recentf-mode t)
 
 (use-package rainbow-delimiters
     :ensure t

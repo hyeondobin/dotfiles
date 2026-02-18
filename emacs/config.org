@@ -9,6 +9,10 @@
  기본적인 elpaca 설치 및 설정을 한다. elpaca는 패키지 매니저로 각종 플러그인이라고도 할 수 있는 패키지들을 다운로드 받고 설정할 수 있으며 이맥스 자체의 설정도 같이 할 수 있다.
  또 다른 패키지 매니저인 =use-package= 와 연계하여 사용할 수 있어서 그렇게 사용 중이다.
 
+ :ensure t를 해주면 elpaca가 온라인(elpa, melpa 등)에서 패키지를 다운로드 받는다.
+ nil일 시에는 다운로드 받지 않고 로컬에서 불러온다.
+ :ensure (:wait t) 를 하면 해당 패키지의 로딩이 끝날 때까지 다른 패키지를 로드하지 않고 기다린다.
+
 #+begin_src emacs-lisp :lexical t
   ;; bootstrap elpaca
   (defvar elpaca-installer-version 0.11)
@@ -95,7 +99,7 @@ emacs의 기본적인 설정들. 그냥 ~setq~ 나 ~setopt~ 를 단독으로 사
       (custom-file "~/repo/dotfiles/emacs/customs.el")
 
       :init
-      (visual-line-mode +1) ; 보이는 그대로의 라인으로 이동을 한다. wrapping이 되어도 된 줄을 기준으로 이동한다.
+      (global-visual-line-mode +1) ; 보이는 그대로의 라인으로 이동을 한다. wrapping이 되어도 된 줄을 기준으로 이동한다.
 
       (set-charset-priority 'unicode) ;; utf-8 everywhere
       (set-language-environment "Korean") ; 한글관련 세팅인데 뭐지 잘 모르겠음
@@ -109,25 +113,15 @@ emacs의 기본적인 설정들. 그냥 ~setq~ 나 ~setopt~ 를 단독으로 사
       )
 #+end_src
 
-* 임시로 일단 옮겨놓은 기존 전체 init.el
+* Package
+패키지 혹은 플러그인이라고도 할 수 있는 파일들을 로드하고 설정한다. 다양한 추가기능이나 테마 등이 패키지에 속한다고 볼 수 있다.
 
+** evil
+emacs에서 vi motion을 사용할 수 있게 해주는 패키지. 이 패키지가 없었다면 아마 emacs를 시도하지 않았을 것이다.
+
+*** evil
+본체. 핵심이다.
 #+begin_src emacs-lisp :lexical t
-  (use-package desktop
-      :ensure nil
-      :config
-      (desktop-save-mode +1))
-
-  (use-package electric
-      :demand t
-      :ensure nil
-      :init
-      (electric-pair-mode t)
-      (setopt electric-pair-preserve-balance t))
-
-  (use-package ediff
-      :demand t
-      :ensure nil)
-
   (use-package evil
       :ensure t
       :demand t
@@ -159,8 +153,14 @@ emacs의 기본적인 설정들. 그냥 ~setq~ 나 ~setopt~ 를 단독으로 사
       (evil-set-initial-state 'eshell-mode 'insert)
       (evil-set-initial-state 'magit-diff-mode 'insert)
       )
+#+end_src
 
-  (use-package evil-collection
+*** evil-collection
+여러가지 모드에서 사용하는 keymap에서 evil을 지원하게 한다. 일일이 설정해야하는 것을 사람들이 설정하여
+공유해 놓은 말 그대로 컬렉션이다.
+
+#+begin_src emacs-lisp :lexical t
+    (use-package evil-collection
       :after evil
       :custom
       (evil-collection-setup-minibuffer t)
@@ -170,43 +170,70 @@ emacs의 기본적인 설정들. 그냥 ~setq~ 나 ~setopt~ 를 단독으로 사
       :config
       (evil-collection-init))
 
-  ;; vim-commentary의 evil 버전
-  ;; gc - evil-commentary
-  ;; gy - evil-commentary-yank
-  ;; s-/ evil-commentary-line
+#+end_src
+
+*** evil-commentary
+코멘트를 evil-motion을 사용하여 만들 수 있게 해주는 패키지. vim-commentary의 evil버전이라고 보면 된다.
+| prefix     | 명령어                |
+|------------+----------------------|
+| gc         | evil-commentary      |
+| gy         | evil-commentary-yank |
+| s(super)-/ | evil-commentary-line |
+
+#+begin_src emacs-lisp :lexical t
   (use-package evil-commentary
       :after evil
       :ensure t
       :config
       (evil-commentary-mode))
 
-  ;; surrounding 관련 모션 추가
-  ;; surrounding 추가
-  ;; V -> S or gS
-  ;; N -> ys or yS
-  ;; surrounding 변경
-  ;; cs<old><new>
-  ;; surrounding 제거
-  ;; ds
+#+end_src
+
+*** evil-surrounding
+=""= 이나 =()= 같은 감싸고 있는 객체를 제어할 수 있는 모션 추가
+| mode   | prefix       | 작업                 |
+|--------+--------------+---------------------|
+| visual | ~S~ or ~gS~  | surrounding 추가     |
+| normal | ~ys~ or ~yS~ | surrounding 추가     |
+| both   | cs<old><new> | <old>를 <new>로 변경 |
+| both   | ds           | surrounding 제거     |
+
+#+begin_src emacs-lisp :lexical t
   (use-package evil-surround
       :after evil
       :ensure t
       :config
       (global-evil-surround-mode t))
 
-  ;; evil motion에 대한 visual 힌트를 제공
+#+end_src
+
+*** evil-goggles
+evil motion에 대한 visual 힌트를 제공
+어떤 모션을 실행했을 때 그 모션이 적용이 되는 범위를 한 번 하이라이트 해서 보여준다.
+
+#+begin_src emacs-lisp :lexical t
   (use-package evil-goggles
       :ensure t
       :config
       (evil-goggles-mode)
       (evil-goggles-use-diff-faces))
+#+end_src
 
-  (use-package evil-owl
+*** TODO evil-owl
+register관련 패키지. 일단 받아보기는 했는데 추가로 확인을 해야한다.
+
+#+begin_src emacs-lisp :lexical t
+    (use-package evil-owl
       :ensure t
       :diminish ""
       ;; :config
       )
+#+end_src
 
+*** TODO evil-org
+org모드와 evil을 연계시켜주는 패키지라고 하는데 얘도 자세한 내용을 확인해보지는 않았다.
+
+#+begin_src emacs-lisp :lexical t
   (use-package evil-org
       :ensure t
       :after org
@@ -214,12 +241,43 @@ emacs의 기본적인 설정들. 그냥 ~setq~ 나 ~setopt~ 를 단독으로 사
       :config
       (require 'evil-org-agenda)
       (evil-org-agenda-set-keys))
+#+end_src
 
-  ;;When installing a package used in the init file itself,
-  ;;e.g. a package which adds a use-package key word,
-  ;;use the :wait recipe keyword to block until that package is installed/configured.
-  ;;For example:
-  ;;(use-package general :ensure (:wait t) :demand t)
+** desktop
+session을 저장했다가 불러오는 기능인 듯한데 daemon으로 썼을 때는 저장이 안되는 것 같다. 정확한 사용법을 알아볼 필요가 있다. 그 전까지는 일단 활성화하지 않는다.
+
+#+begin_src emacs-lisp :lexical t :tangle no
+  (use-package desktop
+      :ensure nil
+      :config
+      (desktop-save-mode +1))
+#+end_src
+
+** electric
+정확히 무슨 기능을 하는 패키지인지는 모르겠지만 일단 괄호나 따옴표의 짝을 맞춰주는 기능이 있다.
+
+#+begin_src emacs-lisp :lexical t
+  (use-package electric
+      :demand t
+      :ensure nil
+      :init
+      (electric-pair-mode t)
+      (setopt electric-pair-preserve-balance t))
+#+end_src
+
+** TODO ediff
+diff라고 해서 넣어놓긴 했는데 자세한 기능을 모른다. 얘도 알아봐야할 듯
+#+begin_src emacs-lisp :lexical t
+    (use-package ediff
+      :demand t
+      :ensure nil)
+#+end_src
+
+** general
+키 매핑을 쉽게 해주는 패키지. evil과 연계가 잘 되어있어서 leader 매핑을 쉽게 만들 수 있다.
+:general을 사용해서 use-package에서도 키워드로 사용할 수 있다.
+
+#+begin_src emacs-lisp :lexical t
   (use-package general
       :ensure (:wait t)
       :demand t
@@ -275,12 +333,11 @@ emacs의 기본적인 설정들. 그냥 ~setq~ 나 ~setopt~ 를 단독으로 사
       (dobin/leader-keys
           "f" '(:ignore t :wk "[f]ile")
           "fc" '(:ignore t :wk "[c]onfig")
-          "fci" '((lambda () (interactive) (find-file user-init-file)) :wk "[i]nit file")
+          "fci" '((lambda () (interactive) (find-file (concat user-emacs-directory "config.org"))) :wk "[i]nit file(사실 config.org)")
           "fcr" '(dobin/restart-server :wk "[r]eload")
           "fd" '(dired-jump :wk "[d]ired")
           "ff" '(find-file :wk "[f]ind [f]ile")
-          "fs" '(save-buffer :wk "[f]ile [s]ave")
-          "fr" '(recentf :wk "[r]ecent [f]ile "))
+          "fs" '(save-buffer :wk "[s]ave"))
 
       ;; buffer
       (dobin/leader-keys
@@ -301,21 +358,27 @@ emacs의 기본적인 설정들. 그냥 ~setq~ 나 ~setopt~ 를 단독으로 사
 
       ;; org
       (dobin/leader-keys
-          "o" '(:ignore t :wk "org")
-          "ol" '(org-store-link :wk "store [l]ink")
-          "oa" '(org-agenda :wk "[a]genda")
-          "oc" '(org-capture :wk "[c]apture")
-          )
+          "o" '(:ignore t :wk "[o]rg"))
       )
+#+end_src
 
+** TODO delsel
+뭔지 잘 모르겠음. 확인 필요
+#+begin_src emacs-lisp :lexical t
   (use-package delsel
       :ensure nil
       :config
       (delete-selection-mode t))
+#+end_src
 
+** org
+
+#+begin_src emacs-lisp :lexical t
   (use-package org
       :ensure (:wait t)
       :demand t
+      :config
+      (add-to-list 'org-structure-template-alist '("S" . "src emacs-lisp :lexical t\n"))
       :custom
       (org-auto-align-tags nil)
       (org-directory "~/repo/org/agenda")
@@ -323,9 +386,29 @@ emacs의 기본적인 설정들. 그냥 ~setq~ 나 ~setopt~ 를 단독으로 사
       :general
       (dobin/leader-keys
           :keymaps 'org-mode-map
-          "e" '(org-edit-special :wk "edit"))
-      )
+          "oa" '(org-agenda :wk "[a]genda")
 
+          "ob" '(:ignore t :wk "[b]abel")
+          "obt" '(org-babel-tangle :wk "[t]angle")
+
+          "oc" '(org-capture :wk "[c]apture")
+
+          "oe" '(org-edit-special :wk "edit")
+
+          "oi" '(:ignore t :wk "[i]nsert")
+          "ois" '(org-insert-structure-template :wk "[s]tructure template")
+
+          "ol" '(org-store-link :wk "store [l]ink"))
+      (dobin/leader-keys
+          :keymaps 'org-src-mode-map
+          "s" '(org-edit-src-exit :wk "save and quit edit buffer"))
+      )
+#+end_src
+
+** paren
+괄호 관련 표시 설정
+
+#+begin_src emacs-lisp :lexical t
   (use-package paren
       :custom
       (show-paren-delay 0)
@@ -336,21 +419,56 @@ emacs의 기본적인 설정들. 그냥 ~setq~ 나 ~setopt~ 를 단독으로 사
       (set-face-foreground 'match "#1e2030")
       (set-face-background 'match "#74c7ec")
       (show-paren-mode +1))
+#+end_src
 
+** TODO avy
+vim-easymotion의 evil 버전?
+hint key의 변경법을 알아봐야할 필요가 있음.
+
+#+begin_src emacs-lisp :lexical t
   (use-package avy
-      :ensure t
-      :general
-      (general-def '(normal motion)
-          "s" 'evil-avy-goto-char-timer
-          "f" 'evil-avy-goto-char-in-line
-          "gl" 'evil-avy-goto-line
-          )
-      )
+    :ensure t
+      :custom
+      (avy-keys '(?n ?r ?t ?s ?h ?a ?e ?i))
+    :general
+    (general-def '(normal motion)
+        "s" 'evil-avy-goto-char-timer
+        "f" 'evil-avy-goto-char-in-line
+        "gl" 'evil-avy-goto-line
+        )
+    )
+#+end_src
 
+** doom-modeline
+modeline인데 설정하기는 당장에 귀찮아서 일단 꽨찮아보이는 doom-modeline을 사용했다.
+
+#+begin_src emacs-lisp :lexical t
   (use-package doom-modeline
       :ensure t
       :init
       (doom-modeline-mode +1))
+#+end_src
+
+** recentf
+최근 방문한 파일을 관리하는 패키지.
+
+#+begin_src emacs-lisp :lexical t
+  (use-package recentf
+      :ensure nil
+      :config
+      (recentf-mode +1)
+      :general
+      (dobin/leader-keys
+          "fr" '(recentf-open :wk "Show [r]ecent files")
+          "f." '(recentf-open-most-recent-file :wk "open last(.) file"))
+      )
+#+end_src
+
+
+* 임시로 일단 옮겨놓은 기존 전체 init.el
+
+#+begin_src emacs-lisp :lexical t
+
 
   (use-package which-key
       :after evil
@@ -391,7 +509,6 @@ emacs의 기본적인 설정들. 그냥 ~setq~ 나 ~setopt~ 를 단독으로 사
   (setq-default inhibit-startup-message t
   	use-short-answers t)
 
-  (recentf-mode t)
 
   (use-package rainbow-delimiters
       :ensure t
