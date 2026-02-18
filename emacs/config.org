@@ -1,15 +1,15 @@
-#+title: dobin's emacs config
-#+author: hyeondobin
+#+TITLE: dobin's emacs config
+#+AUTHOR: hyeondobin
+#+PROPERTY: header-args :tangle init.el :tangle-mode: #o444 :noweb yes :mkdirp yes
 
 * Emacs 설정
  기존의 설정을 설명을 붙여놓은 파일을 만들어둬야 나중에 까먹지 않을 것 같아서 만든 파일.
 
-* 임시로 일단 옮겨놓은 기존 전체 init.el
+* Elpaca bootstrap
+ 기본적인 elpaca 설치 및 설정을 한다. elpaca는 패키지 매니저로 각종 플러그인이라고도 할 수 있는 패키지들을 다운로드 받고 설정할 수 있으며 이맥스 자체의 설정도 같이 할 수 있다.
+ 또 다른 패키지 매니저인 =use-package= 와 연계하여 사용할 수 있어서 그렇게 사용 중이다.
 
-#+begin_src emacs-lisp
-
-  (setopt custom-file "~/repo/dotfiles/emacs/customs.el")
-
+#+begin_src emacs-lisp :lexical t
   ;; bootstrap elpaca
   (defvar elpaca-installer-version 0.11)
   (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
@@ -53,52 +53,65 @@
   (elpaca elpaca-use-package
       (elpaca-use-package-mode))
 
+#+end_src
+
+* emacs 기본 설정들
+emacs의 기본적인 설정들. 그냥 ~setq~ 나 ~setopt~ 를 단독으로 사용하는 대신 ~(use-package emacs ...)~ 을 사용하여 설정한다.
+#+begin_src emacs-lisp :lexical t
   (use-package emacs
       :demand t
       :ensure nil
-      :init
-      (setopt enable-recursive-minibuffers t)
-      (setopt backup-by-copying t)
-      (setopt sentence-end-double-space nil)
-      (setopt frame-inhibit-implied-resize t) ;; tiling window manager에서는 필요가 없음
-      (setopt show-trailing-whitespace t)
-      (setopt user-full-name "Jehui Lee")
-      (setopt user-mail-address "jayli2558@gmail.com")
+      :custom
+      (enable-recursive-minibuffers t)
+      (backup-by-copying t)
+      (sentence-end-double-space nil)
+      (frame-inhibit-implied-resize t) ;; tiling window manager에서는 필요가 없음
+      (show-trailing-whitespace t)
 
-      (visual-line-mode +1)
-      (setopt display-line-numbers 'visual)
+      (user-full-name "Jehui Lee")
+      (user-mail-address "jayli2558@gmail.com")
 
-      (setopt indent-tabs-mode nil)
-      (setopt tab-width 4)
-      (setopt lisp-indent-offset 4)
+      (display-line-numbers 'visual)
 
-      (setopt help-window-select t)
-      (setopt create-lockfiles nil)
-      (setopt backup-directory-alist
+      (indent-tabs-mode nil)
+      (tab-width 4)
+      (lisp-indent-offset 4)
+
+      (help-window-select t)
+      (create-lockfiles nil)
+      (backup-directory-alist
           `((".*" . ,(concat user-emacs-directory "backups")))
           auto-save-file-name-transforms
           `((".*" ,(concat user-emacs-directory "backups") t)))
+      (custom-safe-themes t) ; mark all themes as safe
+      (enable-local-variables :all) ; fix =defvar= warnings
+
+      (delete-by-moving-to-trash t)
+
+      (byte-compile-warnings '(not free-vars unresolved noruntime lexical make-local)) ; elisp 컴파일 시의 경고 메세지 줄이기.
+      (native-comp-async-report-warnings-errors nil)
+      (load-prefer-newer t)
+
+      (custom-file "~/repo/dotfiles/emacs/customs.el")
+
+      :init
+      (visual-line-mode +1) ; 보이는 그대로의 라인으로 이동을 한다. wrapping이 되어도 된 줄을 기준으로 이동한다.
 
       (set-charset-priority 'unicode) ;; utf-8 everywhere
-      (set-language-environment "Korean")
+      (set-language-environment "Korean") ; 한글관련 세팅인데 뭐지 잘 모르겠음
       (prefer-coding-system 'utf-8)
       (set-default-coding-systems 'utf-8)
 
       (global-set-key (kbd "<escape>") 'dobin/keyboard-quit) ;; ESC를 메타 프리픽스로 사용하지 않는다.
 
-      (setopt custom-safe-themes t) ; mark all themes as safe
-      (setopt enable-local-variables :all) ; fix =defvar= warnings
-
-      (setopt delete-by-moving-to-trash t)
-
-      (setq byte-compile-warnings '(not free-vars unresolved noruntime lexical make-local)) ; elisp 컴파일 시의 경고 메세지 줄이기.
-      (setopt native-comp-async-report-warnings-errors nil)
-      (setopt load-prefer-newer t)
-
       :hook
-      (before-save . delete-trailing-whitespace)
+      (before-save . delete-trailing-whitespace) ; 저장 시 남은 공백 제거
       )
+#+end_src
 
+* 임시로 일단 옮겨놓은 기존 전체 init.el
+
+#+begin_src emacs-lisp :lexical t
   (use-package desktop
       :ensure nil
       :config
