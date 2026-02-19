@@ -1,0 +1,8 @@
+;;; -*- coding: utf-8; mode: lisp-data -*-
+(("/home/hyeondobin/repo/dotfiles/emacs/init.el" . 9747)
+    ("/home/hyeondobin/repo/dotfiles/emacs/config.org" . 13142)
+    ("/home/hyeondobin/repo/qmk_userspace/keyboards/zsa/moonlander/keymaps/hyeondobin/"
+        (dired-filename
+            . "/home/hyeondobin/repo/qmk_userspace/keyboards/zsa/moonlander/keymaps/hyeondobin/keycodes.h"))
+    ("/home/hyeondobin/repo/qmk_userspace/keyboards/zsa/moonlander/keymaps/hyeondobin/combos.def"
+        . 314))

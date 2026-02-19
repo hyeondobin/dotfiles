@@ -55,6 +55,7 @@
     (user-mail-address "jayli2558@gmail.com")
 
     (display-line-numbers 'visual)
+    (save-place-mode +1)
 
     (indent-tabs-mode nil)
     (tab-width 4)
@@ -190,7 +191,7 @@
         :global-prefix "M-SPC") ;; insert 모드에서의 리더키
 
     ;; local leader key로 ','를 사용
-    (general-create-definer dobiin/local-leader-keys
+    (general-create-definer dobin/local-leader-keys
         :states '(normal insert visual emacs)
         :keymaps 'override
         :prefix "," ;; leader 설정
@@ -221,11 +222,9 @@
     (dobin/leader-keys
         "h" '(:ignore t :wk "[h]elp"))
 
-    ;; desktop
+    ;; search
     (dobin/leader-keys
-        "d" '(:ignore t :wk "[d]esktop")
-        "dr" '(desktop-revert :wk "[r]evert last desktop")
-        "ds" '(desktop-save :wk "[s]ave current desktop"))
+        "s" '(:wk "[s]earch" :ignore t))
 
     ;; file
     (dobin/leader-keys
@@ -240,7 +239,6 @@
     ;; buffer
     (dobin/leader-keys
         "b" '(:ignore t :wk "[b]uffer")
-        "bs" '(switch-to-buffer :wk "[b]uffer [s]witch")
         "bd" '(kill-current-buffer :wk "[b]uffer [d]elete")
         "br" '(revert-buffer :wk "[b]uffer [r]eload(revert)"))
 
@@ -274,24 +272,32 @@
     (org-directory "~/repo/org/agenda")
     (org-default-notes-file (concat org-directory "/notes.org"))
     :general
+    (org-mode-map
+        "C-s" 'consult-org-heading)
     (dobin/leader-keys
+        "oa" '("[a]genda" . org-agenda)
+        "oc" '("[c]apture" . org-capture)
+        "ol" '("store [l]ink" . org-store-link)
+        )
+    (dobin/local-leader-keys
         :keymaps 'org-mode-map
-        "oa" '(org-agenda :wk "[a]genda")
+        "a" '("[a]genda" . org-agenda)
 
-        "ob" '(:ignore t :wk "[b]abel")
-        "obt" '(org-babel-tangle :wk "[t]angle")
+        "b" '(:wk "[b]abel" :ignore t )
+        "bt" '("[t]angle" . org-babel-tangle)
 
-        "oc" '(org-capture :wk "[c]apture")
+        "c" '("[c]apture" . org-capture)
 
-        "oe" '(org-edit-special :wk "edit")
+        "e" '("edit" . org-edit-special)
 
-        "oi" '(:ignore t :wk "[i]nsert")
-        "ois" '(org-insert-structure-template :wk "[s]tructure template")
+        "i" '(:ignore t :wk "[i]nsert")
+        "ih" '("[h]eading" . org-insert-heading)
+        "is" '("[s]tructure template" . org-insert-structure-template )
 
-        "ol" '(org-store-link :wk "store [l]ink"))
-    (dobin/leader-keys
+        "l" '("store [l]ink" . org-store-link ))
+    (dobin/local-leader-keys
         :keymaps 'org-src-mode-map
-        "s" '(org-edit-src-exit :wk "save and quit edit buffer"))
+        "s" '("save and quit edit buffer" . org-edit-src-exit))
     )
 
 (use-package paren
@@ -310,7 +316,7 @@
     :custom
     (avy-keys '(?n ?r ?t ?s ?h ?a ?e ?i))
   :general
-  (general-def '(normal motion)
+  (:states '(normal motion)
       "s" 'evil-avy-goto-char-timer
       "f" 'evil-avy-goto-char-in-line
       "gl" 'evil-avy-goto-line
@@ -324,13 +330,53 @@
 
 (use-package recentf
     :ensure nil
-    :config
+    :custom
     (recentf-mode +1)
     :general
     (dobin/leader-keys
-        "fr" '(recentf-open :wk "Show [r]ecent files")
+        ;; "fr" '(recentf-open :wk "Show [r]ecent files")
         "f." '(recentf-open-most-recent-file :wk "open last(.) file"))
     )
+
+(use-package consult
+    :ensure t
+
+    :general
+    ([remap goto-line] 'consult-goto-line)
+    ([remap Info-search]  'consult-info)
+    (dobin/leader-keys
+        "bs" '("[s]witch" . consult-buffer)
+
+        "fr" '("[r]ecent" . consult-recent-file)
+
+        "sg" '("[g]rep" . consult-grep)
+        )
+
+    :init
+    (advice-add #'register-preview :override #'consult-register-window)
+
+    :custom
+    (register-preview-delay 0.5)
+    )
+
+(use-package embark
+    :ensure t
+
+    :config
+    (general-define-key
+        "C-," 'embark-act)
+    (add-to-list 'display-buffer-alist
+        '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+             nil
+             (window-parameters (mode-line-format . none)))))
+
+(use-package embark-consult
+    :ensure t)
+
+(use-package marginalia
+    :ensure t
+    :config
+    (marginalia-mode))
 
 (use-package which-key
     :after evil
@@ -342,20 +388,18 @@
     (which-key-setup-side-window-right-bottom)
     )
 
+(use-package catppuccin-theme
+    :ensure t
+    :demand t
+    ;; :hook (server-after-make-frame . catppuccin-reload)
+    :config
+    (load-theme 'catppuccin :no-confirm))
+
 (use-package tree-sitter :ensure t :demand t :config (global-tree-sitter-mode))
 (use-package tree-sitter-langs :ensure t :demand t)
 (use-package nix-ts-mode
     :ensure t
     :mode "\\.nix\\'")
-
-(use-package catppuccin-theme
-    :ensure t
-    :demand t
-    ;; :hook (server-after-make-frame . catppuccin-reload)
-    :init
-    (setq catppuccin-flavor 'macchiato)
-    :config
-    (load-theme 'catppuccin :no-confirm))
 
 ;; D2Coding Nerd Font의 Mono는 글자 폭이 잘못 설정되어 있어서 사용할 시 영어의 폭과 맞춰지기 때문에 일반 폰트로 사용해야한다.
 ;; https://codepractice.tistory.com/167
@@ -409,21 +453,7 @@
     (completion-category-overrides '((file (styles partial-completion)))))
 
 ;; TODO: Embark Maginalia
-(use-package marginalia
-    :ensure t
-    :config
-    (marginalia-mode))
 
-(use-package embark
-    :ensure t
-
-    :config
-    (general-define-key
-        "C-," 'embark-act)
-    (add-to-list 'display-buffer-alist
-        '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
-             nil
-             (window-parameters (mode-line-format . none)))))
 
 (use-package command-log-mode
     :ensure t)

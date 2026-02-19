@@ -76,6 +76,7 @@ emacs의 기본적인 설정들. 그냥 ~setq~ 나 ~setopt~ 를 단독으로 사
       (user-mail-address "jayli2558@gmail.com")
 
       (display-line-numbers 'visual)
+      (save-place-mode +1)
 
       (indent-tabs-mode nil)
       (tab-width 4)
@@ -292,7 +293,7 @@ diff라고 해서 넣어놓긴 했는데 자세한 기능을 모른다. 얘도 �
           :global-prefix "M-SPC") ;; insert 모드에서의 리더키
 
       ;; local leader key로 ','를 사용
-      (general-create-definer dobiin/local-leader-keys
+      (general-create-definer dobin/local-leader-keys
           :states '(normal insert visual emacs)
           :keymaps 'override
           :prefix "," ;; leader 설정
@@ -323,11 +324,9 @@ diff라고 해서 넣어놓긴 했는데 자세한 기능을 모른다. 얘도 �
       (dobin/leader-keys
           "h" '(:ignore t :wk "[h]elp"))
 
-      ;; desktop
+      ;; search
       (dobin/leader-keys
-          "d" '(:ignore t :wk "[d]esktop")
-          "dr" '(desktop-revert :wk "[r]evert last desktop")
-          "ds" '(desktop-save :wk "[s]ave current desktop"))
+          "s" '(:wk "[s]earch" :ignore t))
 
       ;; file
       (dobin/leader-keys
@@ -342,7 +341,6 @@ diff라고 해서 넣어놓긴 했는데 자세한 기능을 모른다. 얘도 �
       ;; buffer
       (dobin/leader-keys
           "b" '(:ignore t :wk "[b]uffer")
-          "bs" '(switch-to-buffer :wk "[b]uffer [s]witch")
           "bd" '(kill-current-buffer :wk "[b]uffer [d]elete")
           "br" '(revert-buffer :wk "[b]uffer [r]eload(revert)"))
 
@@ -384,24 +382,32 @@ diff라고 해서 넣어놓긴 했는데 자세한 기능을 모른다. 얘도 �
       (org-directory "~/repo/org/agenda")
       (org-default-notes-file (concat org-directory "/notes.org"))
       :general
+      (org-mode-map
+          "C-s" 'consult-org-heading)
       (dobin/leader-keys
+          "oa" '("[a]genda" . org-agenda)
+          "oc" '("[c]apture" . org-capture)
+          "ol" '("store [l]ink" . org-store-link)
+          )
+      (dobin/local-leader-keys
           :keymaps 'org-mode-map
-          "oa" '(org-agenda :wk "[a]genda")
+          "a" '("[a]genda" . org-agenda)
 
-          "ob" '(:ignore t :wk "[b]abel")
-          "obt" '(org-babel-tangle :wk "[t]angle")
+          "b" '(:wk "[b]abel" :ignore t )
+          "bt" '("[t]angle" . org-babel-tangle)
 
-          "oc" '(org-capture :wk "[c]apture")
+          "c" '("[c]apture" . org-capture)
 
-          "oe" '(org-edit-special :wk "edit")
+          "e" '("edit" . org-edit-special)
 
-          "oi" '(:ignore t :wk "[i]nsert")
-          "ois" '(org-insert-structure-template :wk "[s]tructure template")
+          "i" '(:ignore t :wk "[i]nsert")
+          "ih" '("[h]eading" . org-insert-heading)
+          "is" '("[s]tructure template" . org-insert-structure-template )
 
-          "ol" '(org-store-link :wk "store [l]ink"))
-      (dobin/leader-keys
+          "l" '("store [l]ink" . org-store-link ))
+      (dobin/local-leader-keys
           :keymaps 'org-src-mode-map
-          "s" '(org-edit-src-exit :wk "save and quit edit buffer"))
+          "s" '("save and quit edit buffer" . org-edit-src-exit))
       )
 #+end_src
 
@@ -431,7 +437,7 @@ hint key의 변경법을 알아봐야할 필요가 있음.
       :custom
       (avy-keys '(?n ?r ?t ?s ?h ?a ?e ?i))
     :general
-    (general-def '(normal motion)
+    (:states '(normal motion)
         "s" 'evil-avy-goto-char-timer
         "f" 'evil-avy-goto-char-in-line
         "gl" 'evil-avy-goto-line
@@ -455,21 +461,79 @@ modeline인데 설정하기는 당장에 귀찮아서 일단 꽨찮아보이는 
 #+begin_src emacs-lisp :lexical t
   (use-package recentf
       :ensure nil
-      :config
+      :custom
       (recentf-mode +1)
       :general
       (dobin/leader-keys
-          "fr" '(recentf-open :wk "Show [r]ecent files")
+          ;; "fr" '(recentf-open :wk "Show [r]ecent files")
           "f." '(recentf-open-most-recent-file :wk "open last(.) file"))
       )
 #+end_src
 
 
-* 임시로 일단 옮겨놓은 기존 전체 init.el
+** consult
+검색 및 이동을 도와주는 패키지
+#+begin_src emacs-lisp :lexical t
+  (use-package consult
+      :ensure t
+
+      :general
+      ([remap goto-line] 'consult-goto-line)
+      ([remap Info-search]  'consult-info)
+      (dobin/leader-keys
+          "bs" '("[s]witch" . consult-buffer)
+
+          "fr" '("[r]ecent" . consult-recent-file)
+
+          "sg" '("[g]rep" . consult-grep)
+          )
+
+      :init
+      (advice-add #'register-preview :override #'consult-register-window)
+
+      :custom
+      (register-preview-delay 0.5)
+      )
+#+end_src
+
+** embark
+추가행동?을 할 수 있게 해주는 패키지인데 아직은 사용 할 타이밍을 잘 못잡고있다.
+#+begin_src emacs-lisp :lexical t
+    (use-package embark
+        :ensure t
+
+        :config
+        (general-define-key
+            "C-," 'embark-act)
+        (add-to-list 'display-buffer-alist
+            '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+                 nil
+                 (window-parameters (mode-line-format . none)))))
+#+end_src
+
+** embark-consult
+=embark= 와 =consult= 를 연계시켜주는 패키지. 설치하지 않으면 같이 사용할 수 없다는 경고가 뜬다.
 
 #+begin_src emacs-lisp :lexical t
+  (use-package embark-consult
+      :ensure t)
+#+end_src
 
+** marginalia
+minibuffer에서 항목에 대한 설명을 추가한다.
+일단은 =M-x= 에서 작동하는 건 확인했음.
 
+#+begin_src emacs-lisp :lexical t
+    (use-package marginalia
+        :ensure t
+        :config
+        (marginalia-mode))
+#+end_src
+
+** which-key
+neovim에서도 유명한 패키지의 원본 현재 입력된 키에서 수행할 수 있는 액션들을 보여준다.
+
+#+begin_src emacs-lisp :lexical t
   (use-package which-key
       :after evil
       :demand t
@@ -479,21 +543,28 @@ modeline인데 설정하기는 당장에 귀찮아서 일단 꽨찮아보이는 
       ;; (which-key-setup-minibuffer)
       (which-key-setup-side-window-right-bottom)
       )
+#+end_src
 
+** catppuccin
+늘 사용하는 테마.
+
+#+begin_src emacs-lisp :lexical t
+    (use-package catppuccin-theme
+        :ensure t
+        :demand t
+        ;; :hook (server-after-make-frame . catppuccin-reload)
+        :config
+        (load-theme 'catppuccin :no-confirm))
+#+end_src
+.
+* 임시로 일단 옮겨놓은 기존 전체 init.el
+
+#+begin_src emacs-lisp :lexical t
   (use-package tree-sitter :ensure t :demand t :config (global-tree-sitter-mode))
   (use-package tree-sitter-langs :ensure t :demand t)
   (use-package nix-ts-mode
       :ensure t
       :mode "\\.nix\\'")
-
-  (use-package catppuccin-theme
-      :ensure t
-      :demand t
-      ;; :hook (server-after-make-frame . catppuccin-reload)
-      :init
-      (setq catppuccin-flavor 'macchiato)
-      :config
-      (load-theme 'catppuccin :no-confirm))
 
   ;; D2Coding Nerd Font의 Mono는 글자 폭이 잘못 설정되어 있어서 사용할 시 영어의 폭과 맞춰지기 때문에 일반 폰트로 사용해야한다.
   ;; https://codepractice.tistory.com/167
@@ -547,21 +618,7 @@ modeline인데 설정하기는 당장에 귀찮아서 일단 꽨찮아보이는 
       (completion-category-overrides '((file (styles partial-completion)))))
 
   ;; TODO: Embark Maginalia
-  (use-package marginalia
-      :ensure t
-      :config
-      (marginalia-mode))
 
-  (use-package embark
-      :ensure t
-
-      :config
-      (general-define-key
-          "C-," 'embark-act)
-      (add-to-list 'display-buffer-alist
-          '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
-               nil
-               (window-parameters (mode-line-format . none)))))
 
   (use-package command-log-mode
       :ensure t)
