@@ -45,11 +45,12 @@
     :demand t
     :ensure nil
     :custom
-    (enable-recursive-minibuffers t)
-    (backup-by-copying t)
+    (enable-recursive-minibuffers +1)
+    (backup-by-copying +1)
     (sentence-end-double-space nil)
     (frame-inhibit-implied-resize t) ;; tiling window manager에서는 필요가 없음
     (show-trailing-whitespace t)
+    (ring-bell-function -1)
 
     (user-full-name "Jehui Lee")
     (user-mail-address "jayli2558@gmail.com")
@@ -252,6 +253,9 @@
     (dobin/leader-keys
         "u" '(universal-argument :wk "[u]niversal prefix")) ;; C-u의 원래 기능을 리더키로 사용
 
+    (dobin/leader-keys
+        "ere" '("restart emacs" . (lambda () (interactive) (restart-emacs))))
+
     ;; org
     (dobin/leader-keys
         "o" '(:ignore t :wk "[o]rg"))
@@ -307,8 +311,6 @@
     (show-paren-when-point-in-periphery t)
     (show-paren-when-point-inside-paren t)
     :config
-    (set-face-foreground 'match "#1e2030")
-    (set-face-background 'match "#74c7ec")
     (show-paren-mode +1))
 
 (use-package avy
@@ -410,7 +412,9 @@
             (set-fontset-font "fontset-default" 'hangul (font-spec :family "D2CodingLigature Nerd Font" :size 18)))))
 (add-hook 'after-make-frame-functions 'dobin/set-korean-font)
 
-(add-to-list 'default-frame-alist '(font . "JetBrains Mono NFM-14"))
+(set-face-attribute 'match nil :background "#74c7ec" :foreground "#1e2030")
+
+(add-to-list 'default-frame-alist '(font . "JetBrainsMono NF-14"))
 
 (setq-default inhibit-startup-message t
 	use-short-answers t)
@@ -521,4 +525,5 @@
     (shell-command "systemctl --user restart emacs.service"))
 
 (use-package vterm
-    :ensure nil)
+    :ensure nil
+    :disabled)
