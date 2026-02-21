@@ -397,6 +397,7 @@ diff라고 해서 넣어놓긴 했는데 자세한 기능을 모른다. 얘도 �
           )
       (dobin/local-leader-keys
           :keymaps 'org-mode-map
+          "<" '("up one heading" . org-up-heading)
           "a" '("[a]genda" . org-agenda)
 
           "b" '(:wk "[b]abel" :ignore t )
@@ -407,10 +408,16 @@ diff라고 해서 넣어놓긴 했는데 자세한 기능을 모른다. 얘도 �
           "e" '("edit" . org-edit-special)
 
           "i" '(:ignore t :wk "[i]nsert")
-          "ih" '("[h]eading" . org-insert-heading)
+          "ih" '(:ignore t :wk "[h]eading")
+          "ihh" '("[h]eading" . org-insert-heading)
+          "ihS" '("[S]ub heading" . org-insert-subheading)
+          "iht" '("[t]odo" . org-insert-todo-heading)
+          "ihT" '("[T]odo subheading" . org-insert-todo-subheading)
+
           "is" '("[s]tructure template" . org-insert-structure-template )
 
-          "l" '("store [l]ink" . org-store-link ))
+          "l" '("store [l]ink" . org-store-link )
+          )
       (dobin/local-leader-keys
           :keymaps 'org-src-mode-map
           "s" '("save and quit edit buffer" . org-edit-src-exit))

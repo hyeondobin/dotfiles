@@ -12,6 +12,7 @@ emacs/emacs-config.org~
 emacs/eshell/history
 emacs/eshell/lastdir
 emacs/hyeondobin@VanLioum-Desktop.*
+emacs/init.el
 emacs/org-persist
 emacs/projects
 emacs/recentf
