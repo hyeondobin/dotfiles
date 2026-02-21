@@ -51,6 +51,8 @@
     (frame-inhibit-implied-resize t) ;; tiling window manager에서는 필요가 없음
     (show-trailing-whitespace t)
     (ring-bell-function -1)
+    (inhibit-startup-message t)
+    (use-short-answers t)
 
     (user-full-name "Jehui Lee")
     (user-mail-address "jayli2558@gmail.com")
@@ -325,6 +327,10 @@
       )
   )
 
+(use-package vterm
+    :ensure nil
+    :disabled)
+
 (use-package doom-modeline
     :ensure t
     :init
@@ -387,7 +393,7 @@
     (which-key-mode 1)
     :config
     ;; (which-key-setup-minibuffer)
-    (which-key-setup-side-window-right-bottom)
+    (which-key-setup-side-window-bottom)
     )
 
 (use-package catppuccin-theme
@@ -398,37 +404,21 @@
     (load-theme 'catppuccin :no-confirm))
 
 (use-package tree-sitter :ensure t :demand t :config (global-tree-sitter-mode))
+
 (use-package tree-sitter-langs :ensure t :demand t)
+
 (use-package nix-ts-mode
     :ensure t
     :mode "\\.nix\\'")
-
-;; D2Coding Nerd Font의 Mono는 글자 폭이 잘못 설정되어 있어서 사용할 시 영어의 폭과 맞춰지기 때문에 일반 폰트로 사용해야한다.
-;; https://codepractice.tistory.com/167
-(defun dobin/set-korean-font (frame)
-    "Set font for new frames"
-    (when (display-graphic-p frame)
-        (with-selected-frame frame
-            (set-fontset-font "fontset-default" 'hangul (font-spec :family "D2CodingLigature Nerd Font" :size 18)))))
-(add-hook 'after-make-frame-functions 'dobin/set-korean-font)
-
-(set-face-attribute 'match nil :background "#74c7ec" :foreground "#1e2030")
-
-(add-to-list 'default-frame-alist '(font . "JetBrainsMono NF-14"))
-
-(setq-default inhibit-startup-message t
-	use-short-answers t)
-
 
 (use-package rainbow-delimiters
     :ensure t
     :hook (prog-mode . rainbow-delimiters-mode))
 
-(defun dobin/elisp-mode-init ()
-    "Set completion function to cape"
-    (setq-local completion-at-point-functions
-	    (list (cape-capf-inside-code #'cape-elisp-symbol))))
-(add-hook 'emacs-lisp-mode-hook #'dobin/elisp-mode-init)
+(use-package command-log-mode
+    :ensure t)
+
+
 
 (use-package corfu
     :ensure t
@@ -441,12 +431,10 @@
     :config
     (keymap-unset corfu-map "RET")
     )
+
 (use-package vertico
     :ensure t
     :init (vertico-mode))
-
-(use-package cape
-    :ensure t)
 
 (use-package orderless
     :ensure t
@@ -456,10 +444,13 @@
     (completion-category-defaults nil)
     (completion-category-overrides '((file (styles partial-completion)))))
 
-;; TODO: Embark Maginalia
+(defun dobin/elisp-mode-init ()
+    "Set completion function to cape"
+    (setq-local completion-at-point-functions
+	    (list (cape-capf-inside-code #'cape-elisp-symbol))))
+(add-hook 'emacs-lisp-mode-hook #'dobin/elisp-mode-init)
 
-
-(use-package command-log-mode
+(use-package cape
     :ensure t)
 
 (use-package dabbrev
@@ -471,7 +462,6 @@
     (add-to-list 'dabbrev-ignored-buffer-modes 'doc-view-mode)
     (add-to-list 'dabbrev-ignored-buffer-modes 'pdf-view-mode)
     (add-to-list 'dabbrev-ignored-buffer-modes 'tags-table-mode))
-
 
 (use-package lsp-mode
     :ensure t
@@ -504,6 +494,17 @@
     :config
     (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
 
+(defun dobin/set-korean-font (frame)
+    "Set font for new frames"
+    (when (display-graphic-p frame)
+        (with-selected-frame frame
+            (set-fontset-font "fontset-default" 'hangul (font-spec :family "D2CodingLigature Nerd Font" :size 18)))))
+(add-hook 'after-make-frame-functions 'dobin/set-korean-font)
+
+(set-face-attribute 'match nil :background "#74c7ec" :foreground "#1e2030")
+
+(add-to-list 'default-frame-alist '(font . "JetBrainsMono NF-14"))
+
 (defun dobin/keyboard-quit ()
     "Smarter version of the built-in `keyboard-quit'."
     (interactive)
@@ -519,11 +520,8 @@
     (interactive)
     (save-buffer)
     (evil-quit))
+
 (defun dobin/restart-server ()
     (interactive)
     (save-buffer )
     (shell-command "systemctl --user restart emacs.service"))
-
-(use-package vterm
-    :ensure nil
-    :disabled)

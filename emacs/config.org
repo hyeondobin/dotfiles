@@ -72,6 +72,8 @@ emacs의 기본적인 설정들. 그냥 ~setq~ 나 ~setopt~ 를 단독으로 사
       (frame-inhibit-implied-resize t) ;; tiling window manager에서는 필요가 없음
       (show-trailing-whitespace t)
       (ring-bell-function -1)
+      (inhibit-startup-message t)
+      (use-short-answers t)
 
       (user-full-name "Jehui Lee")
       (user-mail-address "jayli2558@gmail.com")
@@ -447,7 +449,17 @@ hint key의 변경법을 알아봐야할 필요가 있음.
     )
 #+end_src
 
+** vterm
+
+이맥스에서 터미널을 사용하기 위한 패키지인데 windows에서 안되고 fish도 제대로 컬러가 로딩이 안돼서 그냥 터미널을 사용할 예정이라 비활성화 해놓았다.
+
+#+begin_src emacs-lisp :lexical t
+  (use-package vterm
+      :ensure nil
+      :disabled)
+#+end_src
 ** doom-modeline
+
 modeline인데 설정하기는 당장에 귀찮아서 일단 꽨찮아보이는 doom-modeline을 사용했다.
 
 #+begin_src emacs-lisp :lexical t
@@ -543,7 +555,7 @@ neovim에서도 유명한 패키지의 원본 현재 입력된 키에서 수행�
       (which-key-mode 1)
       :config
       ;; (which-key-setup-minibuffer)
-      (which-key-setup-side-window-right-bottom)
+      (which-key-setup-side-window-bottom)
       )
 #+end_src
 
@@ -558,43 +570,50 @@ neovim에서도 유명한 패키지의 원본 현재 입력된 키에서 수행�
         :config
         (load-theme 'catppuccin :no-confirm))
 #+end_src
-.
-* 임시로 일단 옮겨놓은 기존 전체 init.el
 
+** Treesitter
+프로그래밍 언어에 맞는 문법
 #+begin_src emacs-lisp :lexical t
   (use-package tree-sitter :ensure t :demand t :config (global-tree-sitter-mode))
+
   (use-package tree-sitter-langs :ensure t :demand t)
+#+end_src
+
+*** Nix
+
+#+begin_src emacs-lisp :lexical t
   (use-package nix-ts-mode
       :ensure t
       :mode "\\.nix\\'")
+#+end_src
 
-  ;; D2Coding Nerd Font의 Mono는 글자 폭이 잘못 설정되어 있어서 사용할 시 영어의 폭과 맞춰지기 때문에 일반 폰트로 사용해야한다.
-  ;; https://codepractice.tistory.com/167
-  (defun dobin/set-korean-font (frame)
-      "Set font for new frames"
-      (when (display-graphic-p frame)
-          (with-selected-frame frame
-              (set-fontset-font "fontset-default" 'hangul (font-spec :family "D2CodingLigature Nerd Font" :size 18)))))
-  (add-hook 'after-make-frame-functions 'dobin/set-korean-font)
+** rainbow delimiter
 
-  (set-face-attribute 'match nil :background "#74c7ec" :foreground "#1e2030")
-
-  (add-to-list 'default-frame-alist '(font . "JetBrainsMono NF-14"))
-
-  (setq-default inhibit-startup-message t
-  	use-short-answers t)
-
-
+괄호의 색을 변경해서 몇 번 중첩이 됐는 지 알려준다.
+#+begin_src emacs-lisp :lexical t
   (use-package rainbow-delimiters
       :ensure t
       :hook (prog-mode . rainbow-delimiters-mode))
+#+end_src
 
-  (defun dobin/elisp-mode-init ()
-      "Set completion function to cape"
-      (setq-local completion-at-point-functions
-  	    (list (cape-capf-inside-code #'cape-elisp-symbol))))
-  (add-hook 'emacs-lisp-mode-hook #'dobin/elisp-mode-init)
+** command-log-mode
 
+사용한 커맨드가 무엇인지 확인할 수 있는 패키지. 주로 지금 누른 키가 무슨 명령어를 불렀는 지 확인하는 용도로 사용했다.
+#+begin_src emacs-lisp :lexical t
+  (use-package command-log-mode
+      :ensure t)
+#+end_src
+
+** 자동완성
+=corfu= =cape= =orderless= =vertico=
+
+#+begin_src emacs-lisp :lexical t
+#+end_src
+
+*** corfu
+
+기본 에디팅에서 사용하는 자동완성
+#+begin_src emacs-lisp :lexical t
   (use-package corfu
       :ensure t
       :hook (prog-mode . (lambda () (setq-local corfu-auto t)))
@@ -606,13 +625,21 @@ neovim에서도 유명한 패키지의 원본 현재 입력된 키에서 수행�
       :config
       (keymap-unset corfu-map "RET")
       )
+#+end_src
+
+*** vertico
+
+minibuffer 에서 사용하는 자동완성
+#+begin_src emacs-lisp :lexical t
   (use-package vertico
       :ensure t
       :init (vertico-mode))
+#+end_src
 
-  (use-package cape
-      :ensure t)
+*** orderless
 
+자동완성에서 fuzzy 매칭을 사용하기 위해 사용하는 패키지. 다양하게 필터링이 가능하다.
+#+begin_src emacs-lisp :lexical t
   (use-package orderless
       :ensure t
       :custom
@@ -620,13 +647,24 @@ neovim에서도 유명한 패키지의 원본 현재 입력된 키에서 수행�
       (completion-styles '(orderless partial-completion basic))
       (completion-category-defaults nil)
       (completion-category-overrides '((file (styles partial-completion)))))
+#+end_src
 
-  ;; TODO: Embark Maginalia
+*** cape
 
+#+begin_src emacs-lisp :lexical t
+  (defun dobin/elisp-mode-init ()
+      "Set completion function to cape"
+      (setq-local completion-at-point-functions
+  	    (list (cape-capf-inside-code #'cape-elisp-symbol))))
+  (add-hook 'emacs-lisp-mode-hook #'dobin/elisp-mode-init)
 
-  (use-package command-log-mode
+  (use-package cape
       :ensure t)
+#+end_src
 
+*** dabbrev
+
+#+begin_src emacs-lisp :lexical t
   (use-package dabbrev
       :bind (("M-/" . dabbrev-completion)
   	          ("C-M-/" . dabbrev-expand))
@@ -637,7 +675,13 @@ neovim에서도 유명한 패키지의 원본 현재 입력된 키에서 수행�
       (add-to-list 'dabbrev-ignored-buffer-modes 'pdf-view-mode)
       (add-to-list 'dabbrev-ignored-buffer-modes 'tags-table-mode))
 
+#+end_src
 
+
+*** lsp-mode
+
+lsp와 연결하기 위한 패키지. 설정하는 방법을 잘 모르겠다.
+#+begin_src emacs-lisp :lexical t
   (use-package lsp-mode
       :ensure t
       :commands lsp
@@ -662,13 +706,42 @@ neovim에서도 유명한 패키지의 원본 현재 입력된 키에서 수행�
   (use-package lsp-ui :ensure t :commands lsp-ui-mode
       :custom
       (lsp-ui-sideline-show-hover t))
+#+end_src
 
+*** kind-icon
+
+자동완성에서 아이템의 유형이 뭔지 알려주는 패키지
+
+#+begin_src emacs-lisp :lexical t
   (use-package kind-icon
       :ensure t
       :after corfu
       :config
       (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
+#+end_src
 
+* 폰트
+
+D2Coding Nerd Font의 Mono는 글자 폭이 잘못 설정되어 있어서 사용할 시 영어의 폭과 맞춰지기 때문에 일반 폰트로 사용해야한다.
+- 출처 : https://codepractice.tistory.com/167
+#+begin_src emacs-lisp :lexical t
+  (defun dobin/set-korean-font (frame)
+      "Set font for new frames"
+      (when (display-graphic-p frame)
+          (with-selected-frame frame
+              (set-fontset-font "fontset-default" 'hangul (font-spec :family "D2CodingLigature Nerd Font" :size 18)))))
+  (add-hook 'after-make-frame-functions 'dobin/set-korean-font)
+
+  (set-face-attribute 'match nil :background "#74c7ec" :foreground "#1e2030")
+
+  (add-to-list 'default-frame-alist '(font . "JetBrainsMono NF-14"))
+#+end_src
+
+* 커스텀 커맨드
+
+직접 만들거나 블로그 등에서 긁어온 함수. 기능을 보완하는 데 사용하고 있다.
+
+#+begin_src emacs-lisp :lexical t
   (defun dobin/keyboard-quit ()
       "Smarter version of the built-in `keyboard-quit'."
       (interactive)
@@ -679,17 +752,27 @@ neovim에서도 유명한 패키지의 원본 현재 입력된 키에서 수행�
           (keyboard-quit)))
   (global-set-key [remap keyboard-quit] #'dobin/keyboard-quit)
 
+#+end_src
+
+** save and quit (ZZ)
+
+=evil-save-modified-and-quit= 과 같은 기능인데 존재를 알기 전에 만들어서 그냥 쓰고 있다.
+=M-w= 에 설정에서 사용 중
+#+begin_src emacs-lisp :lexical t
   (defun dobin/save-and-kill-buffer ()
       "현재 버퍼를 저장하고 제거"
       (interactive)
       (save-buffer)
       (evil-quit))
+#+end_src
+
+** restart daemon
+
+=restart-emacs= 를 사용하면 daemon이 랜덤하게 뻗는 현상이 있어서 systemctl로 서비스 자체를 재시작하는 방법을 사용한다.
+
+#+begin_src emacs-lisp :lexical t
   (defun dobin/restart-server ()
       (interactive)
       (save-buffer )
       (shell-command "systemctl --user restart emacs.service"))
-
-  (use-package vterm
-      :ensure nil
-      :disabled)
 #+end_src
