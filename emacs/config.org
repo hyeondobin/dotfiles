@@ -60,7 +60,9 @@
 #+end_src
 
 * emacs 기본 설정들
+
 emacs의 기본적인 설정들. 그냥 ~setq~ 나 ~setopt~ 를 단독으로 사용하는 대신 ~(use-package emacs ...)~ 을 사용하여 설정한다.
+
 #+begin_src emacs-lisp :lexical t
   (use-package emacs
       :demand t
@@ -115,6 +117,19 @@ emacs의 기본적인 설정들. 그냥 ~setq~ 나 ~setopt~ 를 단독으로 사
       :hook
       (before-save . delete-trailing-whitespace) ; 저장 시 남은 공백 제거
       )
+#+end_src
+
+** 변수 | variables
+
+변수들 설정.
+
+#+begin_src emacs-lisp :lexical t
+  (defvar dobin/notes-path "~/repo/org/roam" "Notes.")
+
+  (defvar dobin/journal-path (concat dobin/notes-path "daily/")
+     "Journal entries" )
+
+  (defvar dobin/org-path "~/repo/org/" "Org path.")
 #+end_src
 
 * Package
@@ -377,6 +392,7 @@ diff라고 해서 넣어놓긴 했는데 자세한 기능을 모른다. 얘도 �
 
 ** org
 
+
 #+begin_src emacs-lisp :lexical t
   (use-package org
       :ensure (:wait t)
@@ -385,7 +401,7 @@ diff라고 해서 넣어놓긴 했는데 자세한 기능을 모른다. 얘도 �
       (add-to-list 'org-structure-template-alist '("S" . "src emacs-lisp :lexical t\n"))
       :custom
       (org-auto-align-tags nil)
-      (org-directory "~/repo/org/agenda")
+      (org-directory (concat dobin/org-path "agenda"))
       (org-default-notes-file (concat org-directory "/notes.org"))
       :general
       (org-mode-map
@@ -424,6 +440,22 @@ diff라고 해서 넣어놓긴 했는데 자세한 기능을 모른다. 얘도 �
       )
 #+end_src
 
+*** TODO org-roam
+노트 관리 도와주는 패키지. 사용법 알아봐야함
+
+#+begin_src emacs-lisp :lexical t
+  (use-package org-roam
+      :ensure t
+      :demand t
+      :general
+      (dobin/leader-keys
+          "n" '(:ignore t :wk "[n]otes(roam)")
+          "ni" '("node [i]nsert" . (lambda () (interactive) (org-roam-node-insert t)))
+          )
+      :custom
+      (org-roam-directory dobin/notes-path)
+      )
+#+end_src
 ** paren
 괄호 관련 표시 설정
 
@@ -744,9 +776,9 @@ D2Coding Nerd Font의 Mono는 글자 폭이 잘못 설정되어 있어서 사용
   (add-to-list 'default-frame-alist '(font . "JetBrainsMono NF-14"))
 #+end_src
 
-* 커스텀 커맨드
+* 커스텀 | Custom
 
-직접 만들거나 블로그 등에서 긁어온 함수. 기능을 보완하는 데 사용하고 있다.
+직접 만들거나 블로그 등에서 긁어온 함수나 변수. 기능을 보완하는 데 사용하고 있다.
 
 #+begin_src emacs-lisp :lexical t
   (defun dobin/keyboard-quit ()
