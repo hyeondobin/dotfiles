@@ -21,7 +21,8 @@ in
         en = "eval $EDITOR ~/.config/nxim/flake.nix ";
         ere = "systemctl --user restart emacs.service";
         ex = "eval $EDITOR ~/repo/dotfiles/flake.nix ";
-        jbm = "jj bookmark move main @-";
+        jbm = "jj bookmark move main --to @-";
+        jci = "jj commit";
         jgp = "jj git push";
         jl = "jj log -s"; # jj log를 diff 포함해서 보여주기.
         js = "jj split";
