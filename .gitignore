@@ -14,6 +14,7 @@ emacs/eshell/lastdir
 emacs/hyeondobin@VanLioum-Desktop.*
 emacs/init.el
 emacs/org-persist
+emacs/places
 emacs/projects
 emacs/recentf
 emacs/tramp
