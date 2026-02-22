@@ -135,6 +135,18 @@ emacs의 기본적인 설정들. 그냥 ~setq~ 나 ~setopt~ 를 단독으로 사
 * Package
 패키지 혹은 플러그인이라고도 할 수 있는 파일들을 로드하고 설정한다. 다양한 추가기능이나 테마 등이 패키지에 속한다고 볼 수 있다.
 
+** dired
+파일 탐색기
+
+#+begin_src emacs-lisp :lexical t
+  (use-package dired
+      :ensure nil
+      :custom
+      (dired-auto-revert-buffer 'dired-directory-changed-p)
+      (dired-kill-when-opening-new-dired-buffer t)
+      )
+#+end_src
+
 ** evil
 emacs에서 vi motion을 사용할 수 있게 해주는 패키지. 이 패키지가 없었다면 아마 emacs를 시도하지 않았을 것이다.
 
