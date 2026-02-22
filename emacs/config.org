@@ -543,6 +543,7 @@ modeline인데 설정하기는 당장에 귀찮아서 일단 꽨찮아보이는 
       :ensure t
 
       :general
+      ("M-p" 'consult-buffer)
       ([remap goto-line] 'consult-goto-line)
       ([remap Info-search]  'consult-info)
       (dobin/leader-keys
