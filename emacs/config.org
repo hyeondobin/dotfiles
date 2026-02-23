@@ -113,20 +113,16 @@ emacs의 기본적인 설정들. 그냥 ~setq~ 나 ~setopt~ 를 단독으로 사
       (set-default-coding-systems 'utf-8)
 
       (global-set-key (kbd "<escape>") 'dobin/keyboard-quit) ;; ESC를 메타 프리픽스로 사용하지 않는다.
-      (defun dobin/maximize-frame (frame)
-          "Maximazes the active frame in Windows"
-          (interactive)
-          (modify-frame-parameters frame '((window-state . maximized))))
+
 
       :config
       ;; ref: https://emacs.stackexchange.com/a/3008/49425
-      (add-to-list 'default-frame-alist '(window-state . maximized))
+      (add-to-list 'default-frame-alist '(fullscreen . maximized))
       ;; (add-hook 'after-make-frame-functions 'dobin/maximize-frame)
 
       :hook
       (before-save . delete-trailing-whitespace) ; 저장 시 남은 공백 제거
-      (window-setup . dobin/maximize-frame)
-      ;; (after-make-frame-functions . dobin/maximize-frame)
+
       )
 #+end_src
 
@@ -356,6 +352,7 @@ diff라고 해서 넣어놓긴 했는데 자세한 기능을 모른다. 얘도 �
           "<mouse-2>") ;; 마우스 휠 클릭으로 붙여넣기 비활성화
 
       (dobin/leader-keys
+          "M-k" '("kill emacs" . kill-emacs)
           "SPC" '(execute-extended-command :wk "command 실행") ;; M-x 대체
           "TAB" '(:keymap tab-prefix-map :wk "[t]ab")) ;; tab 단축키 리맵
       (general-define-key
