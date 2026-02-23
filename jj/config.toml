@@ -6,4 +6,6 @@
 
 [ui]
 default-command = "log"
-  
+
+[working-copy]
+eol-conversion = "input-output"
