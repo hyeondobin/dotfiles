@@ -102,7 +102,7 @@ emacs의 기본적인 설정들. 그냥 ~setq~ 나 ~setopt~ 를 단독으로 사
       (native-comp-async-report-warnings-errors nil)
       (load-prefer-newer t)
 
-      (custom-file "~/repo/dotfiles/emacs/customs.el")
+      (custom-file (concat user-emacs-directory "customs.el"))
 
       :init
       (global-visual-line-mode +1) ; 보이는 그대로의 라인으로 이동을 한다. wrapping이 되어도 된 줄을 기준으로 이동한다.
@@ -113,9 +113,20 @@ emacs의 기본적인 설정들. 그냥 ~setq~ 나 ~setopt~ 를 단독으로 사
       (set-default-coding-systems 'utf-8)
 
       (global-set-key (kbd "<escape>") 'dobin/keyboard-quit) ;; ESC를 메타 프리픽스로 사용하지 않는다.
+      (defun dobin/maximize-frame (frame)
+          "Maximazes the active frame in Windows"
+          (interactive)
+          (modify-frame-parameters frame '((window-state . maximized))))
+
+      :config
+      ;; ref: https://emacs.stackexchange.com/a/3008/49425
+      (add-to-list 'default-frame-alist '(window-state . maximized))
+      ;; (add-hook 'after-make-frame-functions 'dobin/maximize-frame)
 
       :hook
       (before-save . delete-trailing-whitespace) ; 저장 시 남은 공백 제거
+      (window-setup . dobin/maximize-frame)
+      ;; (after-make-frame-functions . dobin/maximize-frame)
       )
 #+end_src
 
@@ -348,7 +359,8 @@ diff라고 해서 넣어놓긴 했는데 자세한 기능을 모른다. 얘도 �
           "SPC" '(execute-extended-command :wk "command 실행") ;; M-x 대체
           "TAB" '(:keymap tab-prefix-map :wk "[t]ab")) ;; tab 단축키 리맵
       (general-define-key
-          "M-w" 'dobin/save-and-kill-buffer)
+          "M-w" 'dobin/save-and-kill-buffer
+          "M-k" 'kill-emacs)
 
       ;; help
       (dobin/leader-keys
@@ -628,7 +640,10 @@ neovim에서도 유명한 패키지의 원본 현재 입력된 키에서 수행�
 #+begin_src emacs-lisp :lexical t
   (use-package tree-sitter :ensure t :demand t :config (global-tree-sitter-mode))
 
-  (use-package tree-sitter-langs :ensure t :demand t)
+  (use-package treesit-langs
+      :ensure (:host github
+                  :repo "kiennq/treesit-langs")
+      :demand t)
 #+end_src
 
 *** Nix
@@ -637,6 +652,15 @@ neovim에서도 유명한 패키지의 원본 현재 입력된 키에서 수행�
   (use-package nix-ts-mode
       :ensure t
       :mode "\\.nix\\'")
+#+end_src
+
+*** powershell
+
+#+begin_src emacs-lisp :lexical t
+  (use-package powershell-ts-mode
+      :ensure (:host github
+                  :repo "dmille56/powershell-ts-mode")
+      )
 #+end_src
 
 ** rainbow delimiter
@@ -772,7 +796,7 @@ lsp와 연결하기 위한 패키지. 설정하는 방법을 잘 모르겠다.
       (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
 #+end_src
 
-* 폰트
+* font | 폰트
 
 D2Coding Nerd Font의 Mono는 글자 폭이 잘못 설정되어 있어서 사용할 시 영어의 폭과 맞춰지기 때문에 일반 폰트로 사용해야한다.
 - 출처 : https://codepractice.tistory.com/167
