@@ -6,3 +6,8 @@
 	defaultBranch = main
 [pull]
     rebase = true
+
+[core]
+    autocrlf = true
+    eol = native
+    longpaths = true

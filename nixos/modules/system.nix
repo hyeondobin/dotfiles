@@ -81,6 +81,7 @@
       init = {
         defaultBranch = "main";
       };
+      core.autocrlf = true;
       core.longpaths = true;
       core.eol = "native";
       pull.rebase = true;
