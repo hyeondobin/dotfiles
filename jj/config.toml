@@ -1,11 +1,16 @@
 #:schema https://docs.jj-vcs.dev/latest/config-schema.json
-
 [user]
   name = "hyeondobin"
   email = "dobinhyeon@gmail.com"
 
 [ui]
 default-command = "log"
+diff-editor = "ediff"
+
+[merge-tools.ediff]
+program = "emacsclient"
+diff-args = [ "-c", "-a", "","--eval",
+"(if (and (file-directory-p \"$left\") (file-directory-p \"$right\")) (ediff-directories \"$left\" \"$right\" \"\") (ediff-files \"$left\" \"$right\"))"]
 
 [working-copy]
 eol-conversion = "input-output"
