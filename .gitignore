@@ -1,9 +1,13 @@
+*.*#
+*.home-manager-backup
+Configs/fcitx5/.config/fcitx/dbus/*
 Interception
 eln*
 emacs/.cache/svg-lib
 emacs/.emacs.desktop
 emacs/.emacs.desktop.lock
 emacs/.lsp-session-v1
+emacs/auto-save-list
 emacs/backups
 emacs/eln-cache/29.4-631e5fd8
 emacs/elpa
@@ -11,6 +15,7 @@ emacs/elpaca
 emacs/emacs-config.org~
 emacs/eshell/history
 emacs/eshell/lastdir
+emacs/history
 emacs/hyeondobin@VanLioum-Desktop.*
 emacs/init.el
 emacs/org-persist
@@ -20,12 +25,8 @@ emacs/recentf
 emacs/server
 emacs/tramp
 emacs/transient
+emacs/undo
 fcitx/dbus/0c42dd0befed41fcb353b3f4516f1c8d-0
 kanata/Interception
 kanata/kanata_link.lnk
 kanata/kanata_log.txt
-emacs/auto-save-list
-emacs/undo
-Configs/fcitx5/.config/fcitx/dbus/*
-*.home-manager-backup
-*.*#

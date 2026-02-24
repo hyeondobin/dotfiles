@@ -62,6 +62,8 @@
 * emacs 기본 설정들
 
 emacs의 기본적인 설정들. 그냥 ~setq~ 나 ~setopt~ 를 단독으로 사용하는 대신 ~(use-package emacs ...)~ 을 사용하여 설정한다.
+variable의 설명에 =customize= 가 가능하다고 써있으면 =use-package= 의 =:custom= 을 사용하여 설정할 수 있다. =setopt= 를 사용한 것과 같은 효과를 갖는다.
+옵션을 켜거나 끌 경우 =+1= =-1= 을 사용하여 조절한다. 단 끄기 위해 =nil= 로 설정해야하는 경우에는 그렇게 지정한다.
 
 #+begin_src emacs-lisp :lexical t
   (use-package emacs
@@ -73,7 +75,8 @@ emacs의 기본적인 설정들. 그냥 ~setq~ 나 ~setopt~ 를 단독으로 사
       (sentence-end-double-space nil)
       (frame-inhibit-implied-resize t) ;; tiling window manager에서는 필요가 없음
       (show-trailing-whitespace t)
-      (ring-bell-function -1)
+      (ring-bell-function nil)
+      (visible-bell +1)
       (inhibit-startup-message t)
       (use-short-answers t)
 
@@ -394,6 +397,7 @@ diff라고 해서 넣어놓긴 했는데 자세한 기능을 모른다. 얘도 �
           "u" '(universal-argument :wk "[u]niversal prefix")) ;; C-u의 원래 기능을 리더키로 사용
 
       (dobin/leader-keys
+          "e" '(:ignore t :wk "[e]macs")
           "ere" '("restart emacs" . (lambda () (interactive) (restart-emacs))))
 
       ;; org
@@ -431,6 +435,7 @@ diff라고 해서 넣어놓긴 했는데 자세한 기능을 모른다. 얘도 �
           "oa" '("[a]genda" . org-agenda)
           "oc" '("[c]apture" . org-capture)
           "ol" '("store [l]ink" . org-store-link)
+          "ot" '("[t]odo" . org-todo)
           )
       (dobin/local-leader-keys
           :keymaps 'org-mode-map
@@ -552,7 +557,8 @@ modeline인데 설정하기는 당장에 귀찮아서 일단 꽨찮아보이는 
       :ensure t
 
       :general
-      ("M-p" 'consult-buffer)
+      (:states '(normal visual insert emacs)
+          "C-p" 'consult-buffer)
       ([remap goto-line] 'consult-goto-line)
       ([remap Info-search]  'consult-info)
       (dobin/leader-keys
@@ -561,6 +567,12 @@ modeline인데 설정하기는 당장에 귀찮아서 일단 꽨찮아보이는 
           "fr" '("[r]ecent" . consult-recent-file)
 
           "sg" '("[g]rep" . consult-grep)
+          "sr" '("[r]ipgrep" . consult-ripgrep)
+          "sG" '("[G]it grep" . consult-git-grep)
+          "sf" '("[f]ind" . consult-find)
+          "sF" '("locate" . consult-locate)
+          "sl" '("[l]ine" . consult-line)
+          "i" '("[i]menu" . consult-imenu)
           )
 
       :init
@@ -574,16 +586,28 @@ modeline인데 설정하기는 당장에 귀찮아서 일단 꽨찮아보이는 
 ** embark
 추가행동?을 할 수 있게 해주는 패키지인데 아직은 사용 할 타이밍을 잘 못잡고있다.
 #+begin_src emacs-lisp :lexical t
-    (use-package embark
-        :ensure t
+  (use-package embark
+      :ensure t
+      :demand t
+      :general
+      (dobin/leader-keys
+          "." 'embark-act)
+      (:states '(normal insert visual emacs)
+          "C-." 'embark-act)
+      ("C-;" 'embark-dwim)
+      (vertico-map
+          "C-." 'embark-act)
+      (embark-heading-map
+          "l" 'org-id-store-link)
+      :init
+      (setq prefix-help-command #'embark-prefix-help-command)
 
-        :config
-        (general-define-key
-            "C-," 'embark-act)
-        (add-to-list 'display-buffer-alist
-            '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
-                 nil
-                 (window-parameters (mode-line-format . none)))))
+      :config
+      ;; Hide the mode line of the Embark live/completions buffers
+      (add-to-list 'display-buffer-alist
+          '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+               nil
+               (window-parameters (mode-line-format . none)))))
 #+end_src
 
 ** embark-consult
@@ -591,7 +615,12 @@ modeline인데 설정하기는 당장에 귀찮아서 일단 꽨찮아보이는 
 
 #+begin_src emacs-lisp :lexical t
   (use-package embark-consult
-      :ensure t)
+      :ensure t
+      :after (embark consult)
+      :demand t
+      :hook
+      (embark-collect-mode . consult-preview-at-point-mode)
+      )
 #+end_src
 
 ** marginalia
@@ -599,10 +628,14 @@ minibuffer에서 항목에 대한 설명을 추가한다.
 일단은 =M-x= 에서 작동하는 건 확인했음.
 
 #+begin_src emacs-lisp :lexical t
-    (use-package marginalia
-        :ensure t
-        :config
-        (marginalia-mode))
+  (use-package marginalia
+      :ensure t
+      :demand t
+      :after vertico
+      :custom
+      (marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil))
+      :init
+      (marginalia-mode))
 #+end_src
 
 ** which-key
@@ -689,15 +722,35 @@ neovim에서도 유명한 패키지의 원본 현재 입력된 키에서 수행�
 #+begin_src emacs-lisp :lexical t
   (use-package corfu
       :ensure t
-      :hook (prog-mode . (lambda () (setq-local corfu-auto t)))
+      :demand t
+      :hook
+      ;; (prog-mode . (lambda () (setq-local corfu-auto t)))
+      (eval-expression-minibuffer-setup . corfu-mode)
+
       :init
       (global-corfu-mode)
+
       :custom
       (corfu-auto-prefix 2)
       (corfu-cycle t)
+
       :config
       (keymap-unset corfu-map "RET")
+
+      :general
+      (corfu-map
+          "SPC" 'corfu-insert-separator)
+      (general-unbind
+          :states '(insert)
+          "C-k"
+          :states '(normal)
+          "C-;")
       )
+
+  (use-package emacs
+      :ensure nil
+      :custom
+      (tab-always-indent 'complete))
 #+end_src
 
 *** vertico
@@ -706,7 +759,39 @@ minibuffer 에서 사용하는 자동완성
 #+begin_src emacs-lisp :lexical t
   (use-package vertico
       :ensure t
-      :init (vertico-mode))
+      :init
+      (vertico-mode +1)
+      (vertico-multiform-mode +1)
+      (setopt vertico-multiform-categories
+          '((file grid)
+               ))
+      (setopt vertico-cycle t) ;; enable cycling for vertico 'next' and 'previous'
+      :general
+      (:keymaps 'vertico-map
+          "C-j" 'vertico-next
+          "C-a" 'vertico-next
+          "C-k" 'vertico-previous
+          "C-e" 'vertico-previous
+          "C-f" 'vertico-exit
+          "<backspace>" 'vertico-directory-delete-char
+          "C-<backspace>" 'vertico-directory-delete-word
+          "C-w" 'vertico-directory-delete-word
+          "RET" 'vertico-directory-enter)
+      (:keymaps 'minibuffer-local-map
+          "M-h" 'backward-kill-word
+          )
+      )
+#+end_src
+
+*** savehist
+
+minibuffer에서 사용한 기록을 남겨주는 패키지.
+
+#+begin_src emacs-lisp :lexical t
+  (use-package savehist
+      :ensure nil
+      :init
+      (savehist-mode +1))
 #+end_src
 
 *** orderless
@@ -725,14 +810,32 @@ minibuffer 에서 사용하는 자동완성
 *** cape
 
 #+begin_src emacs-lisp :lexical t
-  (defun dobin/elisp-mode-init ()
-      "Set completion function to cape"
-      (setq-local completion-at-point-functions
-  	    (list (cape-capf-inside-code #'cape-elisp-symbol))))
-  (add-hook 'emacs-lisp-mode-hook #'dobin/elisp-mode-init)
+  ;; (defun dobin/elisp-mode-init ()
+  ;;     "Set completion function to cape"
+  ;;     (setq-local completion-at-point-functions
+  ;; 	    (list (cape-capf-inside-code #'cape-elisp-symbol))))
+  ;; (add-hook 'emacs-lisp-mode-hook #'dobin/elisp-mode-init)
 
   (use-package cape
-      :ensure t)
+      :ensure t
+      :demand t
+      :general
+      ("M-p p" 'completion-at-point
+          "M-p t" 'complete-tag
+          "M-p d" 'cape-dabbrev
+          "M-p h" 'cape-history
+          "M-p f" 'cape-file
+          "M-p k" 'cape-keyword
+          "M-p s" 'cape-symbol
+          "M-p a" 'cape-abbrev
+          "M-p w" 'cape-dict
+          "M-p \\" 'cape-tex
+          "M-p &" 'cape-sgml
+          )
+      :init
+      (add-to-list 'completion-at-point-functions #'cape-file)
+      (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+      )
 #+end_src
 
 *** dabbrev
@@ -793,7 +896,32 @@ lsp와 연결하기 위한 패키지. 설정하는 방법을 잘 모르겠다.
       (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
 #+end_src
 
-* font | 폰트
+** TODO checkers
+
+*** flymake
+
+#+begin_src emacs-lisp :lexical t
+  (use-package flymake
+      :ensure nil
+      :general
+      (dobin/leader-keys
+          :keymaps 'flymake-mode-map
+          "c" '(:ignore t :wk "consult")
+          "cc" '("toggle flymake" . flymake-mode)
+          "cf" '("flymake" . consult-flymake)
+          )
+      (general-nmap "] !" 'flymake-goto-next-error)
+      (general-nmap "[ !" 'flymake-goto-prev-error)
+      :hook
+      (emacs-lisp-mode . flymake-mode)
+      :custom
+      (flymake-no-changes-timeout nil)
+
+      )
+#+end_src
+e
+
+* font | 폰트 관련
 
 D2Coding Nerd Font의 Mono는 글자 폭이 잘못 설정되어 있어서 사용할 시 영어의 폭과 맞춰지기 때문에 일반 폰트로 사용해야한다.
 - 출처 : https://codepractice.tistory.com/167
@@ -805,9 +933,9 @@ D2Coding Nerd Font의 Mono는 글자 폭이 잘못 설정되어 있어서 사용
               (set-fontset-font "fontset-default" 'hangul (font-spec :family "D2CodingLigature Nerd Font" :size 18)))))
   (add-hook 'after-make-frame-functions 'dobin/set-korean-font)
 
-  (set-face-attribute 'match nil :background "#74c7ec" :foreground "#1e2030")
-
   (add-to-list 'default-frame-alist '(font . "JetBrainsMono NF-14"))
+
+  (set-face-attribute 'match nil :background "#74c7ec" :foreground "#1e2030")
 #+end_src
 
 * 커스텀 | Custom
