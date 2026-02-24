@@ -13,6 +13,7 @@
       "networkmanager"
       "wheel"
     ];
+    # shell = pkgs.fish;
   };
   nix.settings.trusted-users = [ username ];
   nix.settings = {
@@ -81,6 +82,7 @@
         defaultBranch = "main";
       };
       core.longpaths = true;
+      core.eol = "native";
       pull.rebase = true;
     };
   };
@@ -89,7 +91,7 @@
   programs.bash = {
     interactiveShellInit = ''
       if [[ $(${pkgs.procps}/bin/ps --no-header --pid=$PPID --format=comm) != "fish" && -z ''${BASH_EXECUTION_STRING} ]] then
-        shopt -q login_shell && LOGIN_OPTION='--login' || LOGIN_OPTION=""
+      shopt -q login_shell && LOGIN_OPTION='--login' || LOGIN_OPTION=""
         exec ${pkgs.fish}/bin/fish $LOGIN_OPTION
       fi
     '';
