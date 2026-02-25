@@ -5,7 +5,7 @@
 
 [ui]
 default-command = "log"
-diff-editor = "ediff"
+# diff-editor = "ediff"
 
 [merge-tools.ediff]
 program = "emacsclient"
