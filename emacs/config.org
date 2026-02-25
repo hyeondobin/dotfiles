@@ -724,7 +724,7 @@ neovim에서도 유명한 패키지의 원본 현재 입력된 키에서 수행�
       :ensure t
       :demand t
       :hook
-      ;; (prog-mode . (lambda () (setq-local corfu-auto t)))
+      (prog-mode . (lambda () (setq-local corfu-auto t)))
       (eval-expression-minibuffer-setup . corfu-mode)
 
       :init
