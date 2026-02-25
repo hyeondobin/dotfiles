@@ -18,6 +18,7 @@
     sounds = true;
     steam = true;
     touch = true;
+    niri = true;
   };
 
   # boot related configs

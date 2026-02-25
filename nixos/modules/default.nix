@@ -11,5 +11,6 @@
     ./steam.nix
     ./system.nix
     ./vimb.nix
+    ./niri.nix
   ];
 }
