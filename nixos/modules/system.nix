@@ -131,6 +131,7 @@
       lazygit
       jujutsu
       lazyjj
+      sd
 
       vivaldi
       bitwarden-desktop

@@ -13,6 +13,7 @@ in
     ./ghostty.nix
     ./zoxide.nix
     ./tmux.nix
+    ./starship.nix
   ];
   config = lib.mkIf cfg.cli {
 
