@@ -17,12 +17,14 @@ in
         cat = "bat ";
         cp = "cp -iv ";
         e = "eval $EDITOR ";
-        ee = "eval $EDITOR ~/repo/dotfiles/emacs/init.el ";
+        ee = "eval $EDITOR ~/repo/dotfiles/emacs/config.org ";
+        eh = "eval $EDITOR ~/repo/dotfiles/nixos/home/hypr.nix";
         en = "eval $EDITOR ~/.config/nxim/flake.nix ";
         ere = "systemctl --user restart emacs.service";
         ex = "eval $EDITOR ~/repo/dotfiles/flake.nix ";
         jbm = "jj bookmark move main --to @-";
         jci = "jj commit";
+        jgf = "jj git fetch";
         jgp = "jj git push";
         jl = "jj log -s"; # jj log를 diff 포함해서 보여주기.
         js = "jj split";
