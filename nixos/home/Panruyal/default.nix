@@ -7,7 +7,7 @@
 
   dbConfig = {
     cli = true;
-    starship = false;
+    starship = true;
     discord = true;
     emacs = true;
     hyprland = true;

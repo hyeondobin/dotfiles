@@ -23,7 +23,7 @@ in
             disabled = true;
           };
           cmd_duration = {
-            min_time = "10_000";
+            min_time = 10000;
             format = "took [$duration]($style)";
           };
           character = {
@@ -50,16 +50,82 @@ in
             disabled = false;
           };
           git_branch = {
-            style = "bold mauve";
+            disabled = true;
           };
+          git_metrics = {
+            disabled = true;
+          };
+          git_status = {
+            disabled = true;
+          };
+          git_commit = {
+            disabled = true;
+          };
+
           username = {
             format = "[$user]($style_user) in ";
             style_user = "blue";
           };
 
+          custom = {
+            jj = {
+              description = "The current jj status";
+              when = "jj --ignore-working-copy root";
+              symbol = "🥋 ";
+              command = ''
+                jj log --revisions @ --no-graph --ignore-working-copy --color always --limit 1 --template '
+  separate(" ",
+    change_id.shortest(4),
+    bookmarks,
+    "|",
+    concat(
+      if(conflict, "💥"),
+      if(divergent, "🚧"),
+      if(hidden, "👻"),
+      if(immutable, "🔒"),
+    ),
+    raw_escape_sequence("\x1b[1;32m") ++ if(empty, "(empty)"),
+    raw_escape_sequence("\x1b[1;32m") ++ coalesce(
+      truncate_end(29, description.first_line(), "…"),
+      "(no description set)",
+    ) ++ raw_escape_sequence("\x1b[0m"),
+  )
+  '
+              '';
+            };
+            jjstate = {
+              when = "jj --ignore-working-copy root";
+              command = ''
+                jj log -r@ -n1 --ignore-working-copy --no-graph -T "" --stat | tail -n1 | sd "(\d+) files? changed, (\d+) insertions?\(\+\), (\d+) deletions?\(-\)" ' $\{1\}m $\{2\}+ $\{3\}' | sd " 0." ""
+              '';
+            };
+            git_status = {
+              when = "! jj --ignore-working-copy root";
+              command = "starship module git_status";
+              style = "";
+              description = "Only show git_status if not in a jj repo";
+            };
+            git_commit = {
+              when = "! jj --ignore-working-copy root";
+              command = "starship module git_commit";
+              style = "";
+              description = "Only show git_commit if not in a jj repo";
+            };
+            git_metrics = {
+              when = "! jj --ignore-working-copy root";
+              command = "starship module git_metrics";
+              style = "";
+              description = "Only show git_metrics if not in a jj repo";
+            };
+            git_branch = {
+              when = "! jj --ignore-working-copy root";
+              command = "starship module git_branch";
+              style = "";
+              description = "Only show git_branch if not in a jj repo";
+            };
+          };
+
           palettes = {
-
-
             catppuccin_latte = {
               rosewater = "#dc8a78";
               flamingo = "#dd7878";
