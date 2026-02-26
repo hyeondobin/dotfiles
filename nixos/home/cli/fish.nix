@@ -24,6 +24,7 @@ in
         ex = "eval $EDITOR ~/repo/dotfiles/flake.nix ";
         jbm = "jj bookmark move main --to @-";
         jci = "jj commit";
+        jd = "jj desc";
         jgf = "jj git fetch";
         jgp = "jj git push";
         jl = "jj log -s"; # jj log를 diff 포함해서 보여주기.
