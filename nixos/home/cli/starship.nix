@@ -17,9 +17,8 @@ in
         enableFishIntegration = true;
         settings = # lib.mkIf cfg.starship
           {
-            prompt = {
-              format = "$all$character";
-            };
+            format = ''$all$line_break$character'';
+            right_format = "$time";
             add_newline = true;
             palette = "catppuccin_mocha";
             line_break = {
