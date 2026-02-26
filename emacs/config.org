@@ -115,7 +115,7 @@ variable의 설명에 =customize= 가 가능하다고 써있으면 =use-package=
       (prefer-coding-system 'utf-8)
       (set-default-coding-systems 'utf-8)
 
-      (global-set-key (kbd "<escape>") 'dobin/keyboard-quit) ;; ESC를 메타 프리픽스로 사용하지 않는다.
+      ;; (global-set-key (kbd "<escape>") 'dobin/keyboard-quit) ;; ESC를 메타 프리픽스로 사용하지 않는다.
 
 
       :config
@@ -325,12 +325,22 @@ diff라고 해서 넣어놓긴 했는데 자세한 기능을 모른다. 얘도 �
       :config
       (general-evil-setup) ;; general과 evil 연계
 
+      (general-define-key
+          :states '(normal insert visual emacs)
+          :prefix-map 'dobin/leader-map
+          :keymaps 'override
+          :global-prefix "C-c"
+          :prefix "SPC"
+          :non-normal-prefix "M-SPC"
+          )
+
       ;; leader key로 'space'를 사용
       (general-create-definer dobin/leader-keys
-          :states '(normal insert visual emacs)
-          :keymaps 'override
-          :prefix "SPC" ;; leader 설정
-          :global-prefix "M-SPC") ;; insert 모드에서의 리더키
+          ;; :states '(normal insert visual emacs)
+          ;; :keymaps 'override
+          ;; :prefix "SPC" ;; leader 설정
+          ;; :global-prefix "M-SPC") ;; insert 모드에서의 리더키
+          :keymaps 'dobin/leader-map)
 
       ;; local leader key로 ','를 사용
       (general-create-definer dobin/local-leader-keys
@@ -343,15 +353,16 @@ diff라고 해서 넣어놓긴 했는데 자세한 기능을 모른다. 얘도 �
           :states 'insert
           "C-g" 'dobin/keyboard-quit)
 
-      (general-define-key
-          :keymaps '(minibuffer-mode-map minibuffer-local-map)
-          :states '(normal insert emacs)
-          "ESC" 'dobin/keyboard-quit)
+      ;; (general-define-key
+      ;;     :keymaps '(minibuffer-mode-map minibuffer-local-map)
+      ;;     :states '(normal insert emacs)
+      ;;     "ESC" 'dobin/keyboard-quit)
 
       (general-unbind
           "C-x C-r" ;; find-file read only 비활성화
           "C-x C-z" ;; suspend frame 비활성화
           "C-x C-d" ;; list directory 비활성화
+          "M-h" ;; 이맥스 기본 바인딩 비활성화
           "<mouse-2>") ;; 마우스 휠 클릭으로 붙여넣기 비활성화
 
       (dobin/leader-keys
@@ -532,6 +543,23 @@ modeline인데 설정하기는 당장에 귀찮아서 일단 꽨찮아보이는 
       :ensure t
       :init
       (doom-modeline-mode +1))
+#+end_src
+
+** keycast
+
+누른 키의 정보를 알려주는 패키지. 모드라인에 추가해서 표시할 수 있다.
+일단 활성화에 실패해 보류중
+#+begin_src emacs-lisp :lexical t
+  (use-package keycast
+      :disabled t
+      :ensure t
+      :after (doom-modeline)
+      :custom
+      (keycast-mode-line-remove-tail-elements nil)
+      (keycast-mode-line-insert-after 'mode-line-misc-info)
+      :config
+      (keycast-mode-line-mode)
+      )
 #+end_src
 
 ** recentf
@@ -768,6 +796,7 @@ minibuffer 에서 사용하는 자동완성
       (setopt vertico-cycle t) ;; enable cycling for vertico 'next' and 'previous'
       :general
       (:keymaps 'vertico-map
+          :states '(insert)
           "C-j" 'vertico-next
           "C-a" 'vertico-next
           "C-k" 'vertico-previous
@@ -778,6 +807,7 @@ minibuffer 에서 사용하는 자동완성
           "C-w" 'vertico-directory-delete-word
           "RET" 'vertico-directory-enter)
       (:keymaps 'minibuffer-local-map
+          :states '(insert)
           "M-h" 'backward-kill-word
           )
       )
