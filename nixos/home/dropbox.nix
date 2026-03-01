@@ -1,6 +1,6 @@
 {config, lib, ...}:
 let
-  cfg = dbConfig.dropbox;
+  cfg = config.dbConfig;
 in
 {
   options = {

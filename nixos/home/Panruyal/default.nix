@@ -9,6 +9,7 @@
     cli = true;
     starship = true;
     discord = true;
+    dropbox = true;
     emacs = true;
     hyprland = true;
     rofi = true;
