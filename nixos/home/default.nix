@@ -28,6 +28,7 @@
   imports = [
     ./cli
     ./discord.nix
+    ./dropbox.nix
     ./emacs.nix
     ./hypr.nix
     ./rofi.nix
