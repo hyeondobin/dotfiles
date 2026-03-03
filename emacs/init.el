@@ -46,7 +46,6 @@
     :ensure nil
     :custom
     (enable-recursive-minibuffers +1)
-    (backup-by-copying +1)
     (sentence-end-double-space nil)
     (frame-inhibit-implied-resize t) ;; tiling window manager에서는 필요가 없음
     (show-trailing-whitespace t)
@@ -54,6 +53,7 @@
     (visible-bell +1)
     (inhibit-startup-message t)
     (use-short-answers t)
+    (debug-on-error t)
 
     (user-full-name "Jehui Lee")
     (user-mail-address "jayli2558@gmail.com")
@@ -66,7 +66,10 @@
     (lisp-indent-offset 4)
 
     (help-window-select t)
+
     (create-lockfiles nil)
+
+    (backup-by-copying +1)
     (backup-directory-alist
         `((".*" . ,(concat user-emacs-directory "backups")))
         auto-save-file-name-transforms
@@ -191,58 +194,30 @@
     (require 'evil-org-agenda)
     (evil-org-agenda-set-keys))
 
-(use-package electric
-    :demand t
-    :ensure nil
-    :init
-    (electric-pair-mode t)
-    (setopt electric-pair-preserve-balance t))
-
-(use-package ediff
-  :demand t
-  :ensure nil)
-
 (use-package general
     :ensure (:wait t)
     :demand t
+    :after (evil)
     :config
     (general-evil-setup) ;; general과 evil 연계
 
-    (general-define-key
-        :states '(normal insert emacs visual)
-        :prefix-map 'dobin/leader-map
-        :global-prefix "C-c"
-        :prefix "SPC"
-        :non-normal-prefix "M-SPC"
-        )
-
-    (general-define-key
-        :states '(normal insert visual emacs)
-        :prefix-map 'dobin/local-leader-map
-        ;; :keymaps 'override
-        :prefix ","
-        :non-normal-prefix "M-,"
-        )
-
     ;; leader key로 'space'를 사용
     (general-create-definer dobin/leader-keys
-        ;; :states '(normal insert visual emacs)
-        ;; :global-prefix "C-c" ;; insert 모드에서의 리더키
-        ;; :prefix "SPC" ;; leader 설정
-        ;; :non-normal-prefix "M-SPC"
-        ;; :prefix-map 'dobin/leader-map)
-        :keymaps 'dobin/leader-map)
+        :states '(normal insert visual emacs)
+        :global-prefix "C-c"
+        :prefix "SPC" ;; leader 설정
+        :non-normal-prefix "M-SPC" ; insert mode leader key
+        )
 
     ;; local leader key로 ','를 사용
     (general-create-definer dobin/local-leader-keys
-        ;; :states '(normal insert visual emacs)
-        ;; :prefix "," ;; leader 설정
-        ;; :non-normal-prefix "M-,"
-        ;; :prefix-map 'dobin/local-leader-map)
-        :keymaps 'dobin/local-leader-map)
+        :states '(normal insert visual emacs)
+        :prefix "," ;; leader 설정
+        :non-normal-prefix "M-,"
+        :prefix-map 'dobin/local-leader-map
+        )
 
-    (general-define-key
-        :states 'insert
+    (general-def 'insert
         "C-g" 'dobin/keyboard-quit)
 
     ;; (general-define-key
@@ -309,6 +284,35 @@
         "o" '(:ignore t :wk "[o]rg"))
     )
 
+(use-package avy
+    :ensure t
+    :custom
+    (avy-keys '(?n ?r ?t ?s ?h ?a ?e ?i))
+    :general
+    (:states '(normal motion)
+        "s" 'evil-avy-goto-char-timer
+        "f" 'evil-avy-goto-char-in-line
+        "gl" 'evil-avy-goto-line
+        )
+    )
+
+(use-package hydra
+    :ensure t
+    :config
+    ;; (defhydra hydra-)
+    )
+
+(use-package electric
+    :demand t
+    :ensure nil
+    :init
+    (electric-pair-mode t)
+    (setopt electric-pair-preserve-balance t))
+
+(use-package ediff
+  :demand t
+  :ensure nil)
+
 (use-package delsel
     :ensure nil
     :config
@@ -334,13 +338,8 @@
         )
     (dobin/local-leader-keys
         :keymaps 'org-mode-map
-        "<" '("up one heading" . org-up-heading)
-        "a" '("[a]genda" . org-agenda)
-
         "b" '(:wk "[b]abel" :ignore t )
         "bt" '("[t]angle" . org-babel-tangle)
-
-        "c" '("[c]apture" . org-capture)
 
         "e" '("edit" . org-edit-special)
 
@@ -381,18 +380,6 @@
     (show-paren-when-point-inside-paren t)
     :config
     (show-paren-mode +1))
-
-(use-package avy
-  :ensure t
-    :custom
-    (avy-keys '(?n ?r ?t ?s ?h ?a ?e ?i))
-  :general
-  (:states '(normal motion)
-      "s" 'evil-avy-goto-char-timer
-      "f" 'evil-avy-goto-char-in-line
-      "gl" 'evil-avy-goto-line
-      )
-  )
 
 (use-package vterm
     :ensure nil
@@ -542,13 +529,14 @@
     :ensure t
     :demand t
     :hook
-    (prog-mode . (lambda () (setq-local corfu-auto t)))
+    ;; (prog-mode . (lambda () (setq-local corfu-auto t)))
     (eval-expression-minibuffer-setup . corfu-mode)
 
     :init
     (global-corfu-mode)
 
     :custom
+    (corfu-auto t)
     (corfu-auto-prefix 2)
     (corfu-cycle t)
 
@@ -557,18 +545,13 @@
 
     :general
     (corfu-map
-        "SPC" 'corfu-insert-separator)
+        "C-SPC" 'corfu-insert-separator)
     (general-unbind
         :states '(insert)
         "C-k"
         :states '(normal)
         "C-;")
     )
-
-(use-package emacs
-    :ensure nil
-    :custom
-    (tab-always-indent 'complete))
 
 (use-package vertico
     :ensure t
@@ -610,15 +593,16 @@
     (completion-category-defaults nil)
     (completion-category-overrides '((file (styles partial-completion)))))
 
-;; (defun dobin/elisp-mode-init ()
-;;     "Set completion function to cape"
-;;     (setq-local completion-at-point-functions
-;; 	    (list (cape-capf-inside-code #'cape-elisp-symbol))))
-;; (add-hook 'emacs-lisp-mode-hook #'dobin/elisp-mode-init)
+(defun dobin/elisp-mode-init ()
+    "Set completion function to cape"
+    (setq-local completion-at-point-functions
+	    (list (cape-capf-inside-code #'cape-elisp-symbol))))
 
 (use-package cape
     :ensure t
     :demand t
+    :hook
+    (emacs-lisp-mode . dobin/elisp-mode-init)
     :general
     ("M-p p" 'completion-at-point
         "M-p t" 'complete-tag
@@ -681,7 +665,7 @@
 (use-package flymake
     :ensure nil
     :general
-    (dobin/local-leader-keys
+    (dobin/leader-keys
         :keymaps 'flymake-mode-map
         "c" '(:ignore t :wk "code")
         "cc" '("toggle flymake" . flymake-mode)
