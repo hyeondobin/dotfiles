@@ -33,6 +33,10 @@ in
       pkgs.nixd
       pkgs.clang-tools
       # pkgs.llvmPackages_latest.clang
+
+      #deps
+      pkgs.cmake
+      pkgs.gnumake
     ];
     services.emacs = {
       enable = true;

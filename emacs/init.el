@@ -637,9 +637,11 @@
     :custom
     (lsp-completion-provider :none)
     (lsp-keymap-prefix "C-c l")
+    (lsp-diagnostics-provider :flycheck)
     :hook
     (lsp-mode . lsp-enable-which-key-integration)
     (nix-ts-mode . lsp)
+    (c-mode . lsp)
     :init
     (defun dobin/orderless-dispatch-flex-first (_pattern index _total)
         (and (eq index 0) 'orderless-flex))
@@ -649,6 +651,9 @@
 	        '(orderless))
         (setq-local orderless-style-dispatchers (list #'dobin/orderless-dispatch-flex-first))
         (setq-local completion-at-point-functions (list (cape-capf-buster #'lsp-completion-at-point))))
+    :general-config
+    (general-def :states 'normal
+        "SPC l" (general-simulate-key "C-c l" :which-key "[L]SP"))
     :hook
     (lsp-completion-mode . dobin/lsp-mode-setup-completion))
 
@@ -664,7 +669,7 @@
 
 (use-package flymake
     :ensure nil
-    :general
+    :general-config
     (dobin/leader-keys
         :keymaps 'flymake-mode-map
         "c" '(:ignore t :wk "code")
@@ -679,6 +684,9 @@
     (flymake-no-changes-timeout nil)
 
     )
+
+(use-package flycheck
+    :ensure t)
 
 (defun dobin/set-korean-font (frame)
     "Set font for new frames"
