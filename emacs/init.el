@@ -106,12 +106,12 @@
 
     )
 
-(defvar dobin/notes-path "~/repo/org/roam" "Notes.")
+(defvar dobin/org-path "~/Dropbox/org" "Org path.")
+
+(defvar dobin/notes-path (concat dobin/org-path "roam") "Notes.")
 
 (defvar dobin/journal-path (concat dobin/notes-path "daily/")
    "Journal entries" )
-
-(defvar dobin/org-path "~/repo/org/" "Org path.")
 
 (use-package dired
     :ensure nil
