@@ -8,7 +8,7 @@
 }:
 let
   cfg = config.dbConfig;
-  emacs = (
+  dbnemacs = (
     (pkgs.emacsPackagesFor pkgs.emacs-pgtk).emacsWithPackages (epkgs: [
       epkgs.vterm
       epkgs.treesit-grammars.with-all-grammars
@@ -27,14 +27,16 @@ in
       #   extraEmacsPackages = epkgs: [
       #   ];
       # })
-      emacs
+      dbnemacs
 
       # language servers
       pkgs.nixd
+      pkgs.clang-tools
+      # pkgs.llvmPackages_latest.clang
     ];
     services.emacs = {
       enable = true;
-      package = emacs;
+      package = dbnemacs;
     };
     home.sessionVariables = {
       EDITOR = "emacsclient -c -a emacs";
