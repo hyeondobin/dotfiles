@@ -252,7 +252,7 @@ in
 
           # discord
           # "$mainMod, D, togglespecialworkspace, Discord"
-          "$mainMod, D, exec, pgrep -if discord && hyprctl dispatch workspace special:Discord || discord --enable-features=UseOzonePlatform"
+          "$mainMod, D, exec, pgrep -if discord && hyprctl dispatch togglespecialworkspace Discord || discord --enable-features=UseOzonePlatform"
           "$ctrlMod, D, exec, discord --enable-features=UseOzonePlatform --enable-wayland-ime --ozone-platform=wayland"
           "$shiftMod, D, movetoworkspace, special:Discord"
 
