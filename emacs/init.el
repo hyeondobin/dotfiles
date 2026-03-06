@@ -101,7 +101,7 @@
 
     :config
     ;; ref: https://emacs.stackexchange.com/a/3008/49425
-    (add-to-list 'default-frame-alist '(fullscreen . maximized))
+    ;; (add-to-list 'default-frame-alist '(fullscreen . maximized))
     ;; (add-hook 'after-make-frame-functions 'dobin/maximize-frame)
 
     :hook
@@ -515,6 +515,7 @@
 
 (use-package vc-jj
     :demand t
+    :disabled t
     )
 
 (use-package jujutsushi
@@ -526,12 +527,18 @@
     :general
     (dobin/leader-keys
         "cj" '("[j]j dashboard" . jj-dashboard)))
+                :main-file "jujutsushi.el")
+    :disabled t)
 
 (use-package jj-mode
     :ensure (:host github :repo "bolivier/jj-mode.el")
     :disabled
     :config
     (evil-make-overriding-map jj-mode-map 'normal)
+    :general
+    (dobin/leader-keys
+        "j" '(:ignore t :wk "[j]ujutsu")
+        "jl" '("[l]og" . jj-log))
     )
 
 (use-package magit
