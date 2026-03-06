@@ -42,8 +42,10 @@ disabled = false
 # custom module for jj status
 [custom.jj]
 description = "The current jj status"
+require_repo = true
 when = "jj --ignore-working-copy root"
 symbol = "🥋 "
+ignore_timeout = true
 command = '''
 jj log --revisions @ --no-graph --ignore-working-copy --color always --limit 1 --template '
   separate(" ",
@@ -67,6 +69,8 @@ jj log --revisions @ --no-graph --ignore-working-copy --color always --limit 1 -
 
 [custom.jjstate]
 when = "jj --ignore-working-copy root"
+require_repo = true
+ignore_timeout = true
 command = '''
 jj log -r@ -n1 --ignore-working-copy --no-graph -T "" --stat | tail -n1 | sd "(\d+) files? changed, (\d+) insertions?\(\+\), (\d+) deletions?\(-\)" ' ${1}m ${2}+ ${3}-' | sd " 0." ""
 '''
@@ -79,6 +83,8 @@ disabled = true
 
 [custom.git_status]
 when = "! jj --ignore-working-copy root"
+require_repo = true
+ignore_timeout = true
 command = "starship module git_status"
 style = "" # This disables the default "(bold green)" style
 description = "Only show git_status if we're not in a jj repo"
@@ -88,6 +94,8 @@ disabled = true
 
 [custom.git_commit]
 when = "! jj --ignore-working-copy root"
+require_repo = true
+ignore_timeout = true
 command = "starship module git_commit"
 style = ""
 description = "Only show git_commit if we're not in a jj repo"
@@ -97,6 +105,8 @@ disabled = true
 
 [custom.git_metrics]
 when = "! jj --ignore-working-copy root"
+require_repo = true
+ignore_timeout = true
 command = "starship module git_metrics"
 description = "Only show git_metrics if we're not in a jj repo"
 style = ""
@@ -106,6 +116,8 @@ disabled = true
 
 [custom.git_branch]
 when = "! jj --ignore-working-copy root"
+require_repo = true
+ignore_timeout = true
 command = "starship module git_branch"
 description = "Only show git_branch if we're not in a jj repo"
 style = ""
