@@ -5,7 +5,8 @@
 
 [ui]
 default-command = "log"
-# diff-editor = "ediff"
+diff-formatter = ":git"
+conflict-marker-style = "git"
 
 [merge-tools.ediff]
 program = "emacsclient"

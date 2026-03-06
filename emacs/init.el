@@ -53,7 +53,7 @@
     (visible-bell +1)
     (inhibit-startup-message t)
     (use-short-answers t)
-    (debug-on-error t)
+    (debug-on-error nil)
 
     (user-full-name "Jehui Lee")
     (user-mail-address "jayli2558@gmail.com")
@@ -523,6 +523,27 @@
     :ensure t)
 
 (use-package vc-jj
+    :ensure t
+    :demand t
+    )
+
+(use-package jujutsushi
+    :ensure (:url "https://git.sr.ht/~puercopop/jujutsushi"
+                :branch "default"
+                :rev :newest
+                :main-file "jujutsushi.el"))
+
+(use-package jj-mode
+    :ensure (:host github :repo "bolivier/jj-mode.el")
+    :config
+    (evil-make-overriding-map jj-mode-map 'normal)
+    )
+
+(use-package magit
+    :after transient
+    :ensure t)
+
+(use-package transient
     :ensure t)
 
 (use-package corfu
