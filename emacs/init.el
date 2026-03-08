@@ -45,6 +45,9 @@
     :demand t
     :ensure nil
     :custom
+    (use-package-always-defer -1)
+    (use-package-always-ensure t)
+
     (enable-recursive-minibuffers +1)
     (sentence-end-double-space nil)
     (frame-inhibit-implied-resize t) ;; tiling window manager에서는 필요가 없음
@@ -121,9 +124,11 @@
     )
 
 (use-package evil
-    :ensure t
     :demand t
     :custom
+    (evil-want-integration t) ; evil-collection의 필요 설정
+    (evil-want-keybinding nil)
+
     (evil-cross-lines t)
     (evil-highlight-closing-paren-at-point-states '(not emacs replace))
     (evil-respect-visual-line-mode t) ; 보이는 그대로 라인 판정
@@ -139,9 +144,6 @@
     (evil-split-window-below t) ; split으로 생긴 창을 아래쪽으로
     (evil-vsplit-window-right t); split으로 생긴 창을 오른쪽으로
 
-    :init
-    (setopt evil-want-integration t) ; evil-collection의 필요 설정
-    (setopt evil-want-keybinding nil)
     :config
     (evil-mode t)
     ;; 기본 시작을 노멀모드로 설정할 버퍼들
@@ -153,41 +155,35 @@
     )
 
 (use-package evil-collection
+  :demand t
   :after evil
   :custom
   (evil-collection-setup-minibuffer t)
   (evil-collection-want-find-usages-bindings t)
-  :demand t
-  :ensure t
   :config
   (evil-collection-init))
 
 (use-package evil-commentary
     :after evil
-    :ensure t
     :config
     (evil-commentary-mode))
 
 (use-package evil-surround
     :after evil
-    :ensure t
     :config
     (global-evil-surround-mode t))
 
 (use-package evil-goggles
-    :ensure t
     :config
     (evil-goggles-mode)
     (evil-goggles-use-diff-faces))
 
 (use-package evil-owl
-  :ensure t
   :diminish ""
   ;; :config
   )
 
 (use-package evil-org
-    :ensure t
     :after org
     :hook (org-mode . (lambda () evil-org-mode))
     :config
@@ -282,10 +278,13 @@
     ;; org
     (dobin/leader-keys
         "o" '(:ignore t :wk "[o]rg"))
+
+    ;; code
+    (dobin/leader-keys
+        "c" '(:ignore t :wk "[c]ode"))
     )
 
 (use-package avy
-    :ensure t
     :custom
     (avy-keys '(?n ?r ?t ?s ?h ?a ?e ?i))
     :general
@@ -297,7 +296,6 @@
     )
 
 (use-package hydra
-    :ensure t
     :config
     ;; (defhydra hydra-)
     )
@@ -360,7 +358,6 @@
     )
 
 (use-package org-roam
-    :ensure t
     :demand t
     :general
     (dobin/leader-keys
@@ -373,6 +370,7 @@
     )
 
 (use-package paren
+    :ensure nil
     :custom
     (show-paren-delay 0)
     (show-paren-style 'expression)
@@ -386,13 +384,11 @@
     :disabled)
 
 (use-package doom-modeline
-    :ensure t
     :init
     (doom-modeline-mode +1))
 
 (use-package keycast
     ;; :disabled t
-    :ensure t
     ;; :after (doom-modeline)
     :custom
     (keycast-mode-line-remove-tail-elements nil)
@@ -412,8 +408,6 @@
     )
 
 (use-package consult
-    :ensure t
-
     :general
     (:states '(normal visual insert emacs)
         "C-p" 'consult-buffer)
@@ -441,7 +435,6 @@
     )
 
 (use-package embark
-    :ensure t
     :demand t
     :general
     (dobin/leader-keys
@@ -464,7 +457,6 @@
              (window-parameters (mode-line-format . none)))))
 
 (use-package embark-consult
-    :ensure t
     :after (embark consult)
     :demand t
     :hook
@@ -472,7 +464,6 @@
     )
 
 (use-package marginalia
-    :ensure t
     :demand t
     :after vertico
     :custom
@@ -493,13 +484,14 @@
     )
 
 (use-package catppuccin-theme
-    :ensure t
     :demand t
     ;; :hook (server-after-make-frame . catppuccin-reload)
     :config
     (load-theme 'catppuccin :no-confirm))
 
-(use-package tree-sitter :ensure t :demand t :config (global-tree-sitter-mode))
+(use-package tree-sitter
+    :demand t
+    :config (global-tree-sitter-mode))
 
 (use-package treesit-langs
     :ensure (:host github
@@ -507,7 +499,6 @@
     :demand t)
 
 (use-package nix-ts-mode
-    :ensure t
     :mode "\\.nix\\'")
 
 (use-package powershell-ts-mode
@@ -516,14 +507,11 @@
     )
 
 (use-package rainbow-delimiters
-    :ensure t
     :hook (prog-mode . rainbow-delimiters-mode))
 
-(use-package command-log-mode
-    :ensure t)
+(use-package command-log-mode)
 
 (use-package vc-jj
-    :ensure t
     :demand t
     )
 
@@ -531,23 +519,27 @@
     :ensure (:url "https://git.sr.ht/~puercopop/jujutsushi"
                 :branch "default"
                 :rev :newest
-                :main-file "jujutsushi.el"))
+                :main-file "jujutsushi.el")
+    :demand t
+    :general
+    (dobin/leader-keys
+        "cj" '("[j]j dashboard" . jj-dashboard)))
 
 (use-package jj-mode
     :ensure (:host github :repo "bolivier/jj-mode.el")
+    :disabled
     :config
     (evil-make-overriding-map jj-mode-map 'normal)
     )
 
 (use-package magit
-    :after transient
-    :ensure t)
+    :demand t
+    :after transient)
 
 (use-package transient
-    :ensure t)
+    :demand t)
 
 (use-package corfu
-    :ensure t
     :demand t
     :hook
     ;; (prog-mode . (lambda () (setq-local corfu-auto t)))
@@ -575,14 +567,13 @@
     )
 
 (use-package vertico
-    :ensure t
-    :init
+    :custom
     (vertico-mode +1)
     (vertico-multiform-mode +1)
-    (setopt vertico-multiform-categories
+    (vertico-cycle t) ; enable cycling for vertico 'next' and 'previous'
+    (vertico-multiform-categories
         '((file grid)
              ))
-    (setopt vertico-cycle t) ;; enable cycling for vertico 'next' and 'previous'
     :general
     (:keymaps 'vertico-map
         :states '(insert)
@@ -603,11 +594,10 @@
 
 (use-package savehist
     :ensure nil
-    :init
+    :custom
     (savehist-mode +1))
 
 (use-package orderless
-    :ensure t
     :custom
     (orderless-matching-styles 'orderless-flex)
     (completion-styles '(orderless partial-completion basic))
@@ -620,10 +610,10 @@
 	    (list (cape-capf-inside-code #'cape-elisp-symbol))))
 
 (use-package cape
-    :ensure t
     :demand t
-    :hook
-    (emacs-lisp-mode . dobin/elisp-mode-init)
+    :init
+    (add-to-list 'completion-at-point-functions #'cape-file)
+    (add-to-list 'completion-at-point-functions #'cape-dabbrev)
     :general
     ("M-p p" 'completion-at-point
         "M-p t" 'complete-tag
@@ -635,14 +625,12 @@
         "M-p a" 'cape-abbrev
         "M-p w" 'cape-dict
         "M-p \\" 'cape-tex
-        "M-p &" 'cape-sgml
-        )
-    :init
-    (add-to-list 'completion-at-point-functions #'cape-file)
-    (add-to-list 'completion-at-point-functions #'cape-dabbrev)
-    )
+        "M-p &" 'cape-sgml)
+    :hook
+    (emacs-lisp-mode . dobin/elisp-mode-init))
 
 (use-package dabbrev
+    :ensure nil
     :bind (("M-/" . dabbrev-completion)
 	          ("C-M-/" . dabbrev-expand))
     :config
@@ -653,17 +641,12 @@
     (add-to-list 'dabbrev-ignored-buffer-modes 'tags-table-mode))
 
 (use-package lsp-mode
-    :ensure t
     :commands lsp
     :custom
     (lsp-completion-provider :none)
     (lsp-keymap-prefix "C-c l")
     (lsp-diagnostics-provider :flycheck)
-    :hook
-    (lsp-mode . lsp-enable-which-key-integration)
-    (nix-ts-mode . lsp)
-    (c-mode . lsp)
-    :init
+    :config
     (defun dobin/orderless-dispatch-flex-first (_pattern index _total)
         (and (eq index 0) 'orderless-flex))
 
@@ -676,20 +659,23 @@
     (general-def :states 'normal
         "SPC l" (general-simulate-key "C-c l" :which-key "[L]SP"))
     :hook
+    (lsp-mode . lsp-enable-which-key-integration)
+    (nix-ts-mode . lsp)
+    (c-mode . lsp)
     (lsp-completion-mode . dobin/lsp-mode-setup-completion))
 
-(use-package lsp-ui :ensure t :commands lsp-ui-mode
+(use-package lsp-ui :commands lsp-ui-mode
     :custom
     (lsp-ui-sideline-show-hover t))
 
 (use-package kind-icon
-    :ensure t
     :after corfu
     :config
     (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
 
 (use-package flymake
     :ensure nil
+    :disabled
     :general-config
     (dobin/leader-keys
         :keymaps 'flymake-mode-map
@@ -707,7 +693,7 @@
     )
 
 (use-package flycheck
-    :ensure t)
+    )
 
 (defun dobin/set-korean-font (frame)
     "Set font for new frames"
