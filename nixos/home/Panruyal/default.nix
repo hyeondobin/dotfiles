@@ -10,7 +10,7 @@
     starship = true;
     discord = true;
     dropbox = true;
-    emacs = true;
+    emacs = false;
     hyprland = true;
     rofi = true;
     telegram = true;
