@@ -109,7 +109,7 @@
 
     )
 
-(defvar dobin/org-path "~/Dropbox/org" "Org path.")
+(defvar dobin/org-path "~/Dropbox/org/" "Org path.")
 
 (defvar dobin/notes-path (concat dobin/org-path "roam") "Notes.")
 

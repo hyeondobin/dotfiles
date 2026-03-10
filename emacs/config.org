@@ -152,7 +152,7 @@ variable의 설명에 =customize= 가 가능하다고 써있으면 =use-package=
 변수들 설정.
 
 #+begin_src emacs-lisp :lexical t
-  (defvar dobin/org-path "~/Dropbox/org" "Org path.")
+  (defvar dobin/org-path "~/Dropbox/org/" "Org path.")
 
   (defvar dobin/notes-path (concat dobin/org-path "roam") "Notes.")
 
