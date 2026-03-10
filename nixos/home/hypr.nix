@@ -190,6 +190,8 @@ in
         #############
         input = {
           kb_layout = "us";
+          # https://discourse.nixos.org/t/how-to-fix-f13-f24-keys/48847/8
+          kb_options = "fkeys:basic_13-24";
           follow_mouse = 1;
           sensitivity = 0; # -1.0 ~ 1.0, 0는 기본값
           touchpad = {
@@ -297,6 +299,11 @@ in
 
           # audio control, refer to submaps below
           "$ctrlMod SHIFT, A, submap, audio"
+
+          # f22, f21, f20을 한글, 영어, 일본어 단축키로 설정
+          ", F22, exec, fcitx5-remote -s hangul"
+          ", F21, exec, fcitx5-remote -c"
+          ", F20, exec, fcitx5-remote -s mozc"
         ]
         ++ (
           # switch to workspaces with main mod + 0-9
