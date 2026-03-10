@@ -200,9 +200,9 @@
     ;; leader key로 'space'를 사용
     (general-create-definer dobin/leader-keys
         :states '(normal insert visual emacs)
-        :global-prefix "C-c"
         :prefix "SPC" ;; leader 설정
         :non-normal-prefix "M-SPC" ; insert mode leader key
+        :keymaps 'override
         )
 
     ;; local leader key로 ','를 사용
@@ -476,8 +476,7 @@
     :demand t
     :custom
     (which-key-allow-multiple-replacements +1)
-    :init
-    (which-key-mode 1)
+    (which-key-mode +1)
     :config
     ;; (which-key-setup-minibuffer)
     (which-key-setup-side-window-bottom)
@@ -507,7 +506,10 @@
     )
 
 (use-package rainbow-delimiters
-    :hook (prog-mode . rainbow-delimiters-mode))
+    :hook (prog-mode . rainbow-delimiters-mode)
+    :custom-face
+    (match ((t (:background "#74c7ec" :foreground "#1e2030"))))
+    )
 
 (use-package command-log-mode)
 
@@ -703,8 +705,6 @@
 (add-hook 'after-make-frame-functions 'dobin/set-korean-font)
 
 (add-to-list 'default-frame-alist '(font . "JetBrainsMono NF-14"))
-
-(set-face-attribute 'match nil :background "#74c7ec" :foreground "#1e2030")
 
 (defun dobin/keyboard-quit ()
     "Smarter version of the built-in `keyboard-quit'."
