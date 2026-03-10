@@ -121,6 +121,8 @@
       wget
       curl
 
+      kdePackages.dolphin
+      kdePackages.qtsvg
       trash-cli
 
       wl-clipboard
