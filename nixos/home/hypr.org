@@ -1,5 +1,6 @@
 #+TITLE: hyprland config in nix
 #+PROPERTY: header-args :tangle hypr.nix :noweb yes :mkdirp yes
+#+STARTUP: content indent
 
 * input
 #+begin_src nix
