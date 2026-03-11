@@ -22,6 +22,7 @@ in
         en = "eval $EDITOR ~/.config/nxim/flake.nix ";
         ere = "systemctl --user restart emacs.service";
         ex = "eval $EDITOR ~/repo/dotfiles/flake.nix ";
+        ff = "fastfetch ";
         jbm = "jj bookmark move main --to @-";
         jci = "jj commit";
         jd = "jj desc";

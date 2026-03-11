@@ -10,11 +10,34 @@
 * body
 
 ** let
-
+hyprland 클라이언트 창 바로가기를 관리하는 스크립트도 포함되어있다.
+프로그램이 작동중인지 감지하고 작동중이라면 해당 창을 포커스하거나 해당하는 워크스페이스를 열어준다. 작동 중이 아니라면 해당 프로그램을 실행한다.
 #+begin_src nix
   let
-      inherit (pkgs.stdenv.hostPlatform) system;
-      hyprpkgs = inputs.hyprland.packages."${system}";
+    inherit (pkgs.stdenv.hostPlatform) system;
+    hyprpkgs = inputs.hyprland.packages."${system}";
+
+    hypr-special-toggle = pkgs.writeShellApplication {
+      name = "hypr-special-toggle";
+      runtimeInputs = [ pkgs.jq pkgs.procps pkgs.fish ];
+      text = ''
+#+end_src
+
+#+begin_src fish
+  fish -c '
+  set prog $argv[1]
+  set ws $argv[2]
+
+  # PID를 통해 프로그램의 class 를 추출
+  set pids (pgrep -if $prog)
+  set class = ""
+  if test -n "$pids"
+  set class (hypr)
+#+end_src
+
+#+begin_src nix
+  '';
+    };
   in
   {
 #+end_src
@@ -147,17 +170,18 @@
 chromium프로그램이 깜박거리는 이슈를 =--disable-gpu= 옵션을 통해 해결하였다.
 ref: https://www.reddit.com/r/wayland/comments/1cywhh2/anyone_still_seeing_flickering_in/
 #+begin_src nix
-        "$mainMod" = "SUPER";
-        "$shiftMod" = "SUPER SHIFT";
-        "$ctrlMod" = "SUPER CTRL";
-        "$altMod" = "SUPER ALT";
-        "$hyprMod" = "SUPER SHIFT CTRL ALT";
-        "$terminal" = "ghostty";
-        "$emacs" = "emacsclient -c";
-        "$webBrowser" = "vivaldi --disable-gpu";
-        "$bitwarden" = "bitwarden";
-        "$chrome" = "googel-chrome-stable --disable-gpu";
-        "$menu" = "rofi -show drun";
+  "$mainMod" = "SUPER";
+  "$shiftMod" = "SUPER SHIFT";
+  "$ctrlMod" = "SUPER CTRL";
+  "$altMod" = "SUPER ALT";
+  "$hyprMod" = "SUPER SHIFT CTRL ALT";
+  "$terminal" = "ghostty";
+  "$emacs" = "emacsclient -c";
+  "$webBrowser" = "vivaldi --disable-gpu";
+  "$bitwarden" = "bitwarden";
+  "$chrome" = "googel-chrome-stable --disable-gpu";
+  "$menu" = "rofi -show drun";
+  "$discord" ="discord --enable-features=UseOzonePlatform --enable-wayland-ime --ozone-platform=wayland";
 #+end_src
 
 *** autostart
@@ -251,124 +275,124 @@ ref: https://www.reddit.com/r/wayland/comments/1cywhh2/anyone_still_seeing_flick
 *** keybinds
 
 #+begin_src nix
-        bind = [
-          # terminal
-          "$mainMod, T, exec, pgrep $terminal && hyprctl dispatch workspace name:Term || $terminal"
-          "$ctrlMod, T, exec, $terminal"
-          "$shiftMod, T, movetoworkspace, name:Term"
+          bind = [
+            # terminal
+            "$mainMod, T, exec, pgrep $terminal && hyprctl dispatch workspace name:Term || $terminal"
+            "$ctrlMod, T, exec, $terminal"
+            "$shiftMod, T, movetoworkspace, name:Term"
 
-          # emacs
-          "$mainMod, E, exec, pgrep emacsclient && hyprctl dispatch workspace name:Emacs || $emacs"
-          "$ctrlMod, E, exec, $emacs"
-          "$shiftMod, E, movetoworkspace, name:Emacs"
+            # emacs
+            "$mainMod, E, exec, pgrep emacsclient && hyprctl dispatch workspace name:Emacs || $emacs"
+            "$ctrlMod, E, exec, $emacs"
+            "$shiftMod, E, movetoworkspace, name:Emacs"
 
-          # notion
-          "$mainMod, N, workspace, name:Notion" # no detecting for electron apps
-          "$ctrlMod, N, exec, notion-app --enable-wayland-ime --ozone-platform=wayland"
-          "$shiftMod, N, movetoworkspace, name:Notion"
+            # notion
+            "$mainMod, N, workspace, name:Notion" # no detecting for electron apps
+            "$ctrlMod, N, exec, notion-app --enable-wayland-ime --ozone-platform=wayland"
+            "$shiftMod, N, movetoworkspace, name:Notion"
 
-          # music
-          "$mainMod, M, togglespecialworkspace, Music"
-          "$ctrlMod, M, exec, $chrome https://music.youtube.com"
-          "$shiftMod, M, movetoworkspace, special:Music"
+            # music
+            "$mainMod, M, togglespecialworkspace, Music"
+            "$ctrlMod, M, exec, $chrome https://music.youtube.com"
+            "$shiftMod, M, movetoworkspace, special:Music"
 
-          # master layout
-          "$mainMod, R, layoutmsg, swapwithmaster master"
-          "$shiftMod, R, layoutmsg, focusmaster"
+            # master layout
+            "$mainMod, R, layoutmsg, swapwithmaster master"
+            "$shiftMod, R, layoutmsg, focusmaster"
 
-          # vavaldi browser
-          "$mainMod, B, exec, pgrep vivaldi && hyprctl dispatch workspace name:WWW || $webBrowser"
-          "$ctrlMod, B, exec, $webBrowser"
-          "$shiftMod, B, movetoworkspace, name:WWW"
+            # vavaldi browser
+            "$mainMod, B, exec, pgrep vivaldi && hyprctl dispatch workspace name:WWW || $webBrowser"
+            "$ctrlMod, B, exec, $webBrowser"
+            "$shiftMod, B, movetoworkspace, name:WWW"
 
-          # discord
-          # "$mainMod, D, togglespecialworkspace, Discord"
-          "$mainMod, D, exec, pgrep -if discord && hyprctl dispatch togglespecialworkspace Discord || discord --enable-features=UseOzonePlatform"
-          "$ctrlMod, D, exec, discord --enable-features=UseOzonePlatform --enable-wayland-ime --ozone-platform=wayland"
-          "$shiftMod, D, movetoworkspace, special:Discord"
+            # discord
+            # "$mainMod, D, togglespecialworkspace, Discord"
+            ''$mainMod, D, exec, hyprctl clients | grep -q "class: discord" && hyprctl dispatch togglespecialworkspace Discord || $discord''
+            "$ctrlMod, D, exec, $discord"
+            "$shiftMod, D, movetoworkspace, special:Discord"
 
-          # bitwarden
-          "$mainMod, W, togglespecialworkspace, Bitwarden"
-          "$ctrlMod, W, exec, $bitwarden"
-          "$shiftMod, W, movetoworkspace, special:Bitwarden"
+            # bitwarden
+            "$mainMod, W, togglespecialworkspace, Bitwarden"
+            "$ctrlMod, W, exec, $bitwarden"
+            "$shiftMod, W, movetoworkspace, special:Bitwarden"
 
-          # telegram
-          "$mainMod, S, exec, pgrep Telegram && hyprctl dispatch togglespecialworkspace Sns || Telegram"
-          "$ctrlMod, S, exec, Telegram"
-          "$shiftMod, S, movetoworkspace, special:Sns"
+            # telegram
+            "$mainMod, S, exec, pgrep Telegram && hyprctl dispatch togglespecialworkspace Sns || Telegram"
+            "$ctrlMod, S, exec, Telegram"
+            "$shiftMod, S, movetoworkspace, special:Sns"
 
-          # screenshot
-          ", PRINT, exec, hyprshot -m output"
-          "$mainMod, PRINT, exec, hyprshot -m window"
-          "$shiftMod, PRINT, exec, hyprshot -m region"
+            # screenshot
+            ", PRINT, exec, hyprshot -m output"
+            "$mainMod, PRINT, exec, hyprshot -m window"
+            "$shiftMod, PRINT, exec, hyprshot -m region"
 
-          # the default example binds
-          "$mainMod, C, killactive"
-          "$mainMod, P, pseudo"
-          "$mainMod, S, togglesplit"
-          "$mainMod, SPACE, exec, $menu"
+            # the default example binds
+            "$mainMod, C, killactive"
+            "$mainMod, P, pseudo"
+            "$mainMod, S, togglesplit"
+            "$mainMod, SPACE, exec, $menu"
 
-          # toggle floating of the window
-          "$mainMod, F, togglefloating"
+            # toggle floating of the window
+            "$mainMod, F, togglefloating"
 
-          # focus other window and bring it to top
-          "$mainMod, TAB, cyclenext"
-          "$mainMod, TAB, bringactivetotop"
+            # focus other window and bring it to top
+            "$mainMod, TAB, cyclenext"
+            "$mainMod, TAB, bringactivetotop"
 
-          # Moving around windows
-          "$mainMod, left, movefocus, l"
-          "$mainMod, right, movefocus, r"
-          "$mainMod, down, movefocus, d"
-          "$mainMod, up, movefocus, u"
-          # also with vim bindings
-          "$mainMod, H, movefocus, l"
-          "$mainMod, J, movefocus, d"
-          "$mainMod, K, movefocus, u"
-          "$mainMod, L, movefocus, r"
+            # Moving around windows
+            "$mainMod, left, movefocus, l"
+            "$mainMod, right, movefocus, r"
+            "$mainMod, down, movefocus, d"
+            "$mainMod, up, movefocus, u"
+            # also with vim bindings
+            "$mainMod, H, movefocus, l"
+            "$mainMod, J, movefocus, d"
+            "$mainMod, K, movefocus, u"
+            "$mainMod, L, movefocus, r"
 
-          # audio control, refer to submaps below
-          "$ctrlMod SHIFT, A, submap, audio"
+            # audio control, refer to submaps below
+            "$ctrlMod SHIFT, A, submap, audio"
 
-          # f22, f21, f20을 한글, 영어, 일본어 단축키로 설정
-          ", F22, exec, fcitx5-remote -s hangul"
-          ", F21, exec, fcitx5-remote -c"
-          ", F20, exec, fcitx5-remote -s mozc"
-        ]
-        ++ (
-          # switch to workspaces with main mod + 0-9
-          # keycode can be obtained with wev(wayland event viewer)
-          # https://wiki.hypr.land/Configuring/Binds/#uncommon-syms--binding-with-a-keycode
-          builtins.concatLists (
-            builtins.genList (
-              i:
-              let
-                workspace = i + 1;
-              in
-              [
-                "$mainMod, code:1${toString i}, workspace, ${toString workspace}"
-                "$shiftMod, code:1${toString i}, movetoworkspace, ${toString workspace}"
-              ]
-            ) 9
-          )
-        );
+            # f22, f21, f20을 한글, 영어, 일본어 단축키로 설정
+            ", F22, exec, fcitx5-remote -s hangul"
+            ", F21, exec, fcitx5-remote -c"
+            ", F20, exec, fcitx5-remote -s mozc"
+          ]
+          ++ (
+            # switch to workspaces with main mod + 0-9
+            # keycode can be obtained with wev(wayland event viewer)
+            # https://wiki.hypr.land/Configuring/Binds/#uncommon-syms--binding-with-a-keycode
+            builtins.concatLists (
+              builtins.genList (
+                i:
+                let
+                  workspace = i + 1;
+                in
+                [
+                  "$mainMod, code:1${toString i}, workspace, ${toString workspace}"
+                  "$shiftMod, code:1${toString i}, movetoworkspace, ${toString workspace}"
+                ]
+              ) 9
+            )
+          );
 
-        bindm = [
-          "$mainMod, mouse:272, movewindow"
-          "$mainMod, mouse:273, resizewindow"
-        ];
-      };
-      submaps = {
-        audio = {
-          settings = {
-            bind = [
-              ", l, exec, pactl set-sink-port 0 analog-output-lineout"
-              ", h, exec, pactl set-sink-port 0 analog-output-headphones"
-              ", escape, submap, reset"
-            ];
+          bindm = [
+            "$mainMod, mouse:272, movewindow"
+            "$mainMod, mouse:273, resizewindow"
+          ];
+        };
+        submaps = {
+          audio = {
+            settings = {
+              bind = [
+                ", l, exec, pactl set-sink-port 0 analog-output-lineout"
+                ", h, exec, pactl set-sink-port 0 analog-output-headphones"
+                ", escape, submap, reset"
+              ];
+            };
           };
         };
       };
     };
-  };
-}
+  }
 #+end_src

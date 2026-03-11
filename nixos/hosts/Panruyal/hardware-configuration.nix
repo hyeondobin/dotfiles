@@ -4,7 +4,6 @@
 {
   config,
   lib,
-  pkgs,
   modulesPath,
   ...
 }:
@@ -40,6 +39,10 @@
       "fmask=0077"
       "dmask=0077"
     ];
+  };
+  fileSystems."/home/hyeondobin/hard" = {
+    device = "/dev/disk/by-label/hard";
+    fsType = "ext4";
   };
 
   swapDevices = [

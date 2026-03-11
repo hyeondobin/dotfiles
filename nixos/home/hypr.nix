@@ -1,8 +1,26 @@
 { config, lib, inputs, pkgs, ...}:
 
 let
-    inherit (pkgs.stdenv.hostPlatform) system;
-    hyprpkgs = inputs.hyprland.packages."${system}";
+  inherit (pkgs.stdenv.hostPlatform) system;
+  hyprpkgs = inputs.hyprland.packages."${system}";
+
+  hypr-special-toggle = pkgs.writeShellApplication {
+    name = "hypr-special-toggle";
+    runtimeInputs = [ pkgs.jq pkgs.procps pkgs.fish ];
+    text = ''
+
+fish -c '
+set prog $argv[1]
+set ws $argv[2]
+
+# PID를 통해 프로그램의 class 를 추출
+set pids (pgrep -if $prog)
+set class = ""
+if test -n "$pids"
+set class (hypr)
+
+'';
+  };
 in
 {
 
@@ -115,6 +133,7 @@ monitor = ", preferred, auto, $scale";
 "$bitwarden" = "bitwarden";
 "$chrome" = "googel-chrome-stable --disable-gpu";
 "$menu" = "rofi -show drun";
+"$discord" ="discord --enable-features=UseOzonePlatform --enable-wayland-ime --ozone-platform=wayland";
 
 exec-once = [
   "$terminal"
@@ -220,8 +239,8 @@ bind = [
 
           # discord
           # "$mainMod, D, togglespecialworkspace, Discord"
-          "$mainMod, D, exec, pgrep -if discord && hyprctl dispatch togglespecialworkspace Discord || discord --enable-features=UseOzonePlatform"
-          "$ctrlMod, D, exec, discord --enable-features=UseOzonePlatform --enable-wayland-ime --ozone-platform=wayland"
+          ''$mainMod, D, exec, hyprctl clients | grep -q "class: discord" && hyprctl dispatch togglespecialworkspace Discord || $discord''
+          "$ctrlMod, D, exec, $discord"
           "$shiftMod, D, movetoworkspace, special:Discord"
 
           # bitwarden
