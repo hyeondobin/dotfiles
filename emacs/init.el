@@ -92,9 +92,9 @@
     (global-visual-line-mode +1) ; 보이는 그대로의 라인으로 이동을 한다. wrapping이 되어도 된 줄을 기준으로 이동한다.
 
     (set-charset-priority 'unicode) ;; utf-8 everywhere
-    (set-language-environment "Korean") ; 한글관련 세팅인데 뭐지 잘 모르겠음
-    (prefer-coding-system 'utf-8)
-    (set-default-coding-systems 'utf-8)
+    (set-language-environment "utf-8") ; korean 대신 utf-8로 한다. korean으로 설정시 euc-kr로 연결된다.
+    (prefer-coding-system 'utf-8-unix)
+    (set-default-coding-systems 'utf-8-unix) ; unix를 붙여 lf를 기본으로 한다.
 
     ;; (global-set-key (kbd "<escape>") 'dobin/keyboard-quit) ;; ESC를 메타 프리픽스로 사용하지 않는다.
 
@@ -111,9 +111,9 @@
 
 (defvar dobin/org-path "~/Dropbox/org/" "Org path.")
 
-(defvar dobin/notes-path (concat dobin/org-path "roam") "Notes.")
+(defvar dobin/notes-path (concat dobin/org-path "roam/") "Notes.")
 
-(defvar dobin/journal-path (concat dobin/notes-path "daily/")
+(defvar dobin/journal-path (concat dobin/org-path "daily/")
    "Journal entries" )
 
 (use-package dired
@@ -333,6 +333,7 @@
         "oa" '("[a]genda" . org-agenda)
         "oc" '("[c]apture" . org-capture)
         "ol" '("store [l]ink" . org-store-link)
+        "oo" '("[o]pen" . (dired dobin/org-path))
         "ot" '("[t]odo" . org-todo)
         )
     (dobin/local-leader-keys
@@ -352,6 +353,7 @@
         "is" '("[s]tructure template" . org-insert-structure-template )
 
         "l" '("store [l]ink" . org-store-link )
+        "t" '("[t]odo" . org-todo)
         )
     (dobin/local-leader-keys
         :keymaps 'org-src-mode-map
