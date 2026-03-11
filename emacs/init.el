@@ -196,7 +196,6 @@
     :after (evil)
     :config
     (general-evil-setup) ;; general과 evil 연계
-
     ;; leader key로 'space'를 사용
     (general-create-definer dobin/leader-keys
         :states '(normal insert visual emacs)
@@ -204,7 +203,7 @@
         :non-normal-prefix "M-SPC" ; insert mode leader key
         :keymaps 'override
         )
-
+    
     ;; local leader key로 ','를 사용
     (general-create-definer dobin/local-leader-keys
         :states '(normal insert visual emacs)
@@ -212,39 +211,39 @@
         :non-normal-prefix "M-,"
         :prefix-map 'dobin/local-leader-map
         )
-
+    
     (general-def 'insert
         "C-g" 'dobin/keyboard-quit)
-
+    
     ;; (general-define-key
     ;;     :keymaps '(minibuffer-mode-map minibuffer-local-map)
     ;;     :states '(normal insert emacs)
     ;;     "ESC" 'dobin/keyboard-quit)
-
+    
     (general-unbind
         "C-x C-r" ;; find-file read only 비활성화
         "C-x C-z" ;; suspend frame 비활성화
         "C-x C-d" ;; list directory 비활성화
         "M-h" ;; 이맥스 기본 바인딩 비활성화
         "<mouse-2>") ;; 마우스 휠 클릭으로 붙여넣기 비활성화
-
+    
     (dobin/leader-keys
         "M-k" '("kill emacs" . kill-emacs)
         "SPC" '("command 실행" . execute-extended-command) ;; M-x 대체
         "TAB" '(:wk "[t]ab" :keymap tab-prefix-map )) ;; tab 단축키 리맵
-
+    
     (general-define-key
         "M-w" 'dobin/save-and-kill-buffer
         "M-k" 'kill-emacs)
-
+    
     ;; help
     (dobin/leader-keys
         "h" '(:ignore t :wk "[h]elp"))
-
+    
     ;; search
     (dobin/leader-keys
         "s" '(:wk "[s]earch" :ignore t))
-
+    
     ;; file
     (dobin/leader-keys
         "f" '(:ignore t :wk "[f]ile")
@@ -254,35 +253,127 @@
         "fd" '(dired-jump :wk "[d]ired")
         "ff" '(find-file :wk "[f]ind [f]ile")
         "fs" '(save-buffer :wk "[s]ave"))
-
+    
     ;; buffer
     (dobin/leader-keys
         "b" '(:ignore t :wk "[b]uffer")
         "bd" '(kill-current-buffer :wk "[b]uffer [d]elete")
         "br" '(revert-buffer :wk "[b]uffer [r]eload(revert)"))
-
+    
     ;; bookmark
     (dobin/leader-keys
         "m" '(:ignore t :wk "book[m]ark")
-        "ms" '(bookmark-set :wk "[b]ookmark [s]et")
-        "mj" '(bookmark-jump :wk "[b]ookmark [j]ump"))
-
+        "me" '("[e]dit" . edit-bookmarks)
+        "mj" '("[j]ump" . dobin/bookmark-jump-with-saveplace)
+        "mJ" '("[J]ump to point" . bookmark-jump)
+        "ms" '("[b]ookmark [s]et" . bookmark-set))
+    
     ;; universal argument
     (dobin/leader-keys
         "u" '(universal-argument :wk "[u]niversal prefix")) ;; C-u의 원래 기능을 리더키로 사용
-
+    
     (dobin/leader-keys
         "e" '(:ignore t :wk "[e]macs")
         "ere" '("restart emacs" . (lambda () (interactive) (restart-emacs))))
-
+    
     ;; org
     (dobin/leader-keys
         "o" '(:ignore t :wk "[o]rg"))
-
+    
     ;; code
     (dobin/leader-keys
         "c" '(:ignore t :wk "[c]ode"))
     )
+)
+
+;; leader key로 'space'를 사용
+(general-create-definer dobin/leader-keys
+    :states '(normal insert visual emacs)
+    :prefix "SPC" ;; leader 설정
+    :non-normal-prefix "M-SPC" ; insert mode leader key
+    :keymaps 'override
+    )
+
+;; local leader key로 ','를 사용
+(general-create-definer dobin/local-leader-keys
+    :states '(normal insert visual emacs)
+    :prefix "," ;; leader 설정
+    :non-normal-prefix "M-,"
+    :prefix-map 'dobin/local-leader-map
+    )
+
+(general-def 'insert
+    "C-g" 'dobin/keyboard-quit)
+
+;; (general-define-key
+;;     :keymaps '(minibuffer-mode-map minibuffer-local-map)
+;;     :states '(normal insert emacs)
+;;     "ESC" 'dobin/keyboard-quit)
+
+(general-unbind
+    "C-x C-r" ;; find-file read only 비활성화
+    "C-x C-z" ;; suspend frame 비활성화
+    "C-x C-d" ;; list directory 비활성화
+    "M-h" ;; 이맥스 기본 바인딩 비활성화
+    "<mouse-2>") ;; 마우스 휠 클릭으로 붙여넣기 비활성화
+
+(dobin/leader-keys
+    "M-k" '("kill emacs" . kill-emacs)
+    "SPC" '("command 실행" . execute-extended-command) ;; M-x 대체
+    "TAB" '(:wk "[t]ab" :keymap tab-prefix-map )) ;; tab 단축키 리맵
+
+(general-define-key
+    "M-w" 'dobin/save-and-kill-buffer
+    "M-k" 'kill-emacs)
+
+;; help
+(dobin/leader-keys
+    "h" '(:ignore t :wk "[h]elp"))
+
+;; search
+(dobin/leader-keys
+    "s" '(:wk "[s]earch" :ignore t))
+
+;; file
+(dobin/leader-keys
+    "f" '(:ignore t :wk "[f]ile")
+    "fc" '(:ignore t :wk "[c]onfig")
+    "fci" '((lambda () (interactive) (find-file (concat user-emacs-directory "config.org"))) :wk "[i]nit file(사실 config.org)")
+    "fcr" '(dobin/restart-server :wk "[r]eload")
+    "fd" '(dired-jump :wk "[d]ired")
+    "ff" '(find-file :wk "[f]ind [f]ile")
+    "fs" '(save-buffer :wk "[s]ave"))
+
+;; buffer
+(dobin/leader-keys
+    "b" '(:ignore t :wk "[b]uffer")
+    "bd" '(kill-current-buffer :wk "[b]uffer [d]elete")
+    "br" '(revert-buffer :wk "[b]uffer [r]eload(revert)"))
+
+;; bookmark
+(dobin/leader-keys
+    "m" '(:ignore t :wk "book[m]ark")
+    "me" '("[e]dit" . edit-bookmarks)
+    "mj" '("[j]ump" . dobin/bookmark-jump-with-saveplace)
+    "mJ" '("[J]ump to point" . bookmark-jump)
+    "ms" '("[b]ookmark [s]et" . bookmark-set))
+
+;; universal argument
+(dobin/leader-keys
+    "u" '(universal-argument :wk "[u]niversal prefix")) ;; C-u의 원래 기능을 리더키로 사용
+
+(dobin/leader-keys
+    "e" '(:ignore t :wk "[e]macs")
+    "ere" '("restart emacs" . (lambda () (interactive) (restart-emacs))))
+
+;; org
+(dobin/leader-keys
+    "o" '(:ignore t :wk "[o]rg"))
+
+;; code
+(dobin/leader-keys
+    "c" '(:ignore t :wk "[c]ode"))
+)
 
 (use-package avy
     :custom
@@ -321,6 +412,8 @@
     :demand t
     :config
     (add-to-list 'org-structure-template-alist '("S" . "src emacs-lisp :lexical t\n"))
+    (add-to-list 'org-src-lang-modes '("nix" . nix-ts))
+    (add-to-list 'org-src-lang-modes '("fish" . fish))
     :custom
     (org-auto-align-tags nil)
     (org-directory (concat dobin/org-path "agenda"))
@@ -357,6 +450,7 @@
         )
     (dobin/local-leader-keys
         :keymaps 'org-src-mode-map
+        "q" '("abort and quit" . org-edit-src-abort)
         "s" '("save and quit edit buffer" . org-edit-src-exit))
     )
 
@@ -514,10 +608,14 @@
 (use-package nix-ts-mode
     :mode "\\.nix\\'")
 
+(use-package fish-mode)
+
 (use-package powershell-ts-mode
     :ensure (:host github
                 :repo "dmille56/powershell-ts-mode")
     )
+
+(use-package kdl-mode)
 
 (use-package rainbow-delimiters
     :hook (prog-mode . rainbow-delimiters-mode)
@@ -748,3 +846,11 @@
     (interactive)
     (save-buffer )
     (shell-command "systemctl --user restart emacs.service"))
+
+(defun dobin/bookmark-jump-with-saveplace (bookmark)
+    "북마크를 불러오되 커서 위치는 무시하고 saveplace의 것을 사용한다."
+    (interactive (list (bookmark-completing-read "Jump to bookmark: ")))
+    (let ((file (bookmark-get-filename bookmark)))
+        (if (and file (file-exists-p file))
+            (find-file file)
+            (message "파일을 찾을 수 없습니다. %s" file))))
