@@ -146,7 +146,10 @@ workspaces:
   - name: '7'
   - name: '8'
   - name: '9'
+#+end_src
+** window rules
 
+#+begin_src yaml
 window_rules:
   - commands: ['ignore']
     match:
@@ -170,6 +173,7 @@ window_rules:
         window_class: { not_regex: 'OpusApp' }
       - window_process: { equals: 'POWERPNT' }
         window_class: { not_regex: 'PPTFrameClass' }
+      - window_process: { equals: 'arknights'}
 #+end_src
 
 * keybindings
@@ -325,7 +329,7 @@ Launch CMD terminal. Alternatively, use `shell-exec wt` or
 Terminal and Git Bash respectively.
 #+begin_src yaml
   - commands: ['shell-exec wt']
-    bindings: ['alt+enter']
+    bindings: ['alt+shift+t']
 #+end_src
 
 ** workspace
