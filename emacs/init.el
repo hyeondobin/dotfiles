@@ -184,8 +184,8 @@
   )
 
 (use-package evil-org
-    :after org
-    :hook (org-mode . (lambda () evil-org-mode))
+    :after (org evil)
+    :hook (org-mode . evil-org-mode)
     :config
     (require 'evil-org-agenda)
     (evil-org-agenda-set-keys))
@@ -325,6 +325,7 @@
     (org-auto-align-tags nil)
     (org-directory (concat dobin/org-path "agenda"))
     (org-default-notes-file (concat org-directory "/notes.org"))
+    ;; (org-src-preserve-indentation +1)
     :general
     (org-mode-map
         "C-s" 'consult-org-heading)
@@ -362,12 +363,16 @@
     :general
     (dobin/leader-keys
         "n" '(:ignore t :wk "[n]otes(roam)")
+        "nb" '("show roam [b]uffer" . org-roam-buffer-toggle)
+        "nc" '("[c]apture" . org-roam-capture)
         "nf" '("[f]ind" . org-roam-node-find)
+        "ng" '("[g]raph" . org-roam-graph)
         "ni" '("node [i]nsert" . (lambda () (interactive) (org-roam-node-insert t)))
-        )
+        "nj" '("daily [j]ournal" . org-roam-dailies-capture-today))
     :custom
     (org-roam-directory dobin/notes-path)
-    )
+    (org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
+    (org-roam-db-autosync-mode +1))
 
 (use-package paren
     :ensure nil
@@ -497,6 +502,13 @@
                 :repo "kiennq/treesit-langs")
     :demand t)
 
+(use-package yaml-mode
+    :mode ("\\.yml\\'" "\\.yaml\\'")
+    :hook
+    (yaml-mode . (lambda ()
+                     (setq-local indent-tabs-mode nil)
+                     (setq-local tab-width 2))))
+
 (use-package nix-ts-mode
     :mode "\\.nix\\'")
 
@@ -526,7 +538,7 @@
     :demand t
     :general
     (dobin/leader-keys
-        "cj" '("[j]j dashboard" . jj-dashboard)))
+        "cj" '("[j]j dashboard" . jj-dashboard)
                 :main-file "jujutsushi.el")
     :disabled t)
 
@@ -649,21 +661,22 @@
     (add-to-list 'dabbrev-ignored-buffer-modes 'pdf-view-mode)
     (add-to-list 'dabbrev-ignored-buffer-modes 'tags-table-mode))
 
+(defun dobin/orderless-dispatch-flex-first (_pattern index _total)
+    (and (eq index 0) 'orderless-flex))
+
+(defun dobin/lsp-mode-setup-completion ()
+    (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
+	    '(orderless))
+    (setq-local orderless-style-dispatchers (list #'dobin/orderless-dispatch-flex-first))
+    (setq-local completion-at-point-functions (list (cape-capf-buster #'lsp-completion-at-point))))
+
 (use-package lsp-mode
     :commands lsp
+    :after (org)
     :custom
     (lsp-completion-provider :none)
     (lsp-keymap-prefix "C-c l")
     (lsp-diagnostics-provider :flycheck)
-    :config
-    (defun dobin/orderless-dispatch-flex-first (_pattern index _total)
-        (and (eq index 0) 'orderless-flex))
-
-    (defun dobin/lsp-mode-setup-completion ()
-        (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
-	        '(orderless))
-        (setq-local orderless-style-dispatchers (list #'dobin/orderless-dispatch-flex-first))
-        (setq-local completion-at-point-functions (list (cape-capf-buster #'lsp-completion-at-point))))
     :general-config
     (general-def :states 'normal
         "SPC l" (general-simulate-key "C-c l" :which-key "[L]SP"))

@@ -290,8 +290,8 @@ org모드와 evil을 연계시켜주는 패키지라고 하는데 얘도 자세�
 
 #+begin_src emacs-lisp :lexical t
   (use-package evil-org
-      :after org
-      :hook (org-mode . (lambda () evil-org-mode))
+      :after (org evil)
+      :hook (org-mode . evil-org-mode)
       :config
       (require 'evil-org-agenda)
       (evil-org-agenda-set-keys))
@@ -481,6 +481,7 @@ diff라고 해서 넣어놓긴 했는데 자세한 기능을 모른다. 얘도 �
       (org-auto-align-tags nil)
       (org-directory (concat dobin/org-path "agenda"))
       (org-default-notes-file (concat org-directory "/notes.org"))
+      ;; (org-src-preserve-indentation +1)
       :general
       (org-mode-map
           "C-s" 'consult-org-heading)
@@ -523,12 +524,16 @@ diff라고 해서 넣어놓긴 했는데 자세한 기능을 모른다. 얘도 �
       :general
       (dobin/leader-keys
           "n" '(:ignore t :wk "[n]otes(roam)")
+          "nb" '("show roam [b]uffer" . org-roam-buffer-toggle)
+          "nc" '("[c]apture" . org-roam-capture)
           "nf" '("[f]ind" . org-roam-node-find)
+          "ng" '("[g]raph" . org-roam-graph)
           "ni" '("node [i]nsert" . (lambda () (interactive) (org-roam-node-insert t)))
-          )
+          "nj" '("daily [j]ournal" . org-roam-dailies-capture-today))
       :custom
       (org-roam-directory dobin/notes-path)
-      )
+      (org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
+      (org-roam-db-autosync-mode +1))
 #+end_src
 
 ** paren
@@ -708,7 +713,7 @@ neovim에서도 유명한 패키지의 원본 현재 입력된 키에서 수행�
         (load-theme 'catppuccin :no-confirm))
 #+end_src
 
-** Treesitter
+** Treesitter | lang modes
 프로그래밍 언어에 맞는 문법
 #+begin_src emacs-lisp :lexical t
   (use-package tree-sitter
@@ -719,6 +724,18 @@ neovim에서도 유명한 패키지의 원본 현재 입력된 키에서 수행�
       :ensure (:host github
                   :repo "kiennq/treesit-langs")
       :demand t)
+#+end_src
+
+*** yaml
+
+#+begin_src emacs-lisp :lexical t
+  (use-package yaml-mode
+      :mode ("\\.yml\\'" "\\.yaml\\'")
+      :hook
+      (yaml-mode . (lambda ()
+                       (setq-local indent-tabs-mode nil)
+                       (setq-local tab-width 2))))
+
 #+end_src
 
 *** Nix
@@ -775,7 +792,7 @@ neovim에서도 유명한 패키지의 원본 현재 입력된 키에서 수행�
       :demand t
       :general
       (dobin/leader-keys
-          "cj" '("[j]j dashboard" . jj-dashboard)))
+          "cj" '("[j]j dashboard" . jj-dashboard)
                   :main-file "jujutsushi.el")
       :disabled t)
 
@@ -952,21 +969,22 @@ minibuffer에서 사용한 기록을 남겨주는 패키지.
 
 lsp와 연결하기 위한 패키지. 설정하는 방법을 잘 모르겠다.
 #+begin_src emacs-lisp :lexical t
+  (defun dobin/orderless-dispatch-flex-first (_pattern index _total)
+      (and (eq index 0) 'orderless-flex))
+
+  (defun dobin/lsp-mode-setup-completion ()
+      (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
+  	    '(orderless))
+      (setq-local orderless-style-dispatchers (list #'dobin/orderless-dispatch-flex-first))
+      (setq-local completion-at-point-functions (list (cape-capf-buster #'lsp-completion-at-point))))
+
   (use-package lsp-mode
       :commands lsp
+      :after (org)
       :custom
       (lsp-completion-provider :none)
       (lsp-keymap-prefix "C-c l")
       (lsp-diagnostics-provider :flycheck)
-      :config
-      (defun dobin/orderless-dispatch-flex-first (_pattern index _total)
-          (and (eq index 0) 'orderless-flex))
-
-      (defun dobin/lsp-mode-setup-completion ()
-          (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
-  	        '(orderless))
-          (setq-local orderless-style-dispatchers (list #'dobin/orderless-dispatch-flex-first))
-          (setq-local completion-at-point-functions (list (cape-capf-buster #'lsp-completion-at-point))))
       :general-config
       (general-def :states 'normal
           "SPC l" (general-simulate-key "C-c l" :which-key "[L]SP"))
