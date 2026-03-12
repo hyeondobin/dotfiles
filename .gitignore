@@ -2,6 +2,7 @@
 *.home-manager-backup
 Configs/fcitx5/.config/fcitx/dbus/*
 Interception
+
 eln*
 emacs/.cache/svg-lib
 emacs/.emacs.desktop
@@ -25,6 +26,9 @@ emacs/server
 emacs/tramp
 emacs/transient
 emacs/undo
+
+glazewm/errors.log
+
 fcitx/dbus/0c42dd0befed41fcb353b3f4516f1c8d-0
 kanata/Interception
 kanata/kanata_link.lnk
