@@ -8,6 +8,7 @@ emacs/.cache/svg-lib
 emacs/.emacs.desktop
 emacs/.emacs.desktop.lock
 emacs/.lsp-session-v1
+emacs/.org-id-locations
 emacs/auto-save-list
 emacs/backups
 emacs/eln-cache/29.4-631e5fd8
