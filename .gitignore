@@ -19,6 +19,7 @@ emacs/eshell/lastdir
 emacs/history
 emacs/hyeondobin@VanLioum-Desktop.*
 emacs/org-persist
+emacs/org-roam.db
 emacs/places
 emacs/projects
 emacs/recentf
