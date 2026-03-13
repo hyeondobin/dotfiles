@@ -320,95 +320,99 @@ create definer를 사용해서 리더키를 만들려고 해봤지만 키맵에 
 따로 모아서 정리하고 싶긴 한데 링크를 거는 방법을 까먹어서 일단 보류.
 
 #+name: leader-keys
-#+begin_src emacs-lisp :lexical t :noweb-prefix no
-      ;; leader key로 'space'를 사용
-      (general-create-definer dobin/leader-keys
-          :states '(normal insert visual emacs)
-          :prefix "SPC" ;; leader 설정
-          :non-normal-prefix "M-SPC" ; insert mode leader key
-          :keymaps 'override
-          )
-
-      ;; local leader key로 ','를 사용
-      (general-create-definer dobin/local-leader-keys
-          :states '(normal insert visual emacs)
-          :prefix "," ;; leader 설정
-          :non-normal-prefix "M-,"
-          :prefix-map 'dobin/local-leader-map
-          )
-
-      (general-def 'insert
-          "C-g" 'dobin/keyboard-quit)
-
-      ;; (general-define-key
-      ;;     :keymaps '(minibuffer-mode-map minibuffer-local-map)
-      ;;     :states '(normal insert emacs)
-      ;;     "ESC" 'dobin/keyboard-quit)
-
-      (general-unbind
-          "C-x C-r" ;; find-file read only 비활성화
-          "C-x C-z" ;; suspend frame 비활성화
-          "C-x C-d" ;; list directory 비활성화
-          "M-h" ;; 이맥스 기본 바인딩 비활성화
-          "<mouse-2>") ;; 마우스 휠 클릭으로 붙여넣기 비활성화
-
-      (dobin/leader-keys
-          "M-k" '("kill emacs" . kill-emacs)
-          "SPC" '("command 실행" . execute-extended-command) ;; M-x 대체
-          "TAB" '(:wk "[t]ab" :keymap tab-prefix-map )) ;; tab 단축키 리맵
-
-      (general-define-key
-          "M-w" 'dobin/save-and-kill-buffer
-          "M-k" 'kill-emacs)
-
-      ;; help
-      (dobin/leader-keys
-          "h" '(:ignore t :wk "[h]elp"))
-
-      ;; search
-      (dobin/leader-keys
-          "s" '(:wk "[s]earch" :ignore t))
-
-      ;; file
-      (dobin/leader-keys
-          "f" '(:ignore t :wk "[f]ile")
-          "fc" '(:ignore t :wk "[c]onfig")
-          "fci" '((lambda () (interactive) (find-file (concat user-emacs-directory "config.org"))) :wk "[i]nit file(사실 config.org)")
-          "fcr" '(dobin/restart-server :wk "[r]eload")
-          "fd" '(dired-jump :wk "[d]ired")
-          "ff" '(find-file :wk "[f]ind [f]ile")
-          "fs" '(save-buffer :wk "[s]ave"))
-
-      ;; buffer
-      (dobin/leader-keys
-          "b" '(:ignore t :wk "[b]uffer")
-          "bd" '(kill-current-buffer :wk "[b]uffer [d]elete")
-          "br" '(revert-buffer :wk "[b]uffer [r]eload(revert)"))
-
-      ;; bookmark
-      (dobin/leader-keys
-          "m" '(:ignore t :wk "book[m]ark")
-          "me" '("[e]dit" . edit-bookmarks)
-          "mj" '("[j]ump" . dobin/bookmark-jump-with-saveplace)
-          "mJ" '("[J]ump to point" . bookmark-jump)
-          "ms" '("[b]ookmark [s]et" . bookmark-set))
-
-      ;; universal argument
-      (dobin/leader-keys
-          "u" '(universal-argument :wk "[u]niversal prefix")) ;; C-u의 원래 기능을 리더키로 사용
-
-      (dobin/leader-keys
-          "e" '(:ignore t :wk "[e]macs")
-          "ere" '("restart emacs" . (lambda () (interactive) (restart-emacs))))
-
-      ;; org
-      (dobin/leader-keys
-          "o" '(:ignore t :wk "[o]rg"))
-
-      ;; code
-      (dobin/leader-keys
-          "c" '(:ignore t :wk "[c]ode"))
+#+begin_src emacs-lisp :lexical t :tangle no
+  ;; leader key로 'space'를 사용
+  (general-create-definer dobin/leader-keys
+      :states '(normal insert visual emacs)
+      :prefix "SPC" ;; leader 설정
+      :non-normal-prefix "M-SPC" ; insert mode leader key
+      :keymaps 'override
       )
+
+  ;; local leader key로 ','를 사용
+  (general-create-definer dobin/local-leader-keys
+      :states '(normal insert visual emacs)
+      :prefix "," ;; leader 설정
+      :non-normal-prefix "M-,"
+      :prefix-map 'dobin/local-leader-map
+      )
+
+  (general-def 'insert
+      "C-g" 'dobin/keyboard-quit)
+
+  ;; (general-define-key
+  ;;     :keymaps '(minibuffer-mode-map minibuffer-local-map)
+  ;;     :states '(normal insert emacs)
+  ;;     "ESC" 'dobin/keyboard-quit)
+
+  (general-unbind
+      "C-x C-r" ;; find-file read only 비활성화
+      "C-x C-z" ;; suspend frame 비활성화
+      "C-x C-d" ;; list directory 비활성화
+      "M-h" ;; 이맥스 기본 바인딩 비활성화
+      "<mouse-2>") ;; 마우스 휠 클릭으로 붙여넣기 비활성화
+
+  ;; esc를 meta prefix로 사용하기 위해 normal모드에서 언바인드 해준다.
+  (general-define-key
+      :states 'normal
+      [escape] nil)
+
+  (dobin/leader-keys
+      "M-k" '("kill emacs" . kill-emacs)
+      "SPC" '("command 실행" . execute-extended-command) ;; M-x 대체
+      "TAB" '(:wk "[t]ab" :keymap tab-prefix-map )) ;; tab 단축키 리맵
+
+  (general-define-key
+      "M-w" 'dobin/save-and-kill-buffer
+      "M-k" 'kill-emacs)
+
+  ;; help
+  (dobin/leader-keys
+      "h" '(:ignore t :wk "[h]elp"))
+
+  ;; search
+  (dobin/leader-keys
+      "s" '(:wk "[s]earch" :ignore t))
+
+  ;; file
+  (dobin/leader-keys
+      "f" '(:ignore t :wk "[f]ile")
+      "fc" '(:ignore t :wk "[c]onfig")
+      "fci" '((lambda () (interactive) (find-file (concat user-emacs-directory "config.org"))) :wk "[i]nit file(사실 config.org)")
+      "fcr" '(dobin/restart-server :wk "[r]eload")
+      "fd" '(dired-jump :wk "[d]ired")
+      "ff" '(find-file :wk "[f]ind [f]ile")
+      "fs" '(save-buffer :wk "[s]ave"))
+
+  ;; buffer
+  (dobin/leader-keys
+      "b" '(:ignore t :wk "[b]uffer")
+      "bd" '(kill-current-buffer :wk "[b]uffer [d]elete")
+      "br" '(revert-buffer :wk "[b]uffer [r]eload(revert)"))
+
+  ;; bookmark
+  (dobin/leader-keys
+      "m" '(:ignore t :wk "book[m]ark")
+      "me" '("[e]dit" . edit-bookmarks)
+      "mj" '("[j]ump" . dobin/bookmark-jump-with-saveplace)
+      "mJ" '("[J]ump to point" . bookmark-jump)
+      "ms" '("[b]ookmark [s]et" . bookmark-set))
+
+  ;; universal argument
+  (dobin/leader-keys
+      "u" '(universal-argument :wk "[u]niversal prefix")) ;; C-u의 원래 기능을 리더키로 사용
+
+  (dobin/leader-keys
+      "e" '(:ignore t :wk "[e]macs")
+      "ere" '("restart emacs" . (lambda () (interactive) (restart-emacs))))
+
+  ;; org
+  (dobin/leader-keys
+      "o" '(:ignore t :wk "[o]rg"))
+
+  ;; code
+  (dobin/leader-keys
+      "c" '(:ignore t :wk "[c]ode"))
 #+end_src
 *** avy
 vim-easymotion의 evil 버전?
