@@ -95,6 +95,26 @@ other_windows:
     enabled: false
     opacity: '0%'
 
+workspaces:
+  - name: '1'
+    bind_to_monitor: 0
+  - name: '2'
+    bind_to_monitor: 1
+  - name: '3'
+    bind_to_monitor: 0
+  - name: '4'
+    bind_to_monitor: 1
+  - name: '5'
+    bind_to_monitor: 0
+  - name: '6'
+    bind_to_monitor: 1
+  - name: '7'
+    bind_to_monitor: 0
+  - name: '8'
+    bind_to_monitor: 1
+  - name: '9'
+    bind_to_monitor: 0
+
 window_behavior:
   # New windows are created in this state whenever possible.
   # Allowed values: 'tiling', 'floating'.
@@ -118,17 +138,6 @@ window_behavior:
 
       # Whether to show fullscreen windows as always on top.
       shown_on_top: false
-
-workspaces:
-  - name: '1'
-  - name: '2'
-  - name: '3'
-  - name: '4'
-  - name: '5'
-  - name: '6'
-  - name: '7'
-  - name: '8'
-  - name: '9'
 
 window_rules:
   - commands: ['ignore']
@@ -154,9 +163,19 @@ window_rules:
       - window_process: { equals: 'POWERPNT' }
         window_class: { not_regex: 'PPTFrameClass' }
       - window_process: { equals: 'Endfield'}
+
+  - commands: ["move --workspace 7"]
+    match:
+      - window_title: { equals: 'ed'}
+
   - commands: ["move --workspace 4"]
     match:
       - window_process: { equals: 'Discord'}
+
+  - commands: ["move --workspace 6"]
+    match:
+      - window_process: { equals: 'NexonPlug'}
+      - window_process: { equals: 'Taskmgr'}
 
 binding_modes:
   # When enabled, the focused window can be resized via arrow keys or HJKL.
