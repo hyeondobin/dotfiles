@@ -29,7 +29,7 @@ general:
 
   cursor_jump:
     # Whether to automatically move the cursor on the specified trigger.
-    enabled: true
+    enabled: false
 
     # Trigger for cursor jump:
     # - 'monitor_focus': Jump when focus changes between monitors.
@@ -51,6 +51,7 @@ general:
 
 * visual
 
+** gaps
 #+begin_src yaml
 gaps:
   # Whether to scale the gaps with the DPI of the monitor.
@@ -65,7 +66,10 @@ gaps:
     right: '5px'
     bottom: '5px'
     left: '5px'
+#+end_src
 
+** window effects
+#+begin_src yaml
 window_effects:
   # Visual effects to apply to the focused window.
   focused_window:
@@ -93,24 +97,26 @@ window_effects:
       # Can be something like '95%' or '0.95' for slightly transparent windows.
       # '0' or '0%' is fully transparent (and, by consequence, unfocusable).
       opacity: '95%'
-
 # Visual effects to apply to non-focused windows.
-other_windows:
-  border:
-    enabled: true
-    color: '#a1a1a1'
-  hide_title_bar:
-    enabled: false
-  corner_style:
-    enabled: false
-    style: 'square'
-  transparency:
-    enabled: false
-    opacity: '0%'
+  other_windows:
+    border:
+      enabled: true
+      color: '#a1a1a1'
+    hide_title_bar:
+      enabled: false
+    corner_style:
+      enabled: false
+      style: 'square'
+    transparency:
+      enabled: false
+      opacity: '0%'
 #+end_src
 
 * workspaces
-- name: 기본으로 적용되는 unique id. 키설정 명령어
+- name: 기본으로 적용되는 unique id. 키설정 명령어. display_name이 정의되지 않았으면 =name= 이 사용된다.
+- display_name: 보여지는 이름. 명령어에는 영향이 없다. 중복되어도 상관 없다.
+- bind_to_monitor: 존재한다면, 해당 모니터에 해당 =workspace= 를 위치시킨다. 0이 가장 왼쪽의 모니터이며 숫자가 올라가면서 오른쪽이다.
+- keep_alive: =workspace= 에 아무 창이 없어도 해당 =workspace= 를 유지시킬 지 여부.
 #+begin_src yaml
 workspaces:
   - name: '1'
@@ -127,6 +133,7 @@ workspaces:
     bind_to_monitor: 1
   - name: '7'
     bind_to_monitor: 0
+    display_name: "Emacs"
   - name: '8'
     bind_to_monitor: 1
   - name: '9'
@@ -134,6 +141,8 @@ workspaces:
 #+end_src
 
 * window 관련 설정들
+
+** window_behavior
 
 #+begin_src yaml
 window_behavior:
@@ -225,7 +234,9 @@ binding_modes:
     # Press enter/escape to return to default keybindings.
     - commands: ['wm-disable-binding-mode --name resize']
       bindings: ['escape', 'enter']
+#+end_src
 
+#+begin_src yaml
 keybindings:
 #+end_src
 
