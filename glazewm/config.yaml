@@ -114,6 +114,8 @@ workspaces:
     bind_to_monitor: 1
   - name: '9'
     bind_to_monitor: 0
+  - name: 'Game'
+    bind_to_monitor: 0
 
 window_behavior:
   # New windows are created in this state whenever possible.
@@ -176,6 +178,14 @@ window_rules:
     match:
       - window_process: { equals: 'NexonPlug'}
       - window_process: { equals: 'Taskmgr'}
+
+  - commands: ["set-floating"]
+    match:
+      - window_process: { regex: '[Tt]elegram'}
+
+  - commands: ["move --workspace Game"]
+    match:
+      - window_process: { regex: "[Ss]team"}
 
 binding_modes:
   # When enabled, the focused window can be resized via arrow keys or HJKL.
@@ -268,7 +278,7 @@ keybindings:
 
   # Close focused window.
   - commands: ['close']
-    bindings: ['alt+shift+q']
+    bindings: ['alt+control+shift+q']
 
   # Kill GlazeWM process safely.
   - commands: ['wm-exit']
@@ -291,6 +301,8 @@ keybindings:
     bindings: ['alt+d']
 
   # Change focus to a workspace defined in `workspaces` config.
+  - commands: ['focus --workspace Game']
+    bindings: ['alt+g']
   - commands: ['focus --workspace 1']
     bindings: ['alt+1']
   - commands: ['focus --workspace 2']
@@ -311,6 +323,8 @@ keybindings:
     bindings: ['alt+9']
 
   # Move focused window to a workspace defined in `workspaces` config.
+  - commands: ['move --workspace Game', 'focus --workspace Game']
+    bindings: ['alt+control+g']
   - commands: ['move --workspace 1', 'focus --workspace 1']
     bindings: ['alt+control+1']
   - commands: ['move --workspace 2', 'focus --workspace 2']
