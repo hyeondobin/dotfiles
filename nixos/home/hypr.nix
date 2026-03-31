@@ -139,7 +139,7 @@ exec-once = [
   "$terminal"
   "$bitwarden"
   "waybar"
-  "dropbox"
+  "dropbox start"
 ];
 
 general = {
@@ -182,7 +182,7 @@ general = {
 input = {
   kb_layout = "us";
   # https://discourse.nixos.org/t/how-to-fix-f13-f24-keys/48847/8
-  kb_options = "fkeys:basic_13-24,ctrl:swapcaps";
+  kb_options = "fkeys:basic_13-24";
   follow_mouse = 1;
   sensitivity = 0; # -1.0 ~ 1.0, 0는 기본값
   touchpad = {
@@ -261,7 +261,7 @@ bind = [
           # the default example binds
           "$mainMod, C, killactive"
           "$mainMod, P, pseudo"
-          "$mainMod, S, togglesplit"
+          "$mainMod, S, layoutmsg, togglesplit"
           "$mainMod, SPACE, exec, $menu"
 
           # toggle floating of the window
