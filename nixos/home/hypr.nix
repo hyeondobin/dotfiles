@@ -182,7 +182,7 @@ general = {
 input = {
   kb_layout = "us";
   # https://discourse.nixos.org/t/how-to-fix-f13-f24-keys/48847/8
-  kb_options = "fkeys:basic_13-24";
+  kb_options = "fkeys:basic_13-24,ctrl:swapcaps";
   follow_mouse = 1;
   sensitivity = 0; # -1.0 ~ 1.0, 0는 기본값
   touchpad = {
