@@ -1,4 +1,4 @@
-{config, lib, ...}:
+{config, lib, pkgs, ...}:
 let
   cfg = config.dbConfig;
 in
@@ -10,7 +10,8 @@ in
   config = lib.mkIf cfg.dropbox {
     services.dropbox = {
       enable = true;
-      path = "${config.home.homeDirectory}/dropbox";
+      path = "${config.home.homeDirectory}/data/dropbox";
+      package = pkgs.dropbox;
     };
   };
 }

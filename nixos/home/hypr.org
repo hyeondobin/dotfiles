@@ -191,7 +191,7 @@ ref: https://www.reddit.com/r/wayland/comments/1cywhh2/anyone_still_seeing_flick
     "$terminal"
     "$bitwarden"
     "waybar"
-    "dropbox"
+    "dropbox start"
   ];
 #+end_src
 
