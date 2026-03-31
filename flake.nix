@@ -33,6 +33,7 @@
           modules = [
             inputs.catppuccin.nixosModules.catppuccin
             inputs.nxim.nixosModules.default
+	    inputs.disko.nixosModules.disko
             ./nixos/hosts/${config-vars.hostname}
           ];
         };
@@ -98,6 +99,11 @@
 
     wsl = {
       url = "github:nix-community/NixOS-WSL";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    disko = {
+      url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
