@@ -139,7 +139,7 @@ exec-once = [
   "$terminal"
   "$bitwarden"
   "waybar"
-  "dropbox start"
+  # "dropbox start"
 ];
 
 general = {
