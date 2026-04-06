@@ -1,0 +1,484 @@
+#+TITLE: hyprland config in nix
+#+PROPERTY: header-args :tangle "./Configs/hyprland/.config/hypr/hyprland.conf" :noweb yes :mkdirp yes
+#+STARTUP: content indent
+
+* hyprland config
+nixos 에서 사용중이지만 설정 파일 자체는 nix로 하기 보다는 hyprlang으로 한다.
+
+* nix
+** input
+#+begin_src nix :tangle "./nixos/home/hypr.nix"
+  { config, lib, inputs, pkgs, ...}:
+#+end_src
+
+** body
+
+*** let
+hyprland 클라이언트 창 바로가기를 관리하는 스크립트도 포함되어있다.
+프로그램이 작동중인지 감지하고 작동중이라면 해당 창을 포커스하거나 해당하는 워크스페이스를 열어준다. 작동 중이 아니라면 해당 프로그램을 실행한다.
+#+begin_src nix :tangle "./nixos/home/hypr.nix"
+  let
+    inherit (pkgs.stdenv.hostPlatform) system;
+    hyprpkgs = inputs.hyprland.packages."${system}";
+
+    hypr-special-toggle = pkgs.writeShellApplication {
+      name = "hypr-special-toggle";
+      runtimeInputs = [ pkgs.jq pkgs.procps pkgs.fish ];
+      text = ''
+        <<fish_command>>
+      '';
+    };
+  in
+#+end_src
+
+#+name: fish_command
+#+begin_src fish :tangle no
+  fish -c '
+  set prog $argv[1]
+  set ws $argv[2]
+
+  # PID를 통해 프로그램의 class 를 추출
+  set pids (pgrep -if $prog)
+  set class = ""
+  if test -n "$pids"
+  set class (hypr)
+#+end_src
+
+
+*** options
+=hyprland= 를 토글할 수 있는 옵션을 만든다.
+
+#+begin_src nix :tangle "./nixos/home/hypr.nix"
+  {
+  options = {
+    dbConfig.hyprland = lib.mkEnableOption "Enable Hyprland";
+  };
+#+end_src
+
+*** config
+
+#+begin_src nix :tangle "./nixos/home/hypr.nix"
+  config = lib.mkIf config.dbConfig.hyprland {
+#+end_src
+
+*** set variables
+=hyprland= 가 정상적으로 작동하기 위한 변수들을 설정해준다.
+
+#+begin_src nix :tangle "./nixos/home/hypr.nix"
+    home.sessionVariables = {
+      ELECTRON_OZONE_PLATFORM_HINT = "wayland";
+    };
+#+end_src
+
+*** hyprland 기본
+:PROPERTIES:
+:header-args: :tangle "./nixos/home/hypr.nix"
+:END:
+
+#+begin_src nix :tangle no
+  wayland.windowManager.hyprland = {
+    enable = true;
+    package = hyprpkgs.hyprland;
+    portalPackage = hyprpkgs.xdg-desktop-portal-hyprland;
+  };
+#+end_src
+
+*** hyprconf symlink
+hyprland config를 nix로 굳이 다시 쓰기보다는 home-manager로 symlink만 해주고 설정 자체는 hyprlang으로 쓴다.
+
+#+begin_src nix :tangle "./nixos/home/hypr.nix"
+  xdg.configFile.hypr = {
+    source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/repo/dotfiles/Configs/hyprland/.config/hypr";
+  };
+  };
+  }
+#+end_src
+
+* hyprlang
+*** catppuccin
+=github:catppuccin/hyprland= 의 =mocha flavor= 를 사용
+
+#+begin_src conf :tangle "./Configs/hyprland/.config/hypr/catppuccin.conf"
+  $rosewater = rgb(f5e0dc)
+  $rosewaterAlpha = f5e0dc
+
+  $flamingo = rgb(f2cdcd)
+  $flamingoAlpha = f2cdcd
+
+  $pink = rgb(f5c2e7)
+  $pinkAlpha = f5c2e7
+
+  $mauve = rgb(cba6f7)
+  $mauveAlpha = cba6f7
+
+  $red = rgb(f38ba8)
+  $redAlpha = f38ba8
+
+  $maroon = rgb(eba0ac)
+  $maroonAlpha = eba0ac
+
+  $peach = rgb(fab387)
+  $peachAlpha = fab387
+
+  $yellow = rgb(f9e2af)
+  $yellowAlpha = f9e2af
+
+  $green = rgb(a6e3a1)
+  $greenAlpha = a6e3a1
+
+  $teal = rgb(94e2d5)
+  $tealAlpha = 94e2d5
+
+  $sky = rgb(89dceb)
+  $skyAlpha = 89dceb
+
+  $sapphire = rgb(74c7ec)
+  $sapphireAlpha = 74c7ec
+
+  $blue = rgb(89b4fa)
+  $blueAlpha = 89b4fa
+
+  $lavender = rgb(b4befe)
+  $lavenderAlpha = b4befe
+
+  $text = rgb(cdd6f4)
+  $textAlpha = cdd6f4
+
+  $subtext1 = rgb(bac2de)
+  $subtext1Alpha = bac2de
+
+  $subtext0 = rgb(a6adc8)
+  $subtext0Alpha = a6adc8
+
+  $overlay2 = rgb(9399b2)
+  $overlay2Alpha = 9399b2
+
+  $overlay1 = rgb(7f849c)
+  $overlay1Alpha = 7f849c
+
+  $overlay0 = rgb(6c7086)
+  $overlay0Alpha = 6c7086
+
+  $surface2 = rgb(585b70)
+  $surface2Alpha = 585b70
+
+  $surface1 = rgb(45475a)
+  $surface1Alpha = 45475a
+
+  $surface0 = rgb(313244)
+  $surface0Alpha = 313244
+
+  $base = rgb(1e1e2e)
+  $baseAlpha = 1e1e2e
+
+  $mantle = rgb(181825)
+  $mantleAlpha = 181825
+
+  $crust = rgb(11111b)
+  $crustAlpha = 11111b
+#+end_src
+
+#+begin_src conf
+  source=./catppuccin.conf
+#+end_src
+*** Variables
+단축키 설정에 사용할 각종 변수들을 선언한다.
+
+chromium프로그램이 깜박거리는 이슈를 =--disable-gpu= 옵션을 통해 해결하였다.
+ref: https://www.reddit.com/r/wayland/comments/1cywhh2/anyone_still_seeing_flickering_in/
+#+begin_src conf :tangle "./Configs/hyprland/.config/hypr/hyprland.conf"
+  $mainMod = SUPER
+  $shiftMod = SUPER SHIFT
+  $ctrlMod = SUPER CTRL
+  $altMod = SUPER ALT
+  $mehMod = CTRL SHIFT ALT
+  $hyprMod = SUPER SHIFT CTRL ALT
+  $terminal = ghostty
+  $emacs = emacsclient -c
+  $webBrowser = vivaldi --disable-gpu
+  $bitwarden = bitwarden
+  $chrome = googel-chrome-stable --disable-gpu
+  $menu = rofi -show drun
+  $discord = discord --enable-features=UseOzonePlatform --enable-wayland-ime --ozone-platform=wayland
+#+end_src
+
+*** monitor
+#+begin_src conf
+  $scale = 1;
+  monitorv2 {
+    output = eDP-1
+    mode = preferred
+    position = 0x0
+    scale = 1
+  }
+
+  monitorv2 {
+    output = desc:LG Electronics LG ULTRAGEAR 304NTVS0A895
+    mode = 2560x1440@59.95
+    position = auto-up
+    scale = 1
+    # mirror = eDP-1
+  }
+#+end_src
+
+*** autostart
+
+#+begin_src conf
+  exec-once = $terminal
+  exec-once = $bitwarden
+  exec-once = waybar
+  #exec-once "dropbox start"
+#+end_src
+
+*** visual
+
+#+begin_src conf
+  general {
+    gaps_in = 5
+    gaps_out = 3
+    border_size = 3
+    col.active_border = $lavender $peach 30deg
+    col.inactive_border = $crust
+    layout = scrolling
+  }
+
+  decoration {
+    shadow  {
+      enabled = false
+      offset = 0 5
+      range = 4
+      render_power = 3
+      color = rgba(1a1a1aee)
+    }
+      rounding = 10
+      rounding_power = 2
+      active_opacity = 1.0
+      inactive_opacity = 0.9
+  }
+
+  animations {
+    enabled = true
+  }
+
+  dwindle {
+    pseudotile = true
+    preserve_split = true
+  }
+
+  master {
+    new_status = "master"
+  }
+
+  scrolling {
+
+  }
+
+  misc {
+    force_default_wallpaper = 0
+    disable_hyprland_logo = true
+  }
+#+end_src
+
+*** input
+
+#+begin_src conf
+  input {
+    kb_layout = us
+    # https://discourse.nixos.org/t/how-to-fix-f13-f24-keys/48847/8
+    kb_options = fkeys:basic_13-24
+    follow_mouse = 1
+    sensitivity = 0 # -1.0 ~ 1.0, 0는 기본값
+    touchpad {
+      natural_scroll = false
+    }
+  }
+#+end_src
+
+*** windowrule
+
+#+begin_src conf
+  windowrule = no_focus on, match:class ^$, match:title ^$, match:xwayland 1, match:float 1, match:fullscreen 0, match:pin 0
+  windowrule = pseudo on, match:class fcitx
+  windowrule = suppress_event maximize, match:class .*
+  windowrule = workspace name:Emacs, match:class ^(emacs).*$
+  windowrule = workspace name:Term, match:initial_title Ghostty
+  windowrule = workspace special:Discord, match:class discord
+  windowrule = workspace special:SNS, pseudo on, match:initial_title Telegram
+  windowrule = workspace special:Bitwarden, match:class [Bb]itwarden
+  windowrule = workspace name:WWW, match:class [Vv]ivaldi.*
+#+end_src
+
+*** keybinds
+
+**** window management
+#+begin_src conf
+  bind = $mainMod, C, killactive
+  bind = $mainMod, F, togglefloating
+
+  # Moving around windows
+  bind = $mainMod, left, movefocus, l
+  bind = $mainMod, right, movefocus, r
+  bind = $mainMod, down, movefocus, d
+  bind = $mainMod, up, movefocus, u
+
+  # also with vim bindings
+  bind = $mainMod, H, movefocus, l
+  bind = $mainMod, J, movefocus, d
+  bind = $mainMod, K, movefocus, u
+  bind = $mainMod, L, movefocus, r
+
+  bind = $shiftMod, k, movewindow, mon:u
+  bind = $shiftMod, j, movewindow, mon:d
+  bind = $ctrlMod, up, movecurrentworkspacetomonitor, u
+  bind = $ctrlMod, k, movecurrentworkspacetomonitor, u
+  bind = $ctrlMod, down, movecurrentworkspacetomonitor, d
+  bind = $ctrlMod, j, movecurrentworkspacetomonitor, d
+#+end_src
+
+***** scrolling layout
+=scrolling layout= 을 사용할 때 사용할 수 있는 단축키
+
+이웃한 창과 현재 창의 위치를 서로 바꾼다.
+#+begin_src conf
+  bind = $mainMod, comma, layoutmsg, swapcol l
+  bind = $shiftMod, h, layoutmsg, swapcol l
+  bind = $shiftMod, left, layoutmsg, swapcol l
+
+  bind = $mainMod, period, layoutmsg, swapcol r
+  bind = $shiftMod, l, layoutmsg, swapcol r
+  bind = $shiftMod, right, layoutmsg, swapcol r
+#+end_src
+창의 사이즈 변경하기. supmap을 사용한다.
+#+begin_src conf
+  bind = $mehMod, r, submap, resize
+  bind = $mehMod, e, submap, resize
+  submap = resize
+  bind = , left, layoutmsg, colresize -conf
+  bind = , h, layoutmsg, colresize -conf
+  bind = , right, layoutmsg, colresize +conf
+  bind = , l, layoutmsg, colresize +conf
+  bind = , escape, submap, reset
+  bind = , f, layoutmsg, fit active
+  bind = , a, layoutmsg, fit all
+  bind = , catchall, submap, reset
+  submap = reset
+#+end_src
+
+**** workspace
+#+begin_src conf
+  bind = $mainMod, 1, workspace, 1
+  bind = $shiftMod, 1, movetoworkspace, 1
+  bind = $mainMod, 2, workspace, 2
+  bind = $shiftMod, 2, movetoworkspace, 2
+  bind = $mainMod, 3, workspace, 3
+  bind = $shiftMod, 3, movetoworkspace, 3
+  bind = $mainMod, 4, workspace, 4
+  bind = $shiftMod, 4, movetoworkspace, 4
+  bind = $mainMod, 5, workspace, 5
+  bind = $shiftMod, 5, movetoworkspace, 5
+  bind = $mainMod, 6, workspace, 6
+  bind = $shiftMod, 6, movetoworkspace, 6
+  bind = $mainMod, 7, workspace, 7
+  bind = $shiftMod, 7, movetoworkspace, 7
+  bind = $mainMod, 8, workspace, 8
+  bind = $shiftMod, 8, movetoworkspace, 8
+  bind = $mainMod, 9, workspace, 9
+  bind = $shiftMod, 9, movetoworkspace, 9
+#+end_src
+
+**** launcher
+#+begin_src conf
+  bind = $mainMod, SPACE, exec, $menu
+#+end_src
+
+**** leaderkey
+make leader key using submaps.
+#+begin_src conf
+  bind = ALT, SPACE, submap, leader
+
+  submap = leader
+  bind = , r, submap, resize
+  bind = , catchall, submap, reset
+  submap = reset
+#+end_src
+**** browser
+vivaldi browser
+#+begin_src conf
+  bind = $mainMod, B, exec, hyprctl clients | grep "class: vivaldi-stable" && hyprctl dispatch workspace name:WWW || $webBrowser
+  bind = $ctrlMod, B, exec, $webBrowser
+  bind = $shiftMod, B, movetoworkspace, name:WWW
+#+end_src
+
+**** SNS
+
+***** discord
+#+begin_src conf
+  bind = $mainMod, D, exec, hyprctl clients | grep -q "class: discord" && hyprctl dispatch togglespecialworkspace Discord || $discord
+  bind = $ctrlMod, D, exec, $discord
+  bind = $shiftMod, D, movetoworkspace, special:Discord
+#+end_src
+
+***** telegram
+#+begin_src conf
+  bind = $mainMod, S, exec, hyprctl clients | grep -q "initialTitle: Telegram" && hyprctl dispatch togglespecialworkspace SNS || Telegram
+  bind = $ctrlMod, S, exec, Telegram
+  bind = $shiftMod, S, movetoworkspace, special:SNS
+#+end_src
+
+*** TODO
+
+#+begin_src conf
+
+
+  # emacs
+  bind = $mainMod, E, exec, pgrep emacsclient && hyprctl dispatch workspace name:Emacs || $emacs
+  bind = $ctrlMod, E, exec, $emacs
+  bind = $shiftMod, E, movetoworkspace, name:Emacs
+
+  # toggle floating of the window
+
+  bind = $mainMod, P, pseudo
+
+  # master layout
+  bind = $mainMod, R, layoutmsg, swapwithmaster master
+  bind = $shiftMod, R, layoutmsg, focusmaster
+
+  # terminal
+  bind = $mainMod, T, exec, pgrep $terminal && hyprctl dispatch workspace name:Term || $terminal
+  bind = $ctrlMod, T, exec, $terminal
+  bind = $shiftMod, T, movetoworkspace, name:Term
+
+
+
+  # bitwarden
+  bind = $mainMod, W, togglespecialworkspace, Bitwarden
+  bind = $ctrlMod, W, exec, $bitwarden
+  bind = $shiftMod, W, movetoworkspace, special:Bitwarden
+
+  # screenshot
+  bind = , PRINT, exec, hyprshot -m output
+  bind = $mainMod, PRINT, exec, hyprshot -m window
+  bind = $shiftMod, PRINT, exec, hyprshot -m region
+
+  # focus other window and bring it to top
+  bind = $mainMod, TAB, cyclenext
+  bind = $mainMod, TAB, bringactivetotop
+
+
+  # audio control, refer to submaps below
+  bind = $ctrlMod SHIFT, A, submap, audio
+  submap = audio, reset
+  bind = , l, exec, pactl set-sink-port 0 analog-output-lineout
+  bind = , h, exec, pactl set-sink-port 0 analog-output-headphones
+  bind = , escape, submap, reset
+  submap = reset
+
+  # f22, f21, f20을 한글, 영어, 일본어 단축키로 설정
+  bind = , F22, exec, fcitx5-remote -s hangul
+  bind = , F21, exec, fcitx5-remote -c
+  bind = , F20, exec, fcitx5-remote -s mozc
+
+
+  bindm = $mainMod, mouse:272, movewindow
+  bindm = $mainMod, mouse:273, resizewindow
+#+end_src

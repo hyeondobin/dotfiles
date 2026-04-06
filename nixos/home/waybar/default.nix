@@ -9,6 +9,7 @@
       settings = {
         mainBar = {
           layer = "top";
+          output = ["eDP-1" "HDMI-A-1"];
           position = "top";
           height = 20;
           modules-left = [
