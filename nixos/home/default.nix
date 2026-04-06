@@ -2,6 +2,7 @@
   config,
   config-vars,
   username,
+  pkgs,
   ...
 }:
 {
@@ -11,8 +12,11 @@
     stateVersion = config-vars.stateVersion;
 
     pointerCursor = {
+      name = "catppuccin-mocha-sapphire-cursors";
+      package = pkgs.catppuccin-cursors.mochaSapphire;
       hyprcursor.enable = true;
       size = 24;
+      gtk.enable = true;
     };
   };
 
@@ -45,7 +49,7 @@
     accent = "sapphire";
     flavor = "mocha";
     cursors = {
-      enable = true;
+      enable = false;
     };
   };
 }
