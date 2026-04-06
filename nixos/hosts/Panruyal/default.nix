@@ -33,6 +33,11 @@
       configurationLimit = 10;
       timeoutStyle = "menu";
       # theme = pkgs.catppuccin-grub;
+      extraEntries = ''
+        menuentry "UEFI firmware setup" --id "fwsetup" {
+          fwsetup
+}
+      '';
     };
     efi.canTouchEfiVariables = true;
   };

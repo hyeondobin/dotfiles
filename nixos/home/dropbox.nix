@@ -1,4 +1,9 @@
-{config, lib, pkgs, ...}:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   cfg = config.dbConfig;
 in
@@ -11,7 +16,6 @@ in
     services.dropbox = {
       enable = true;
       path = "${config.home.homeDirectory}/data/dropbox";
-      package = pkgs.dropbox;
     };
   };
 }
