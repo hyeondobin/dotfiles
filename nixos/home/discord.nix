@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 let
   cfg = config.dbConfig;
 in
@@ -7,8 +7,8 @@ in
     dbConfig.discord = lib.mkEnableOption "Enable discord";
   };
   config = lib.mkIf cfg.discord {
-    programs.discord = {
-      enable = true;
-    };
+    home.packages = [
+      pkgs.vesktop
+    ];
   };
 }

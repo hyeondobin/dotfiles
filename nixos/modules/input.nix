@@ -38,16 +38,18 @@
                 };
                 "Groups/0/Items/0".Name = "keyboard-us";
                 "Groups/0/Items/1".Name = "hangul";
+                "Groups/0/Items/2".Name = "Mozc";
               };
               globalOptions = {
                 Hotkey = {
                   EnumerateWithTriggerKeys = true;
                   EnumerateSkipFirst = false;
                   ModifierOnlyKeyTimeout = "250";
+                  AltTriggerKeys = "";
                 };
                 "Hotkey/TriggerKeys"."0" = "Alt+Alt_R";
                 "Hotkey/TriggerKeys"."1" = "Hangul";
-                "Hotkey/DeactivateKeys"."0" = "Escape";
+                # "Hotkey/DeactivateKeys"."0" = "Escape";
                 Behavior = {
                   ShareInputState = false;
                   PreeditEnabledByDefault = false;
