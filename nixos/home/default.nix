@@ -23,6 +23,10 @@
     source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/repo/dotfiles/jj";
   };
 
+  xdg.configFile.nxim = {
+    source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/repo/nxim";
+  };
+
   programs.home-manager.enable = true;
 
   imports = [
