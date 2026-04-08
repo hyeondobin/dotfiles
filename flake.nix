@@ -33,7 +33,7 @@
           modules = [
             inputs.catppuccin.nixosModules.catppuccin
             inputs.nxim.nixosModules.default
-	    inputs.disko.nixosModules.disko
+            inputs.disko.nixosModules.disko
             ./nixos/hosts/${config-vars.hostname}
           ];
         };

@@ -299,17 +299,17 @@ ref: https://www.reddit.com/r/wayland/comments/1cywhh2/anyone_still_seeing_flick
 *** windowrule
 
 #+begin_src conf
-  windowrule = no_focus on, match:class ^$, match:title ^$, match:xwayland 1, match:float 1, match:fullscreen 0, match:pin 0
-  windowrule = pseudo on, match:class fcitx
-  windowrule = suppress_event maximize, match:class .*
-  windowrule = workspace name:Emacs, match:class ^(emacs).*$
-  windowrule = workspace name:Main, match:initial_title Ghostty
-  windowrule = workspace special:Discord, match:class vesktop
-  windowrule = workspace special:SNS, pseudo on, match:initial_title Telegram
-  windowrule = workspace special:Bitwarden, match:class [Bb]itwarden
-  #windowrule = workspace name:WWW, match:class [Vv]ivaldi.*
-#  windowrule = workspace special:Nxim, match:initial_title nximw
-#  windowrule = workspace special:RcNxim, match:initial_title rcnximw
+    windowrule = no_focus on, match:class ^$, match:title ^$, match:xwayland 1, match:float 1, match:fullscreen 0, match:pin 0
+    windowrule = pseudo on, match:class fcitx
+    windowrule = suppress_event maximize, match:class .*
+    # windowrule = workspace name:Emacs, match:class ^(emacs).*$
+    windowrule = workspace name:Main, match:initial_title Ghostty
+    windowrule = workspace special:Discord, match:class vesktop
+    windowrule = workspace special:SNS, pseudo on, match:initial_title Telegram
+    windowrule = workspace special:Bitwarden, match:class [Bb]itwarden
+    #windowrule = workspace name:WWW, match:class [Vv]ivaldi.*
+  #  windowrule = workspace special:Nxim, match:initial_title nximw
+  #  windowrule = workspace special:RcNxim, match:initial_title rcnximw
 #+end_src
 
 *** keybinds
@@ -363,6 +363,7 @@ ref: https://www.reddit.com/r/wayland/comments/1cywhh2/anyone_still_seeing_flick
   bind = , l, layoutmsg, colresize +conf
   bind = , escape, submap, reset
   bind = , f, layoutmsg, fit active
+  bind = , f, submap, reset
   bind = , a, layoutmsg, fit all
   bind = , catchall, submap, reset
   submap = reset
@@ -388,6 +389,8 @@ ref: https://www.reddit.com/r/wayland/comments/1cywhh2/anyone_still_seeing_flick
   bind = $shiftMod, 8, movetoworkspace, 8
   bind = $mainMod, 9, workspace, 9
   bind = $shiftMod, 9, movetoworkspace, 9
+  bind = $mainMod, m, workspace, name:Main
+  bind = $shiftMod, m, movetoworkspace, name:Main
 #+end_src
 
 **** launcher
@@ -440,17 +443,64 @@ vivaldi browser
 #  bind = $shiftMod, T, movetoworkspace, name:Term
 #+end_src
 
-*** TODO
+**** emacs
 
 #+begin_src conf
-
-
-  # emacs
-  bind = $mainMod, E, exec, pgrep emacsclient && hyprctl dispatch workspace name:Emacs || $emacs
+  bind = $mainMod, E, exec, hyprctl clients | grep -q "initialClass: emacs" && hyprctl dispatch focuswindow initialclass:emacs || $emacs
   bind = $ctrlMod, E, exec, $emacs
-  bind = $shiftMod, E, movetoworkspace, name:Emacs
+  # bind = $shiftMod, E, movetoworkspace, name:Emacs
+#+end_src
 
-  # toggle floating of the window
+**** nvim
+using custom neovim
+#+begin_src conf
+  bind = $mainMod, n, exec, hyprctl clients | grep -q "initialTitle: nximw" && hyprctl dispatch focuswindow initialtitle:nximw || $nxim
+
+  bind = $mainMod, r, exec, hyprctl clients | grep -q "initialTitle: rcnximw" && hyprctl dispatch focuswindow initialtitle:rcnximw || $rcnxim
+#+end_src
+
+**** bitwarden
+#+begin_src conf
+  bind = $mainMod, W, togglespecialworkspace, Bitwarden
+  bind = $ctrlMod, W, exec, $bitwarden
+  bind = $shiftMod, W, movetoworkspace, special:Bitwarden
+#+end_src
+
+**** etc
+
+***** audio
+서브맵을 활용하여 출력 장치를 바꾸는 단축키인데 현재 하드코딩 되어있는 출력 장치를 해결하지 않아 그냥 =pwvucontrol= 을 사용해서 출력장치를 관리하고 있다.
+#+begin_src conf
+  # audio control, refer to submaps below
+  bind = $ctrlMod SHIFT, A, submap, audio
+  submap = audio, reset
+  bind = , l, exec, pactl set-sink-port 0 analog-output-lineout
+  bind = , h, exec, pactl set-sink-port 0 analog-output-headphones
+  bind = , p, exec, pwvucontrol
+  bind = , catchall, submap, reset
+  submap = reset
+
+#+end_src
+
+***** input method
+f22, f21, f20을 한글, 영어, 일본어 단축키로 설정. moonlander에서 combo를 활용해 입력 언어 변경 시에 사용한다.
+#+begin_src conf
+  bind = , F22, exec, fcitx5-remote -s hangul
+  bind = , F21, exec, fcitx5-remote -c
+  bind = , F20, exec, fcitx5-remote -s mozc
+#+end_src
+
+***** mouse
+272는 좌클릭 273은 우클릭이다.
+#+begin_src conf
+  bindm = $mainMod, mouse:272, movewindow
+  bindm = $mainMod, mouse:273, resizewindow
+#+end_src
+
+*** TODO
+
+#+begin_src conf :tangle no
+
 
   bind = $mainMod, P, pseudo
 
@@ -459,14 +509,6 @@ vivaldi browser
   bind = $shiftMod, R, layoutmsg, focusmaster
 
 
-  bind = $mainMod, n, exec, hyprctl clients | grep -q "initialTitle: nximw" && hyprctl dispatch focuswindow initialtitle:nximw || $nxim
-
-  bind = $mainMod, r, exec, hyprctl clients | grep -q "initialTitle: rcnximw" && hyprctl dispatch focuswindow initialtitle:rcnximw || $rcnxim
-
-  # bitwarden
-  bind = $mainMod, W, togglespecialworkspace, Bitwarden
-  bind = $ctrlMod, W, exec, $bitwarden
-  bind = $shiftMod, W, movetoworkspace, special:Bitwarden
 
   # screenshot
   bind = , PRINT, exec, hyprshot -m output
@@ -478,20 +520,4 @@ vivaldi browser
   bind = $mainMod, TAB, bringactivetotop
 
 
-  # audio control, refer to submaps below
-  bind = $ctrlMod SHIFT, A, submap, audio
-  submap = audio, reset
-  bind = , l, exec, pactl set-sink-port 0 analog-output-lineout
-  bind = , h, exec, pactl set-sink-port 0 analog-output-headphones
-  bind = , escape, submap, reset
-  submap = reset
-
-  # f22, f21, f20을 한글, 영어, 일본어 단축키로 설정
-  bind = , F22, exec, fcitx5-remote -s hangul
-  bind = , F21, exec, fcitx5-remote -c
-  bind = , F20, exec, fcitx5-remote -s mozc
-
-
-  bindm = $mainMod, mouse:272, movewindow
-  bindm = $mainMod, mouse:273, resizewindow
 #+end_src
