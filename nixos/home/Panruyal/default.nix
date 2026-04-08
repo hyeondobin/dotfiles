@@ -15,5 +15,6 @@
     rofi = true;
     telegram = true;
     waybar = true;
+    jetbrains = true;
   };
 }

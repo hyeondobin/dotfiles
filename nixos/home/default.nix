@@ -42,6 +42,7 @@
     ./rofi.nix
     ./telegram.nix
     ./waybar
+    ./jetbrains.nix
   ];
 
   catppuccin = {
