@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/emacs/elpaca/cache/melpa" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/emacs/elpaca/repos/elpaca" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/emacs/elpaca/sources/annalist" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/emacs/elpaca/sources/avy" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/emacs/elpaca/sources/cape" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/emacs/elpaca/sources/command-log-mode" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/emacs/elpaca/sources/cond-let" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/emacs/elpaca/sources/consult" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/emacs/elpaca/sources/corfu" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/emacs/elpaca/sources/dash" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/emacs/elpaca/sources/doom-modeline" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/emacs/elpaca/sources/elisp-tree-sitter" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/emacs/elpaca/sources/elpaca" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/emacs/elpaca/sources/emacs" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/emacs/elpaca/sources/emacs-fish" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/emacs/elpaca/sources/emacs-kdl-mode" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/emacs/elpaca/sources/emacs-which-key" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/emacs/elpaca/sources/emacsql" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/emacs/elpaca/sources/embark" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/emacs/elpaca/sources/evil" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/emacs/elpaca/sources/evil-collection" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/emacs/elpaca/sources/evil-commentary" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/emacs/elpaca/sources/evil-goggles" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/emacs/elpaca/sources/evil-org-mode" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/emacs/elpaca/sources/evil-owl" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/emacs/elpaca/sources/evil-surround" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/emacs/elpaca/sources/f" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/emacs/elpaca/sources/flycheck" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/emacs/elpaca/sources/general" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/emacs/elpaca/sources/goto-chg" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/emacs/elpaca/sources/ht" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/emacs/elpaca/sources/hydra" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/emacs/elpaca/sources/keycast" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/emacs/elpaca/sources/kind-icon" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/emacs/elpaca/sources/llama" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/emacs/elpaca/sources/lsp-mode" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/emacs/elpaca/sources/lsp-ui" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/emacs/elpaca/sources/magit" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/emacs/elpaca/sources/marginalia" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/emacs/elpaca/sources/markdown-mode" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/emacs/elpaca/sources/nerd-icons" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/emacs/elpaca/sources/nix-ts-mode" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/emacs/elpaca/sources/orderless" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/emacs/elpaca/sources/org" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/emacs/elpaca/sources/org-roam" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/emacs/elpaca/sources/powershell-ts-mode" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/emacs/elpaca/sources/rainbow-delimiters" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/emacs/elpaca/sources/s" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/emacs/elpaca/sources/shrink-path" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/emacs/elpaca/sources/spinner" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/emacs/elpaca/sources/svg-lib" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/emacs/elpaca/sources/transient" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/emacs/elpaca/sources/treesit-langs" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/emacs/elpaca/sources/vertico" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/emacs/elpaca/sources/with-editor" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/emacs/elpaca/sources/yaml-mode" vcs="Git" />
+  </component>
+</project>

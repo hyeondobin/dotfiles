@@ -2,5 +2,5 @@
     "git.enabled": false,
     "Lua.diagnostics.globals": [
         "vim"
-    ]
+    ],
 }

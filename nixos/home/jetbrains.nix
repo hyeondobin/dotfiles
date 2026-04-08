@@ -5,7 +5,7 @@
   ...
 }:
 let
-  cfg = config.jetbrains;
+  cfg = config.dbConfig;
 in
 {
   options = {
