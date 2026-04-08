@@ -137,6 +137,7 @@
 
       vivaldi
       bitwarden-desktop
+      vscode.fhs
 
       # (catppuccin-sddm.override {
       #   flavor = "macchiato";

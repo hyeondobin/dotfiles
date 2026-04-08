@@ -1,0 +1,2 @@
+vim.mapleader = " "
+vim.maplocalleader = ","
