@@ -41,7 +41,7 @@ in
       package = dbnemacs;
     };
     home.sessionVariables = {
-      EDITOR = "emacsclient -c -a emacs";
+      # EDITOR = "emacsclient -c -a emacs";
     };
     xdg.configFile = {
       emacs = {

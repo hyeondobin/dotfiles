@@ -155,7 +155,7 @@
     accent = "sapphire";
     flavor = "mocha";
     cursors = {
-      enable = true;
+      enable = false;
     };
     sddm = {
       fontSize = "12";

@@ -35,6 +35,7 @@ in
         lz = "lazyjj ";
         mkdir = "mkdir -pv ";
         mv = "mv -iv ";
+        nfu = "nix flake update ";
         nhs = "nh home switch --ask -b home-manager-backup ";
         nhsf = "nh home switch -b hm-backup ";
         nos = "nh os switch --ask ";
@@ -54,7 +55,7 @@ in
         fastfetch
       '';
       shellInitLast = ''
-	COMPLETE=fish jj | source
+        	COMPLETE=fish jj | source
       '';
     };
     home.packages = with pkgs; [
