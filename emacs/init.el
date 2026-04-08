@@ -1,45 +1,46 @@
 ;; bootstrap elpaca
-(defvar elpaca-installer-version 0.11)
+(defvar elpaca-installer-version 0.12)
 (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
 (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
-(defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
+(defvar elpaca-sources-directory (expand-file-name "sources/" elpaca-directory))
 (defvar elpaca-order '(elpaca :repo "https://github.com/progfolio/elpaca.git"
-                          :ref nil :depth 1 :inherit ignore
-                          :files (:defaults "elpaca-test.el" (:exclude "extensions"))
-                          :build (:not elpaca--activate-package)))
-(let* ((repo  (expand-file-name "elpaca/" elpaca-repos-directory))
-          (build (expand-file-name "elpaca/" elpaca-builds-directory))
-          (order (cdr elpaca-order))
-          (default-directory repo))
-    (add-to-list 'load-path (if (file-exists-p build) build repo))
-    (unless (file-exists-p repo)
-        (make-directory repo t)
-        (when (<= emacs-major-version 28) (require 'subr-x))
-        (condition-case-unless-debug err
-            (if-let* ((buffer (pop-to-buffer-same-window "*elpaca-bootstrap*"))
-                         ((zerop (apply #'call-process `("git" nil ,buffer t "clone"
-                                                            ,@(when-let* ((depth (plist-get order :depth)))
-                                                                  (list (format "--depth=%d" depth) "--no-single-branch"))
-                                                            ,(plist-get order :repo) ,repo))))
-                         ((zerop (call-process "git" nil buffer t "checkout"
-                                     (or (plist-get order :ref) "--"))))
-                         (emacs (concat invocation-directory invocation-name))
-                         ((zerop (call-process emacs nil buffer nil "-Q" "-L" "." "--batch"
-                                     "--eval" "(byte-recompile-directory \".\" 0 'force)")))
-                         ((require 'elpaca))
-                         ((elpaca-generate-autoloads "elpaca" repo)))
-                (progn (message "%s" (buffer-string)) (kill-buffer buffer))
-                (error "%s" (with-current-buffer buffer (buffer-string))))
-            ((error) (warn "%s" err) (delete-directory repo 'recursive))))
-    (unless (require 'elpaca-autoloads nil t)
-        (require 'elpaca)
-        (elpaca-generate-autoloads "elpaca" repo)
-        (let ((load-source-file-function nil)) (load "./elpaca-autoloads"))))
+                              :ref nil :depth 1 :inherit ignore
+                              :files (:defaults "elpaca-test.el" (:exclude "extensions"))
+                              :build (:not elpaca-activate)))
+(let* ((repo  (expand-file-name "elpaca/" elpaca-sources-directory))
+       (build (expand-file-name "elpaca/" elpaca-builds-directory))
+       (order (cdr elpaca-order))
+       (default-directory repo))
+  (add-to-list 'load-path (if (file-exists-p build) build repo))
+  (unless (file-exists-p repo)
+    (make-directory repo t)
+    (when (<= emacs-major-version 28) (require 'subr-x))
+    (condition-case-unless-debug err
+        (if-let* ((buffer (pop-to-buffer-same-window "*elpaca-bootstrap*"))
+                  ((zerop (apply #'call-process `("git" nil ,buffer t "clone"
+                                                  ,@(when-let* ((depth (plist-get order :depth)))
+                                                      (list (format "--depth=%d" depth) "--no-single-branch"))
+                                                  ,(plist-get order :repo) ,repo))))
+                  ((zerop (call-process "git" nil buffer t "checkout"
+                                        (or (plist-get order :ref) "--"))))
+                  (emacs (concat invocation-directory invocation-name))
+                  ((zerop (call-process emacs nil buffer nil "-Q" "-L" "." "--batch"
+                                        "--eval" "(byte-recompile-directory \".\" 0 'force)")))
+                  ((require 'elpaca))
+                  ((elpaca-generate-autoloads "elpaca" repo)))
+            (progn (message "%s" (buffer-string)) (kill-buffer buffer))
+          (error "%s" (with-current-buffer buffer (buffer-string))))
+      ((error) (warn "%s" err) (delete-directory repo 'recursive))))
+  (unless (require 'elpaca-autoloads nil t)
+    (require 'elpaca)
+    (elpaca-generate-autoloads "elpaca" repo)
+    (let ((load-source-file-function nil)) (load "./elpaca-autoloads"))))
 (add-hook 'after-init-hook #'elpaca-process-queues)
 (elpaca `(,@elpaca-order))
 
 (elpaca elpaca-use-package
     (elpaca-use-package-mode))
+
 
 (use-package emacs
     :demand t
@@ -81,6 +82,7 @@
     (enable-local-variables :all) ; fix =defvar= warnings
 
     (delete-by-moving-to-trash t)
+    (select-enable-clipboard nil)
 
     (byte-compile-warnings '(not free-vars unresolved noruntime lexical make-local)) ; elisp 컴파일 시의 경고 메세지 줄이기.
     (native-comp-async-report-warnings-errors nil)
@@ -103,6 +105,12 @@
     ;; ref: https://emacs.stackexchange.com/a/3008/49425
     ;; (add-to-list 'default-frame-alist '(fullscreen . maximized))
     ;; (add-hook 'after-make-frame-functions 'dobin/maximize-frame)
+    (defmacro dobin/evil-input-sim (keys)
+        `(lambda ()
+             (interactive)
+             (setq unread-command-events
+                 (append (listify-key-sequence (kbd ,keys))
+                     unread-command-events))))
 
     :hook
     (before-save . delete-trailing-whitespace) ; 저장 시 남은 공백 제거
@@ -163,15 +171,18 @@
   :config
   (evil-collection-init))
 
+
 (use-package evil-commentary
     :after evil
     :config
     (evil-commentary-mode))
 
+
 (use-package evil-surround
     :after evil
     :config
     (global-evil-surround-mode t))
+
 
 (use-package evil-goggles
     :config
@@ -228,9 +239,9 @@
         "<mouse-2>") ;; 마우스 휠 클릭으로 붙여넣기 비활성화
     
     ;; esc를 meta prefix로 사용하기 위해 normal모드에서 언바인드 해준다.
-    (general-define-key
-        :states 'normal
-        [escape] nil)
+    ;; (general-define-key
+    ;;     :states 'normal
+    ;;     [escape] nil)
     
     (dobin/leader-keys
         "M-k" '("kill emacs" . kill-emacs)
@@ -288,6 +299,14 @@
     ;; code
     (dobin/leader-keys
         "c" '(:ignore t :wk "[c]ode"))
+    
+    ;; copy paste
+    (dobin/leader-keys
+        "y" (cons "copy to clipboard" (dobin/evil-input-sim "\"+y"))
+        "p" (cons "paste from clipboard" (dobin/evil-input-sim "\"+p")))
+    (general-define-key
+        :states '(normal visual)
+        "\"" 'dobin/preview-register)
 )
 
 (use-package avy
@@ -334,6 +353,8 @@
     (org-directory (concat dobin/org-path "agenda"))
     (org-default-notes-file (concat org-directory "/notes.org"))
     ;; (org-src-preserve-indentation +1)
+    :hook
+    (org-src-mode . (lambda() (evil-normal-state)))
     :general
     (org-mode-map
         "C-s" 'consult-org-heading)
@@ -349,7 +370,7 @@
         "b" '(:wk "[b]abel" :ignore t )
         "bt" '("[t]angle" . org-babel-tangle)
 
-        "e" '("edit" . org-edit-special)
+        "e" '("edit" . dobin/org-edit-special)
 
         "i" '(:ignore t :wk "[i]nsert")
         "ih" '(:ignore t :wk "[h]eading")
@@ -520,6 +541,7 @@
                      (setq-local indent-tabs-mode nil)
                      (setq-local tab-width 2))))
 
+
 (use-package nix-ts-mode
     :mode "\\.nix\\'")
 
@@ -572,6 +594,7 @@
     :demand t
     :after transient)
 
+
 (use-package transient
     :demand t)
 
@@ -601,6 +624,7 @@
         :states '(normal)
         "C-;")
     )
+
 
 (use-package vertico
     :custom
@@ -676,6 +700,7 @@
     (add-to-list 'dabbrev-ignored-buffer-modes 'pdf-view-mode)
     (add-to-list 'dabbrev-ignored-buffer-modes 'tags-table-mode))
 
+
 (defun dobin/orderless-dispatch-flex-first (_pattern index _total)
     (and (eq index 0) 'orderless-flex))
 
@@ -732,14 +757,19 @@
 (use-package flycheck
     )
 
-(defun dobin/set-korean-font (frame)
-    "Set font for new frames"
-    (when (display-graphic-p frame)
-        (with-selected-frame frame
-            (set-fontset-font "fontset-default" 'hangul (font-spec :family "D2CodingLigature Nerd Font" :size 18)))))
-(add-hook 'after-make-frame-functions 'dobin/set-korean-font)
-
 (add-to-list 'default-frame-alist '(font . "JetBrainsMono NF-14"))
+
+(defun dobin/set-korean-font (&optional frame)
+    "Set font for new frames"
+    (let ((f (or frame (selected-frame))))
+        (when (display-graphic-p f)
+            (with-selected-frame f
+                (set-fontset-font t 'hangul (font-spec :family "D2CodingLigature Nerd Font" :size 18))))))
+
+(add-hook 'after-make-frame-functions 'dobin/set-korean-font)
+(add-hook 'window-setup-hook 'dobin/set-korean-font)
+
+
 
 (defun dobin/keyboard-quit ()
     "Smarter version of the built-in `keyboard-quit'."
@@ -750,6 +780,7 @@
 	        (abort-recursive-edit))
         (keyboard-quit)))
 (global-set-key [remap keyboard-quit] #'dobin/keyboard-quit)
+
 
 (defun dobin/save-and-kill-buffer ()
     "현재 버퍼를 저장하고 제거"
@@ -769,3 +800,39 @@
         (if (and file (file-exists-p file))
             (find-file file)
             (message "파일을 찾을 수 없습니다. %s" file))))
+
+(defun dobin/org-edit-special ()
+    "커서 기준 다음 src block으로 이동하여 edit창을 열기"
+    (interactive)
+    (if (org-in-src-block-p)
+        (org-edit-special)
+        (if (re-search-forward "^[ \t]*#\\+begin_src" nil t)
+            (progn
+                (goto-char (match-beginning 0))
+                (org-edit-special))
+            (message "No SRC Block next"))))
+
+(defun dobin/prevent-quote-register (orig-fn beg end &optional type register &rest args)
+    (if (memq register '(?+ ?*))
+        (let ((kill-ring kill-ring)
+                 (kill-ring-yank-pointer kill-ring-yank-pointer))
+            (apply orig-fn beg end type register args))
+    (apply orig-fn beg end type register args)))
+
+(advice-add 'evil-yank :around #'dobin/prevent-quote-register)
+(advice-add 'evil-delete :around #'dobin/prevent-quote-register)
+
+
+(defun dobin/preview-register ()
+    (interactive)
+    (let ((window-config (current-window-configuration))
+             reg)
+        (unwind-protect
+            (progn
+                (evil-show-registers nil)
+                (redisplay)
+                (setq reg (read-char "select register: ")))
+            (set-window-configuration window-config))
+        (when reg
+            (evil-use-register reg)
+            (setq this-command 'evil-use-register))))
