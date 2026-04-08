@@ -58,7 +58,7 @@
   time.timeZone = "Asia/Seoul";
   time.hardwareClockInLocalTime = true;
 
-  # Internationalisation
+  # Internationalization
   i18n.defaultLocale = "en_US.UTF-8";
   i18n.extraLocaleSettings = {
     LC_ADDRESS = "ko_KR.UTF-8";
@@ -116,6 +116,8 @@
     };
     systemPackages = with pkgs; [
       # inputs.nxim.packages.${stdenv.hostPlatform.system}.nxim
+      nixfmt
+
       bat
       btop
       wget
