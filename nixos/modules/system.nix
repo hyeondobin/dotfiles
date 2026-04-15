@@ -192,5 +192,7 @@
           };
       };
     };
-
+  services.envfs = {
+    enable = true;
+  };
 }
