@@ -1,0 +1,17 @@
+# This is Git's per-user configuration file.
+[user]
+	name = hyeondobin
+	email = dobinhyeon@gmail.com
+[init]
+	defaultBranch = main
+[pull]
+    rebase = true
+
+[core]
+{{- if eq .chezmoi.os "windows" }}
+    autocrlf = true
+    longpaths = true
+{{- else }}
+    autocrlf = input
+{{- end }}
+    eol = native
