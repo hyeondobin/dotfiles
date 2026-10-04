@@ -1,0 +1,37 @@
+@import "mocha.css";
+
+window#waybar {
+  background-color: @base;
+  color: @text;
+  font-family: "JetBrainsMono Nerd Font", monospace;
+  font-size: 13px;
+  border-bottom: 2px solid @surface0;
+}
+
+#workspaces button {
+  color: @subtext;
+  padding: 0 6px;
+}
+
+#workspaces button.active {
+  color: @sapphire;
+  border-bottom: 2px solid @sapphire;
+}
+
+#battery {
+  color: @green;
+  padding: 0 8px;
+}
+
+#battery.warning {
+  color: @yellow;
+}
+
+#battery.critical {
+  color: @red;
+}
+
+#clock {
+  color: @lavender;
+  padding: 0 8px;
+}
