@@ -1,0 +1,28 @@
+HISTFILE=~/.zsh_history
+HISTSIZE=10000
+SAVEHIST=10000
+setopt SHARE_HISTORY # 여러 터미널 창 간에 명령어 기록 실시간 공유 
+setopt HIST_IGNORE_DUPS # 연속으로 같은 명령어를 입력했을 때 중복 저장 방지
+setopt HIST_IGNORE_SPACE # 맨 앞에 한 칸 띄우고 친 명령어는 기록하지 않음
+
+# 탭 자동완성 
+autoload -Uz compinit && compinit
+compdef _gnu_generic -default-
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' # 대소문자 구분 없이 완성 
+zstyle ':completion:*' menu select # Tab 누르면 방향키로 선택 가능 
+
+source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+eval "$(starship init zsh)"
+eval "$(zoxide init zsh)"
+
+alias jnew='chezmoi re-add && jj -R $(chezmoi source-path) new'
+alias v='neovide'
+alias ls='eza -la'
+
+alias cz='chezmoi'
+alias ag='cd ~/agent && agy --dangerously-skip-permissions'
+alias lj='lazyjj'
+
+# 문법 하이라이팅, 반드시 맨 마지막에 위치해야함.
+source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
