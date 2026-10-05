@@ -1,0 +1,148 @@
+#compdef hyprctl
+
+_hyprctl() {
+    local curcontext="$curcontext" state line
+    typeset -A opt_args
+
+    local -a flags
+    flags=(
+        '-j[Output in JSON format]'
+        '-r[Refresh state after issuing command]'
+        '--batch[Execute a batch of commands, separated by ;]'
+        '(-i --instance)'{-i,--instance}'[Use a specific instance]:instance'
+        '(-q --quiet)'{-q,--quiet}'[Disable output]'
+        '--help[Print help message]'
+    )
+
+    local -a commands
+    commands=(
+        'activewindow:Gets the active window name and its properties'
+        'activeworkspace:Gets the active workspace and its properties'
+        'animations:Gets current animation info'
+        'binds:Lists all registered binds'
+        'clients:Lists all windows with their properties'
+        'configerrors:Lists current config parsing errors'
+        'cursorpos:Gets the current cursor position'
+        'decorations:Lists all decorations and their info'
+        'devices:Lists all connected keyboards and mice'
+        'dismissnotify:Dismisses notifications'
+        'dispatch:Issue a dispatch to call a keybind dispatcher'
+        'eval:Issue a Lua string to execute'
+        'getoption:Gets config option status'
+        'getprop:Gets a window property'
+        'globalshortcuts:Lists all global shortcuts'
+        'hyprpaper:Issue a hyprpaper request'
+        'hyprsunset:Issue a hyprsunset request'
+        'instances:Lists all running instances of Hyprland'
+        'keyword:Issue a config keyword dynamically'
+        'kill:Get into kill mode to kill an app by clicking'
+        'layers:Lists all the surface layers'
+        'layouts:Lists all layouts available'
+        'monitors:Lists active outputs with their properties'
+        'notify:Sends a notification'
+        'output:Allows adding and removing fake outputs'
+        'plugin:Issue a plugin request'
+        'reload:Force reload the config'
+        'repl:Interactive Lua REPL'
+        'rollinglog:Prints tail of the log'
+        'setcursor:Sets the cursor theme and reloads cursor manager'
+        'seterror:Sets the hyprctl error string'
+        'setprop:Sets a window property'
+        'splash:Get the current splash'
+        'status:Get internal status information'
+        'switchxkblayout:Sets the xkb layout index for a keyboard'
+        'systeminfo:Get system info'
+        'version:Prints the hyprland version'
+        'workspacerules:Lists all workspace rules'
+        'workspaces:Lists all workspaces with their properties'
+    )
+
+    _arguments -s -S \
+        $flags \
+        '1: :->command' \
+        '*: :->args'
+
+    case $state in
+        command)
+            _describe -t commands 'hyprctl command' commands
+            ;;
+        args)
+            local cmd=$words[1]
+            # Handle flags before command
+            integer i=1
+            while [[ $i -lt $#words ]]; do
+                if [[ $words[i] != -* && $words[i] != hyprctl ]]; then
+                    cmd=$words[i]
+                    break
+                fi
+                ((i++))
+            done
+
+            case $cmd in
+                dispatch)
+                    _hyprctl_dispatch
+                    ;;
+                monitors)
+                    _values 'monitors options' 'all[List active and inactive outputs]'
+                    ;;
+                reload)
+                    _values 'reload options' 'config-only[Disable monitor reload]'
+                    ;;
+                rollinglog)
+                    _arguments '(-f --follow)'{-f,--follow}'[Follow log]'
+                    ;;
+                *)
+                    ;;
+            esac
+            ;;
+    esac
+}
+
+_hyprctl_dispatch() {
+    local -a dispatchers
+    dispatchers=(
+        'exec:Execute a shell command'
+        'execr:Execute a raw shell command'
+        'killactive:Close the focused window'
+        'closewindow:Close a specified window'
+        'workspace:Change workspace'
+        'movetoworkspace:Move focused window to workspace'
+        'movetoworkspacesilent:Move focused window to workspace silently'
+        'togglefloating:Toggle active window floating state'
+        'fullscreen:Toggle fullscreen'
+        'fullscreenstate:Set focused window fullscreen mode'
+        'fakefullscreen:Toggle fake fullscreen'
+        'dpms:Set DPMS status (on/off)'
+        'pin:Pin a window'
+        'focuswindow:Focus a window'
+        'focusmonitor:Focus a monitor'
+        'focusworkspaceoncurrentmonitor:Focus workspace on current monitor'
+        'movewindow:Move window in direction'
+        'swapwindow:Swap window in direction'
+        'centerwindow:Center active window'
+        'resizeactive:Resize active window'
+        'resizewindowpixel:Resize window in pixels'
+        'moveactive:Move active window'
+        'movewindowpixel:Move window in pixels'
+        'cyclenext:Focus next window'
+        'swapnext:Swap with next window'
+        'tagwindow:Tag or untag a window'
+        'togglegroup:Toggle group'
+        'changegroupactive:Change active window in group'
+        'lockgroups:Lock or unlock groups'
+        'lockactivegroup:Lock or unlock active group'
+        'moveintogroup:Move window into group'
+        'moveoutofgroup:Move window out of group'
+        'movegroupwindow:Move window within group'
+        'togglespecialworkspace:Toggle special workspace'
+        'exit:Exit Hyprland'
+        "\'hl.dsp.exec_cmd():Lua dispatch command"
+        "\'hl.dsp.window.close()\':Lua close active window"
+        "\'hl.dsp.window.float({ action = \"toggle\" })\':Lua toggle floating"
+        "\'hl.dsp.focus({ workspace = 1 })\':Lua focus workspace"
+        "\'hl.dsp.exit()\':Lua exit Hyprland"
+    )
+    _describe -t dispatchers 'dispatcher' dispatchers
+}
+
+_hyprctl "$@"

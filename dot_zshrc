@@ -6,6 +6,7 @@ setopt HIST_IGNORE_DUPS # 연속으로 같은 명령어를 입력했을 때 중�
 setopt HIST_IGNORE_SPACE # 맨 앞에 한 칸 띄우고 친 명령어는 기록하지 않음
 
 # 탭 자동완성 
+fpath=(~/.zsh/completions $fpath)
 autoload -Uz compinit && compinit
 compdef _gnu_generic -default-
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' # 대소문자 구분 없이 완성 
