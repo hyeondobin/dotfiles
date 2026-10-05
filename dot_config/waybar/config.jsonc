@@ -1,33 +1,24 @@
 {
-    "layer": "top",
-    "position": "top",
-    "height": 32,
-    "spacing": 8,
-    
-    "modules-left": [
-        "hyprland/workspaces",
-        "hyprland/window"
-    ],
-    "modules-center": [
-        "clock"
-    ],
-    "modules-right": [
-        "pulseaudio",
-        "network",
-        "cpu",
-        "memory",
-        "tray"
-    ],
-    "hyprland/workspaces": {
-        "disable-scroll": true,          // 마우스 휠로 워크스페이스 넘어가는 것 방지
-        "all-outputs": true,             // 듀얼 모니터일 때 모든 모니터에 번호 표시
-        "format": "{name}",              // 번호만 표시 ("{icon}"으로 아이콘 매핑 가능)
-        "persistent-workspaces": {       // 창이 없어도 기본으로 보여줄 번호 (1~5번)
-            "*": 5
-        }
+  "layer": "top",
+  "position": "top",
+  "height": 32,
+  "spacing": 8,
+
+  "modules-left": ["hyprland/workspaces", "hyprland/window"],
+  "modules-center": ["clock"],
+  "modules-right": ["pulseaudio", "network", "cpu", "memory", "tray"],
+  "hyprland/workspaces": {
+    "disable-scroll": true, // 마우스 휠로 워크스페이스 넘어가는 것 방지
+    "all-outputs": true, // 듀얼 모니터일 때 모든 모니터에 번호 표시
+    "format": "{name}", // 번호만 표시 ("{icon}"으로 아이콘 매핑 가능)
+    "persistent-workspaces": {
+      // 창이 없어도 기본으로 보여줄 번호 (1~5번)
+      "*": 5,
     },
-    "hyprland/window": {
-        "format": "{}",
-        "max-length": 40,                // 제목이 너무 길면 뒷부분 생략 (...)
-        "separate-outputs": true
+  },
+  "hyprland/window": {
+    "format": "{}",
+    "max-length": 40, // 제목이 너무 길면 뒷부분 생략 (...)
+    "separate-outputs": true,
+  },
 }
