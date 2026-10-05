@@ -16,10 +16,13 @@ source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
 
+export EDITOR="nvim"
+export VISUAL="neovide --no-fork"
+
 alias jnew='chezmoi re-add && jj -R $(chezmoi source-path) new'
 alias v='neovide'
 alias ls='eza -la'
-
+alias grep="grep --color=auto"
 alias cz='chezmoi'
 alias ag='cd ~/agent && agy --dangerously-skip-permissions'
 alias lj='lazyjj'
