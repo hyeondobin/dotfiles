@@ -20,9 +20,9 @@ nmap("<Esc>", "<nop>")
 
 nmap("<M-w>", vim.cmd.xa, { desc = "Save and Quit" })
 nmap("<leader>w", vim.cmd.w, { desc = "Save current file" })
-nmap("<leader>y", [["+y]], "+에 복사")
-vmap("<leader>y", [["+y]], "+에 복사")
-nmap("<leader>p", [["+p]], "+에 복사")
+nmap("<leader>y", [["+y]], "register:+ 에 복사")
+vmap("<leader>y", [["+y]], "register:+ 에 복사")
+nmap("<leader>p", [["+p]], "register:+ 에 복사")
 
 nmap("j", "gj")
 nmap("k", "gk")
